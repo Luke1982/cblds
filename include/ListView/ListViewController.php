@@ -672,7 +672,7 @@ class ListViewController {
 				// Create the action links as an array
 				$row['actions'] = array(
 					'edit' => (isPermitted($module, 'EditView', $recordId) == 'yes') ? $edit_link . '&start=' . $navigationInfo['start'] : false,
-					'delete' => (isPermitted($module, 'Delete', $recordId) == 'yes') ? addslashes(urlencode($del_link)) : false,
+					'delete' => (isPermitted($module, 'Delete', $recordId) == 'yes') ? addslashes($del_link) : false,
 					'changed' => (!$focus->isViewed($recordId)),
 				);
 			}
