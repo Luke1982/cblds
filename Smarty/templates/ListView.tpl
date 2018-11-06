@@ -52,16 +52,16 @@
                     <div class="slds-page-header__name">
                         <div class="slds-page-header__name-title">
                             <h1>
-                                <span class="slds-page-header__title slds-truncate" title="Accounts">Accounts</span>
+                                <span class="slds-page-header__title slds-truncate" title="{$MODULE|@getTranslatedString:$MODULE}">{$MODULE|@getTranslatedString:$MODULE}</span>
                             </h1>
-                            <span>10 items • sorted by account no</span>
+                            <span>{$recordListRange}</span>
                         </div>
                     </div>
                 </div>
             </div>            
         </div>
         <div class="slds-col">
-            <span class="slds-text-title slds-truncate" title="Filter Accounts">Filter Accounts</span>
+            <span class="slds-text-title slds-truncate" title="{$MODULE|@getTranslatedString:$MODULE} {$APP.LBL_VIEW}">{$MODULE|@getTranslatedString:$MODULE} {$APP.LBL_VIEW}</span>
             <ul class="slds-button-group-list">
                 <li>
                     <div class="slds-form-element">
