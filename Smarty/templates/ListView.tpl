@@ -61,12 +61,13 @@
             </div>            
         </div>
         <div class="slds-col">
+        	{if empty($HIDE_CUSTOM_LINKS) || $HIDE_CUSTOM_LINKS neq '1'}
             <span class="slds-text-title slds-truncate" title="{$MODULE|@getTranslatedString:$MODULE} {$APP.LBL_VIEW}">{$MODULE|@getTranslatedString:$MODULE} {$APP.LBL_VIEW}</span>
             <ul class="slds-button-group-list">
                 <li>
                     <div class="slds-form-element">
                         <div class="slds-select_container">
-                            <select class="slds-select">
+                            <select class="slds-select" onchange="showDefaultCustomView(this,'{$MODULE}','{$CATEGORY}')">
                             	{foreach $CUSTOMVIEW_ARRAY as $CV_OPTION}
 								<option {if $CV_OPTION.default} selected="selected"{/if}>{$CV_OPTION.name}</option>
                             	{/foreach}
@@ -75,30 +76,49 @@
                     </div>
                 </li>
                 <li>
-                    <button class="slds-button slds-button_icon slds-button_icon-border" title="Create filter">
-                        <svg class="slds-button__icon" aria-hidden="true">
-                            <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#add" xmlns:xlink="http://www.w3.org/1999/xlink" />
-                        </svg>
-                        <span class="slds-assistive-text">Create filter</span>
-                    </button>
+                	<a href="index.php?module={$MODULE}&action=CustomView&parenttab={$CATEGORY}">
+	                    <button class="slds-button slds-button_icon slds-button_icon-border" title="{$APP.LNK_CV_CREATEVIEW}">
+	                        <svg class="slds-button__icon" aria-hidden="true">
+	                            <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#add" xmlns:xlink="http://www.w3.org/1999/xlink" />
+	                        </svg>
+	                        <span class="slds-assistive-text">{$APP.LNK_CV_CREATEVIEW}</span>
+	                    </button>
+                    </a>
                 </li>
+                {if $CV_EDIT_PERMIT == 'yes' || $SQLERROR}
                 <li>
-                    <button class="slds-button slds-button_icon slds-button_icon-border" title="Edit filter">
-                        <svg class="slds-button__icon" aria-hidden="true">
-                            <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#edit" xmlns:xlink="http://www.w3.org/1999/xlink" />
-                        </svg>
-                        <span class="slds-assistive-text">Edit filter</span>
-                    </button>
+                	<a href="index.php?module={$MODULE}&action=CustomView&record={$VIEWID}&parenttab={$CATEGORY}">
+	                    <button class="slds-button slds-button_icon slds-button_icon-border" title="{$APP.LNK_CV_EDIT}">
+	                        <svg class="slds-button__icon" aria-hidden="true">
+	                            <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#edit" xmlns:xlink="http://www.w3.org/1999/xlink" />
+	                        </svg>
+	                        <span class="slds-assistive-text">{$APP.LNK_CV_EDIT}</span>
+	                    </button>
+	                </a>
                 </li>
+                {/if}
+                {if $CV_DELETE_PERMIT == 'yes'}
                 <li>
-                    <button class="slds-button slds-button_icon slds-button_icon-border" title="Delete filter">
+                	<a href="javascript:confirmdelete('index.php?module=CustomView&action=Delete&dmodule={$MODULE}&record={$VIEWID}&parenttab={$CATEGORY}')">
+	                    <button class="slds-button slds-button_icon slds-button_icon-border" title="{$APP.LNK_CV_DELETE}">
+	                        <svg class="slds-button__icon" aria-hidden="true">
+	                            <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#delete" xmlns:xlink="http://www.w3.org/1999/xlink" />
+	                        </svg>
+	                        <span class="slds-assistive-text">{$APP.LNK_CV_DELETE}</span>
+	                    </button>
+                	</a>
+                </li>
+                {/if}
+                <li>
+                    <button class="slds-button slds-button_icon slds-button_icon-border" title="{$CUSTOMVIEW_PERMISSION.Label}">
                         <svg class="slds-button__icon" aria-hidden="true">
-                            <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#delete" xmlns:xlink="http://www.w3.org/1999/xlink" />
+                            <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#ban" xmlns:xlink="http://www.w3.org/1999/xlink" />
                         </svg>
-                        <span class="slds-assistive-text">Delete filter</span>
+                        <span class="slds-assistive-text">{$CUSTOMVIEW_PERMISSION.Label}</span>
                     </button>
                 </li>
-            </ul>            
+            </ul> 
+            {/if}           
         </div>
         <div class="slds-col">
             <ul class="slds-button-group-list slds-float_right">
