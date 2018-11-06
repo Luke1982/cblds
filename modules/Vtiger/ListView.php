@@ -234,12 +234,16 @@ if ($sql_error) {
 		}
 
 		$listview_header = $controller->getListViewHeader($focus, $currentModule, $url_string, $sorder, $order_by, $skipAction);
+		$listview_header_array = $controller->getListViewHeader($focus, $currentModule, $url_string, $sorder, $order_by, $skipAction, true);
 		$listview_entries = $controller->getListViewEntries($focus, $currentModule, $list_result, $navigation_array, $skipAction);
+		$listview_entries_array = $controller->getListViewEntries($focus, $currentModule, $list_result, $navigation_array, $skipAction, true);
 
 		$listview_header_search = $controller->getBasicSearchFieldInfoList();
 
 		$smarty->assign('LISTHEADER', $listview_header);
+		$smarty->assign('LISTHEADER_ARRAY', $listview_header_array);
 		$smarty->assign('LISTENTITY', $listview_entries);
+		$smarty->assign('LISTENTITY_ARRAY', $listview_entries_array);
 		$smarty->assign('SEARCHLISTHEADER', $listview_header_search);
 
 	// Module Search

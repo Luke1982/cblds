@@ -120,7 +120,7 @@ class ListViewController {
 	 * Param $oCv - vtiger_customview object
 	 * Returns an array type
 	 */
-	public function getListViewEntries($focus, $module, $result, $navigationInfo, $skipActions = false) {
+	public function getListViewEntries($focus, $module, $result, $navigationInfo, $skipActions = false, $actions_array = false) {
 		global $theme, $default_charset, $current_user, $currentModule, $adb;
 		$is_admin = is_admin($current_user);
 		$listview_max_textlength = GlobalVariable::getVariable('Application_ListView_Max_Text_Length', 40, $currentModule);
@@ -664,8 +664,17 @@ class ListViewController {
 				}
 			}
 			// END
-			if ($actionLinkInfo != "" && !$skipActions) {
-				$row[] = $actionLinkInfo;
+			if (!$actions_array) {
+				if ($actionLinkInfo != "" && !$skipActions) {
+					$row[] = $actionLinkInfo;
+				}
+			} else {
+				// Create the action links as an array
+				$row['actions'] = array(
+					'edit' => (isPermitted($module, 'EditView', $recordId) == 'yes') ? $edit_link . '&start=' . $navigationInfo['start'] : false,
+					'delete' => (isPermitted($module, 'Delete', $recordId) == 'yes') ? addslashes(urlencode($del_link)) : false,
+					'changed' => (!$focus->isViewed($recordId)),
+				);
 			}
 			list($row,$unused,$unused2) = cbEventHandler::do_filter('corebos.filter.listview.render', array($row,$this->db->query_result_rowdata($result, $i),$recordId));
 			$data[$recordId] = $row;
@@ -743,7 +752,7 @@ class ListViewController {
 		return $link;
 	}
 
-	public function getListViewHeader($focus, $module, $sort_qry = '', $sorder = '', $orderBy = '', $skipActions = false) {
+	public function getListViewHeader($focus, $module, $sort_qry = '', $sorder = '', $orderBy = '', $skipActions = false, $return_array = false) {
 		global $theme, $current_user;
 
 		$arrow='';
@@ -775,6 +784,12 @@ class ListViewController {
 				}
 			}
 			$fieldLabel = $field->getFieldLabelKey();
+
+			if ($return_array) {
+				$header[] = $fieldLabel;
+				continue;
+			}
+
 			if (in_array($field->getColumnName(), $focus->sortby_fields)) {
 				if ($orderBy == $field->getFieldName()) {
 					$temp_sorder = $change_sorder[$sorder];

@@ -129,47 +129,67 @@
                         </svg>
                         <span class="slds-assistive-text">Advanced search</span>
                     </button>
-                </li>                
-                <li>
-                    <button class="slds-button slds-button_icon slds-button_icon-border" title="Import">
-                        <svg class="slds-button__icon" aria-hidden="true">
-                            <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#pop_in" xmlns:xlink="http://www.w3.org/1999/xlink" />
-                        </svg>
-                        <span class="slds-assistive-text">Import</span>
-                    </button>
                 </li>
+				{if $CHECK.Import == 'yes'}
                 <li>
-                    <button class="slds-button slds-button_icon slds-button_icon-border" title="Export">
-                        <svg class="slds-button__icon" aria-hidden="true">
-                            <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#new_window" xmlns:xlink="http://www.w3.org/1999/xlink" />
-                        </svg>
-                        <span class="slds-assistive-text">Export</span>
-                    </button>
+                	<a href="index.php?module={$MODULE}&action=Import&step=1&return_module={$MODULE}&return_action=index&parenttab={$CATEGORY}">
+	                    <button class="slds-button slds-button_icon slds-button_icon-border" title="{$APP.LBL_IMPORT} {$MODULE|getTranslatedString:$MODULE}">
+	                        <svg class="slds-button__icon" aria-hidden="true">
+	                            <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#pop_in" xmlns:xlink="http://www.w3.org/1999/xlink" />
+	                        </svg>
+	                        <span class="slds-assistive-text">{$APP.LBL_IMPORT} {$MODULE|getTranslatedString:$MODULE}</span>
+	                    </button>
+                	</a>
                 </li>
+                {/if}
+                {if $CHECK.Export == 'yes'}
                 <li>
-                    <button class="slds-button slds-button_icon slds-button_icon-border" title="Deduplicate">
-                        <svg class="slds-button__icon" aria-hidden="true">
-                            <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#copy" xmlns:xlink="http://www.w3.org/1999/xlink" />
-                        </svg>
-                        <span class="slds-assistive-text">Deduplicate</span>
-                    </button>
+                	<a href="javascript:void(0)" onclick="return selectedRecords('{$MODULE}','{$CATEGORY}')">
+	                    <button class="slds-button slds-button_icon slds-button_icon-border" title="{$APP.LBL_EXPORT} {$MODULE|getTranslatedString:$MODULE}">
+	                        <svg class="slds-button__icon" aria-hidden="true">
+	                            <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#new_window" xmlns:xlink="http://www.w3.org/1999/xlink" />
+	                        </svg>
+	                        <span class="slds-assistive-text">{$APP.LBL_EXPORT} {$MODULE|getTranslatedString:$MODULE}</span>
+	                    </button>
+                	</a>
                 </li>
+                {/if}
+                {if $CHECK.DuplicatesHandling == 'yes' && ($smarty.request.action == 'ListView' || $smarty.request.action == 'index')}
                 <li>
-                    <button class="slds-button slds-button_icon slds-button_icon-border" title="Tools">
-                        <svg class="slds-button__icon" aria-hidden="true">
-                            <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#custom_apps" xmlns:xlink="http://www.w3.org/1999/xlink" />
-                        </svg>
-                        <span class="slds-assistive-text">Tools</span>
-                    </button>
+                	<a href="javascript:;" onClick="mergeshowhide('mergeDup');searchhide('searchAcc','advSearch');">
+	                	<button class="slds-button slds-button_icon slds-button_icon-border" title="{$APP.LBL_FIND_DUPLICATES}">
+	                		<svg class="slds-button__icon" aria-hidden="true">
+	                			<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#copy" xmlns:xlink="http://www.w3.org/1999/xlink" />
+	                		</svg>
+	                		<span class="slds-assistive-text">{$APP.LBL_FIND_DUPLICATES}</span>
+	                	</button>
+                	</a>
                 </li>
+                {/if}
+                {if $CHECK.moduleSettings == 'yes'}
                 <li>
-                    <button class="slds-button slds-button_success">
-                        <svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
-                            <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#add"></use>
-                        </svg>
-                        Add Account
-                    </button>
+                	<a href='index.php?module=Settings&action=ModuleManager&module_settings=true&formodule={$MODULE}&parenttab=Settings'>
+	                    <button class="slds-button slds-button_icon slds-button_icon-border" title="{$MODULE|getTranslatedString:$MODULE} {$APP.LBL_SETTINGS}">
+	                        <svg class="slds-button__icon" aria-hidden="true">
+	                            <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#custom_apps" xmlns:xlink="http://www.w3.org/1999/xlink" />
+	                        </svg>
+	                        <span class="slds-assistive-text">{$MODULE|getTranslatedString:$MODULE} {$APP.LBL_SETTINGS}</span>
+	                    </button>
+                	</a>
                 </li>
+                {/if}
+                {if $CHECK.CreateView == 'yes'}
+                <li>
+                	<a href="index.php?module={$MODULE}&action=EditView&return_action=DetailView&parenttab={$CATEGORY}">
+	                    <button class="slds-button slds-button_success">
+	                        <svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
+	                            <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#add"></use>
+	                        </svg>
+	                        {$APP.LBL_CREATE_BUTTON_LABEL} {$SINGLE_MOD|getTranslatedString:$MODULE}
+	                    </button>
+	                </a>
+                </li>
+                {/if}
             </ul>            
         </div>
     </div>
@@ -459,6 +479,283 @@
     <!-- // Advanced search row -->
 </div>
 <!-- // Page header -->
+
+<!-- Content table -->
+<div class="cbds-shadow-c--small slds-box slds-m-around_medium slds-p-around_none" style="overflow: hidden;">
+    <div class="slds-theme_inverse slds-p-around_small">
+        <div class="slds-grid slds-gutters">
+            <div class="slds-col slds-size_8-of-12">
+            	<!-- Listview buttons -->
+                <div class="slds-button-group" role="group">
+                	{foreach key=button_check item=button_label from=$BUTTONS}
+                	{if $button_check == 'del'}
+                    <button class="slds-button slds-button_destructive" onclick="return massDelete('{$MODULE}')">
+                        <svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
+                            <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#delete"></use>
+                        </svg>
+                        {$button_label}
+                    </button>
+                    {elseif $button_check eq 'mass_edit'}
+                    <button class="slds-button slds-button_inverse" onclick="document.getElementById('cbds-massedit').classList.add('cbds-massedit--active');return mass_edit(this, 'massedit', '{$MODULE}', '{$CATEGORY}');">
+                        <svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
+                            <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#mark_all_as_read"></use>
+                        </svg>
+                        {$button_label}
+                    </button>
+                    {elseif $button_check eq 's_mail'}
+                    <button class="slds-button slds-button_inverse" onclick="return eMail('{$MODULE}',this);">
+                        <svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
+                            <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#email"></use>
+                        </svg>
+                        {$button_label}
+                    </button>
+                    {elseif $button_check eq 'mailer_exp'}
+                    <button class="slds-button slds-button_inverse" onclick="return mailer_export()">
+                        <svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
+                            <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#email"></use>
+                        </svg>
+                        {$button_label}
+                    </button>
+                    {/if}
+                    {/foreach}
+					{if $CUSTOM_LINKS && $CUSTOM_LINKS.LISTVIEWBASIC}
+						{foreach item=CUSTOMLINK from=$CUSTOM_LINKS.LISTVIEWBASIC}
+							{assign var="customlink_href" value=$CUSTOMLINK->linkurl}
+							{assign var="customlink_label" value=$CUSTOMLINK->linklabel}
+							{assign var="customlink_id" value=$CUSTOMLINK->linklabel|replace:' ':''}
+							{if $customlink_label eq ''}
+								{assign var="customlink_label" value=$customlink_href}
+							{else}
+								{* Pickup the translated label provided by the module *}
+								{assign var="customlink_label" value=$customlink_label|@getTranslatedString:$CUSTOMLINK->module()}
+							{/if}
+		                    <button class="slds-button slds-button_inverse" onclick="{$customlink_href}" id="LISTVIEWBASIC_{$customlink_id}">
+		                        {$customlink_label}
+		                    </button>						
+						{/foreach}
+					{/if}
+					{* TO-DO: $CUSTOM_LINKS.LISTVIEW in ListViewCustomButtons.tpl *}
+                </div>
+                <!-- // Listview buttons -->                   
+            </div>
+            <div class="slds-col  slds-size_3-of-12">
+                <div class="slds-form-element__control">
+                    <div class="slds-combobox-group">
+                        <div class="slds-combobox_object-switcher slds-combobox-addon_start">
+                            <div class="slds-form-element slds-text-color_default">
+                                <label class="slds-form-element__label slds-assistive-text" for="objectswitcher-combobox-id-1">Filter Search by:</label>
+                                <div class="slds-form-element__control">
+                                    <div class="slds-combobox_container">
+                                        <div id="test-2" class="slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click" aria-controls="primary-search-combobox-id-1" aria-expanded="false" aria-haspopup="listbox" role="combobox">
+                                            <div class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_right" role="none">
+                                                <input type="text" class="slds-input slds-combobox__input slds-combobox__input-value" id="objectswitcher-combobox-id-1" aria-controls="objectswitcher-listbox-id-1" autocomplete="off" role="textbox" placeholder=" " value="All columns" onfocus="document.getElementById('test-2').classList.add('slds-is-open');" onblur="document.getElementById('test-2').classList.remove('slds-is-open');">
+                                                <span class="slds-icon_container slds-icon-utility-down slds-input__icon slds-input__icon_right">
+                                                    <svg class="slds-icon slds-icon slds-icon_xx-small slds-icon-text-default" aria-hidden="true">
+                                                        <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#down"></use>
+                                                    </svg>
+                                                </span>
+                                            </div>
+                                            <div id="objectswitcher-listbox-id-1" class="slds-dropdown slds-dropdown_length-5 slds-dropdown_x-small slds-dropdown_left" role="listbox">
+                                                <ul class="slds-listbox slds-listbox_vertical" role="group" aria-label="Suggested for you">
+                                                    <li role="presentation" class="slds-listbox__item">
+                                                        <div id="object0" class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small" role="presentation">
+                                                            <h3 class="slds-text-title_caps" role="presentation">Columns</h3>
+                                                        </div>
+                                                    </li>
+                                                    <li role="presentation" class="slds-listbox__item">
+                                                        <div id="object1" class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small slds-is-selected" role="option">
+                                                            <span class="slds-media__figure slds-listbox__option-icon">
+                                                                <span class="slds-icon_container slds-icon-utility-check slds-current-color">
+                                                                    <svg class="slds-icon slds-icon_x-small" aria-hidden="true">
+                                                                        <use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#check"></use>
+                                                                    </svg>
+                                                                </span>
+                                                            </span>
+                                                            <span class="slds-media__body">
+                                                                <span class="slds-truncate" title="Organization no">
+                                                                    <span class="slds-assistive-text">Current Selection:</span> All columns</span>
+                                                            </span>
+                                                        </div>
+                                                    </li>
+                                                    <li role="presentation" class="slds-listbox__item">
+                                                        <div id="object2" class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small" role="option">
+                                                            <span class="slds-media__figure slds-listbox__option-icon"></span>
+                                                            <span class="slds-media__body">
+                                                                    <span class="slds-truncate" title="Organization no"> Organization no</span>
+                                                            </span>
+                                                        </div>
+                                                    </li>
+                                                    <li role="presentation" class="slds-listbox__item">
+                                                        <div id="object2" class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small" role="option">
+                                                            <span class="slds-media__figure slds-listbox__option-icon"></span>
+                                                            <span class="slds-media__body">
+                                                                    <span class="slds-truncate" title="Organization name"> Organization name</span>
+                                                            </span>
+                                                        </div>
+                                                    </li>
+                                                    <li role="presentation" class="slds-listbox__item">
+                                                        <div id="object3" class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small" role="option">
+                                                            <span class="slds-media__figure slds-listbox__option-icon"></span>
+                                                            <span class="slds-media__body">
+                                                                    <span class="slds-truncate" title="Billing city"> Billing city</span>
+                                                            </span>
+                                                        </div>
+                                                    </li>
+                                                    <li role="presentation" class="slds-listbox__item">
+                                                        <div id="object4" class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small" role="option">
+                                                            <span class="slds-media__figure slds-listbox__option-icon"></span>
+                                                            <span class="slds-media__body">
+                                                                    <span class="slds-truncate" title="Website"> Website</span>
+                                                            </span>
+                                                        </div>
+                                                    </li>
+                                                    <li role="presentation" class="slds-listbox__item">
+                                                        <div id="object5" class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small" role="option">
+                                                            <span class="slds-media__figure slds-listbox__option-icon"></span>
+                                                            <span class="slds-media__body">
+                                                                    <span class="slds-truncate" title="Phone"> Phone</span>
+                                                            </span>
+                                                        </div>
+                                                    </li>
+                                                    <li role="presentation" class="slds-listbox__item">
+                                                        <div id="object6" class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small" role="option">
+                                                            <span class="slds-media__figure slds-listbox__option-icon"></span>
+                                                            <span class="slds-media__body">
+                                                                    <span class="slds-truncate" title="Assigned to"> Assigned to</span>
+                                                            </span>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="slds-combobox_container slds-combobox-addon_end">
+                            <div class="slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click" aria-expanded="false" aria-haspopup="listbox" id="primary-search-combobox-id-1" role="combobox">
+                                <div class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_left slds-global-search__form-element" role="none">
+                                    <span class="slds-icon_container slds-icon-utility-search slds-input__icon slds-input__icon_left">
+                                            <svg class="slds-icon slds-icon slds-icon_xx-small slds-icon-text-default" aria-hidden="true">
+                                                <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#search"></use>
+                                            </svg>
+                                        </span>
+                                    <input type="text" class="slds-input slds-combobox__input slds-text-color_default" id="combobox-id-1" aria-autocomplete="list" aria-controls="search-listbox-id-1" autocomplete="off" role="textbox" placeholder="Search Accounts">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>                   
+            </div>
+            <div class="slds-col  slds-size_1-of-12">
+                <div class="slds-button-group">
+                    <button class="slds-button slds-button_icon slds-button_icon-border cbds-bg-white" title="Previous">
+                        <svg class="slds-button__icon" aria-hidden="true">
+                            <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#left" xmlns:xlink="http://www.w3.org/1999/xlink" />
+                        </svg>
+                    </button>
+                    <div class="slds-form-element slds-border_top slds-border_bottom cbds-bg-white" style="height: 32px;">
+                      <div class="slds-form-element__control">
+                        <input id="text-input-id-1" size="3" class="slds-input slds-input_bare" type="text" value="1" />
+                      </div>
+                    </div>
+                    <button class="slds-button slds-button_icon slds-button_icon-border cbds-bg-white" title="Next">
+                        <svg class="slds-button__icon" aria-hidden="true">
+                            <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#right" xmlns:xlink="http://www.w3.org/1999/xlink" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Main listview table -->
+    <table aria-multiselectable="true" class="slds-table slds-table_bordered slds-table_fixed-layout slds-table_resizable-cols" role="grid">
+        <thead>
+            <tr class="slds-line-height_reset">
+                <th class="slds-text-title_caps slds-text-align_right" scope="col" style="width: 3.25rem;">
+                    <span id="column-group-header" class="slds-assistive-text">Choose a row</span>
+                    <div class="slds-th__action slds-th__action_form">
+                        <div class="slds-checkbox">
+                            <input type="checkbox" name="options" id="checkbox-1" tabindex="-1" aria-labelledby="check-select-all-label column-group-header" value="checkbox-1">
+                            <label class="slds-checkbox__label" for="checkbox-1" id="check-select-all-label">
+                                <span class="slds-checkbox_faux"></span>
+                                <span class="slds-form-element__label slds-assistive-text">Select All</span>
+                            </label>
+                        </div>
+                    </div>
+                </th>
+                {foreach name="listviewforeach" item=header from=$LISTHEADER_ARRAY}
+                <th aria-label="Name" aria-sort="none" class="slds-text-title_caps slds-is-sortable" scope="col">
+                    <a class="slds-th__action slds-text-link_reset" href="javascript:void(0);" role="button" tabindex="-1">
+                        <span class="slds-assistive-text">Sort by: </span>
+                        <div class="slds-grid slds-grid_vertical-align-center slds-has-flexi-truncate">
+                            <span class="slds-truncate" title="{$header}">{$header}</span>
+                            <span class="slds-icon_container slds-icon-utility-arrowdown">
+                                <svg class="slds-icon slds-icon-text-default slds-is-sortable__icon " aria-hidden="true">
+                                    <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#arrowdown"></use>
+                                </svg>
+                            </span>
+                        </div>
+                    </a>
+                </th>
+                {/foreach}
+            </tr>
+        </thead>
+        <tbody>
+        	{foreach item=entity key=entity_id from=$LISTENTITY_ARRAY}
+	            <tr aria-selected="false" class="slds-hint-parent">
+	                <td class="slds-text-align_right" role="gridcell">
+	                    <div class="slds-checkbox">
+	                        <input type="checkbox" name="options" id="listview-checkbox-{$entity_id}" tabindex="-1" aria-labelledby="listview-checkboxlabel-{$entity_id} column-group-header" value="{$entity_id}">
+	                        <label class="slds-checkbox__label" for="listview-checkbox-{$entity_id}" id="listview-checkboxlabel-{$entity_id}">
+	                            <span class="slds-checkbox_faux"></span>
+	                            <span class="slds-form-element__label slds-assistive-text">{* TO-DO: Get correct text here *}</span>
+	                        </label>
+	                    </div>
+	                </td>
+				{foreach item=cell key=array_key from=$entity}
+					{if !$cell@last}
+	                <td role="gridcell">
+	                    <div class="slds-truncate" title="">{$cell}</div>
+	                </td>
+	                {else}
+		            <td role="gridcell">
+		                <div class="slds-button-group" role="group">
+		                	{if $cell.edit != false}
+		                    <button class="slds-button slds-button_icon slds-button_icon-border-filled" title="Edit" aria-pressed="false" onclick="location.href='{$cell.edit}'">
+		                        <svg class="slds-button__icon" aria-hidden="true">
+		                            <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#edit"></use>
+		                        </svg>
+		                        <span class="slds-assistive-text">Edit</span>
+		                    </button>
+		                	{/if}
+		                	{if $cell.delete != false}
+		                    <button class="slds-button slds-button_icon slds-button_icon-border-filled" title="Delete" aria-pressed="false" onclick="javascript:confirmdelete('{$cell.delete}');">
+		                        <svg class="slds-button__icon" aria-hidden="true">
+		                            <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#delete"></use>
+		                        </svg>
+		                        <span class="slds-assistive-text">Delete</span>
+		                    </button>
+			                {/if}
+		                	{if $cell.changed != false}
+		                    <button class="slds-button slds-button_icon slds-button_icon-border-filled" title="This record has been changed" aria-pressed="false">
+		                        <svg class="slds-button__icon slds-icon-text-error" aria-hidden="true">
+		                            <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#announcement"></use>
+		                        </svg>
+		                        <span class="slds-assistive-text">This record has been changed</span>
+		                    </button>
+			                {/if}
+		                </div>
+		            </td>
+	                {/if}
+                {/foreach}
+            </tr>
+            {/foreach}
+        </tbody>
+    </table>
+    <!-- // Main listview table -->
+</div>
+<!-- // Content table -->
 
 {*<!-- Contents -->*}
 <table border=0 cellspacing=0 cellpadding=0 width=98% align=center>
