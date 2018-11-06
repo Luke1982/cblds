@@ -298,6 +298,73 @@ class CustomView extends CRMEntity {
 		return $shtml;
 	}
 
+
+    /**
+     * Gets the filters / customviews for a particular module
+     *
+	 * Note that these will be filtered on user privileges
+     *
+     * @param string  $viewid
+     * @param bool    $markselected
+     * @access public
+     */
+	public function getCustomViewArray($viewid = '', $markselected = true) {
+		global $adb, $current_user, $app_strings;
+		$tabid = getTabid($this->customviewmodule);
+
+		require 'user_privileges/user_privileges_' . $current_user->id . '.php';
+
+		$filter_array = array();
+
+		$ssql = 'SELECT vtiger_customview.*, vtiger_users.first_name, vtiger_users.last_name
+				 FROM vtiger_customview
+				 INNER JOIN vtiger_tab ON vtiger_tab.name = vtiger_customview.entitytype
+				 LEFT JOIN vtiger_users ON vtiger_customview.userid = vtiger_users.id
+				 WHERE vtiger_tab.tabid=?';
+		$sparams = array($tabid);
+
+		if ($is_admin == false) {
+			$ssql .= ' AND (vtiger_customview.status=0 OR vtiger_customview.userid = ? OR vtiger_customview.status = 3 OR ';
+			$ssql .= " vtiger_customview.userid IN(SELECT vtiger_user2role.userid
+						FROM vtiger_user2role
+						INNER JOIN vtiger_users ON vtiger_users.id=vtiger_user2role.userid
+						INNER JOIN vtiger_role ON vtiger_role.roleid=vtiger_user2role.roleid
+						WHERE vtiger_role.parentrole like '" . $current_user_parent_role_seq . "::%'))";
+			$sparams[] = $current_user->id;
+		}
+
+		$ssql .= ' ORDER BY viewname';
+
+		$cuserroles = getRoleAndSubordinateUserIds($current_user->column_fields['roleid']);
+		$result = $adb->pquery($ssql, $sparams);
+
+		while ($cvrow = $adb->fetch_array($result)) {
+			if ($cvrow['viewname'] == 'All') {
+				$cvrow['viewname'] = $app_strings['COMBO_ALL'];
+			} else { /** Should the filter shown?  */
+				$return = cbEventHandler::do_filter('corebos.filter.listview.filter.show', $cvrow);
+				if ($return == false) {
+					continue;
+				}
+			}
+
+			$filter = array();
+
+			$viewname = $cvrow['viewname'];
+			if ($cvrow['status'] == CV_STATUS_DEFAULT || $cvrow['userid'] == $current_user->id) {
+				$filter['name'] = $cvrow['viewname'];
+			} else {
+				$userName = getFullNameFromArray('Users', $cvrow);
+				$filter['name'] = $cvrow['viewname'] . ' [ ' . $userName . ' ] ';
+			}
+
+			$filter['default'] = $cvrow['setdefault'] == 1 ? true : false;
+
+			$filter_array[] = $filter;
+		}
+		return $filter_array;
+	}
+
 	/** to get the getColumnsListbyBlock for the given module and Block
 	 * @param $module :: Type String
 	 * @param $block :: Type Integer

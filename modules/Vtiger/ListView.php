@@ -69,6 +69,7 @@ if (!empty($ERROR_MESSAGE)) {
 $customView = new CustomView($currentModule);
 $viewid = $customView->getViewId($currentModule);
 $customview_html = $customView->getCustomViewCombo($viewid);
+$customview_array = $customView->getCustomViewArray($viewid);
 $viewinfo = $customView->getCustomViewByCvid($viewid);
 
 // Approving or Denying status-public by the admin in CustomView
@@ -210,11 +211,13 @@ if ($sql_error) {
 	if ($sql_error) {
 		$smarty->assign('ERROR', getTranslatedString('ERROR_GETTING_FILTER'));
 		$smarty->assign('CUSTOMVIEW_OPTION', $customview_html);
+		$smarty->assign('CUSTOMVIEW_ARRAY', $customview_array);
 	} else {
 		$recordListRangeMsg = getRecordRangeMessage($list_result, $limit_start_rec, $noofrows);
 		$smarty->assign('recordListRange', $recordListRangeMsg);
 
 		$smarty->assign('CUSTOMVIEW_OPTION', $customview_html);
+		$smarty->assign('CUSTOMVIEW_ARRAY', $customview_array);
 
 	// Navigation
 		$navigationOutput = getTableHeaderSimpleNavigation($navigation_array, $url_string, $currentModule, 'index', $viewid);

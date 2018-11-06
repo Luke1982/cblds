@@ -66,10 +66,10 @@
                 <li>
                     <div class="slds-form-element">
                         <div class="slds-select_container">
-                            <select class="slds-select" id="select-01">
-                                <option value="">All</option>
-                                <option>New this week</option>
-                                <option>Prospect accounts</option>
+                            <select class="slds-select">
+                            	{foreach $CUSTOMVIEW_ARRAY as $CV_OPTION}
+								<option {if $CV_OPTION.default} selected="selected"{/if}>{$CV_OPTION.name}</option>
+                            	{/foreach}
                             </select>
                         </div>
                     </div>
