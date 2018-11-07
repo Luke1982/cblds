@@ -350,7 +350,7 @@ function getListViewEntries_js(module, url) {
 	}).done(function (response) {
 		document.getElementById('status').style.display='none';
 		var result = response.split('&#&#&#');
-		document.getElementById('ListViewContents').innerHTML= result[2];
+		document.getElementById('listview-content-wrapper').innerHTML= result[2];
 
 		if (module == 'Documents' && Document_Folder_View) {
 			obj = document.getElementsByName('folderidVal');

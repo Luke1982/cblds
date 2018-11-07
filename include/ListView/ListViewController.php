@@ -775,6 +775,8 @@ class ListViewController {
 		$arrow_gif = array('ASC'=>'arrow_down.gif','DESC'=>'arrow_up.gif');
 		$default_sort_order = GlobalVariable::getVariable('Application_ListView_Default_Sort_Order', 'ASC', $module);
 		foreach ($listViewFields as $fieldName) {
+			$column_array = array();
+
 			if (!empty($moduleFields[$fieldName])) {
 				$field = $moduleFields[$fieldName];
 			} else {
@@ -785,25 +787,29 @@ class ListViewController {
 			}
 			$fieldLabel = $field->getFieldLabelKey();
 
-			if ($return_array) {
-				$header[] = $fieldLabel;
-				continue;
-			}
+			$column_array['label'] = $fieldLabel;
+			$column_array['ptab'] = $tabname;
+			$column_array['module'] = $module;
+			$column_array['curr_sorted'] = false;
 
 			if (in_array($field->getColumnName(), $focus->sortby_fields)) {
 				if ($orderBy == $field->getFieldName()) {
 					$temp_sorder = $change_sorder[$sorder];
 					$arrow = "&nbsp;<img src ='".vtiger_imageurl($arrow_gif[$sorder], $theme)."' border='0'>";
+					$column_array['curr_sorted'] = true;
 				} else {
 					$temp_sorder = $default_sort_order;
 				}
 				$label = getTranslatedString($fieldLabel, $module);
+				$column_array['label'] = $label;
 				//added to display currency symbol in listview header
 				if ($fieldLabel == 'Amount') {
 					$label .= ' ('.getTranslatedString('LBL_IN', $module).' '.$current_user->column_fields['currency_symbol'].')';
+					$column_array['label_add'] = ' ('.getTranslatedString('LBL_IN', $module).' '.$current_user->column_fields['currency_symbol'].')';
 				}
 				if ($field->getUIType() == '9') {
 					$label .=' (%)';
+					$column_array['label_add'] = ' (%)';
 				}
 				if ($module == 'Users' && $fieldName == 'User Name') {
 					$name = "<a href='javascript:;' onClick='getListViewEntries_js(\"".$module.
@@ -816,6 +822,10 @@ class ListViewController {
 							"\",\"parenttab=".$tabname."&foldername=Default&order_by=".$field->getFieldName()."&start=".
 							(isset($_SESSION['lvs'][$module]['start']) ? $_SESSION['lvs'][$module]['start'] : '').
 							"&sorder=".$temp_sorder."".$sort_qry."\");' class='listFormHeaderLinks'>".$label."".$arrow."</a>";
+						$column_array['start'] = (isset($_SESSION['lvs'][$module]['start']) ? $_SESSION['lvs'][$module]['start'] : '');
+						$column_array['sorder'] = $temp_sorder;
+						$column_array['s_query'] = $sort_qry;
+						$column_array['fieldname'] = $field->getFieldName();
 					} else {
 						$name = $label;
 					}
@@ -824,6 +834,7 @@ class ListViewController {
 			} else {
 				$name = getTranslatedString($fieldLabel, getTabModuleName($field->getTabId()));
 			}
+			$name = $return_array ? $column_array : $name;
 			$header[]=$name;
 		}
 
