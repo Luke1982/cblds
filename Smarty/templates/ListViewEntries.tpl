@@ -197,12 +197,12 @@
 	            </div>
 	            <div class="slds-col">
 	                <div class="slds-button-group slds-float_right">
-	                    <button type="button"{if $PAGING_ARRAY.prev == 0} disabled=""{/if}class="slds-button slds-button_icon slds-button_icon-border cbds-bg-white" title="Previous" onclick="getListViewEntries_js('{$PAGING_ARRAY.module}','parenttab={$PAGING_ARRAY.ptab}&start=1');">
+	                    <button type="button"{if $PAGING_ARRAY.prev == 0} disabled=""{/if}class="slds-button slds-button_icon slds-button_icon-border cbds-bg-white" title="Previous" onclick="getListViewEntries_js('{$MODULE}','parenttab={$PAGING_ARRAY.ptab}&start=1');">
 	                        <svg class="slds-button__icon" aria-hidden="true" style="transform: rotate(180deg);">
 	                            <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#macros" xmlns:xlink="http://www.w3.org/1999/xlink" />
 	                        </svg>
 	                    </button>
-	                    <button type="button"{if $PAGING_ARRAY.prev == 0} disabled=""{/if}class="slds-button slds-button_icon slds-button_icon-border cbds-bg-white" title="Previous" onclick="getListViewEntries_js('{$PAGING_ARRAY.module}','parenttab={$PAGING_ARRAY.ptab}&start={$PAGING_ARRAY.prev}');">
+	                    <button type="button"{if $PAGING_ARRAY.prev == 0} disabled=""{/if}class="slds-button slds-button_icon slds-button_icon-border cbds-bg-white" title="Previous" onclick="getListViewEntries_js('{$MODULE}','parenttab={$PAGING_ARRAY.ptab}&start={$PAGING_ARRAY.prev}');">
 	                        <svg class="slds-button__icon" aria-hidden="true">
 	                            <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#left" xmlns:xlink="http://www.w3.org/1999/xlink" />
 	                        </svg>
@@ -212,12 +212,12 @@
 	                        <input id="text-input-id-1" size="3" class="slds-input slds-input_bare" type="text" value="{$PAGING_ARRAY.current}" />
 	                      </div>
 	                    </div>
-	                    <button type="button"{if $PAGING_ARRAY.current == $PAGING_ARRAY.verylast} disabled=""{/if} class="slds-button slds-button_icon slds-button_icon-border cbds-bg-white" title="Next" onclick="getListViewEntries_js('{$PAGING_ARRAY.module}','parenttab={$PAGING_ARRAY.ptab}&start={$PAGING_ARRAY.next}');">
+	                    <button type="button"{if $PAGING_ARRAY.current == $PAGING_ARRAY.verylast} disabled=""{/if} class="slds-button slds-button_icon slds-button_icon-border cbds-bg-white" title="Next" onclick="getListViewEntries_js('{$MODULE}','parenttab={$PAGING_ARRAY.ptab}&start={$PAGING_ARRAY.next}');">
 	                        <svg class="slds-button__icon" aria-hidden="true">
 	                            <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#right" xmlns:xlink="http://www.w3.org/1999/xlink" />
 	                        </svg>
 	                    </button>
-	                    <button type="button"{if $PAGING_ARRAY.current == $PAGING_ARRAY.verylast} disabled=""{/if} class="slds-button slds-button_icon slds-button_icon-border cbds-bg-white" title="Last" onclick="getListViewEntries_js('{$PAGING_ARRAY.module}','parenttab={$PAGING_ARRAY.ptab}&start={$PAGING_ARRAY.verylast}');">
+	                    <button type="button"{if $PAGING_ARRAY.current == $PAGING_ARRAY.verylast} disabled=""{/if} class="slds-button slds-button_icon slds-button_icon-border cbds-bg-white" title="Last" onclick="getListViewEntries_js('{$MODULE}','parenttab={$PAGING_ARRAY.ptab}&start={$PAGING_ARRAY.verylast}');">
 	                        <svg class="slds-button__icon" aria-hidden="true">
 	                            <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#macros" xmlns:xlink="http://www.w3.org/1999/xlink" />
 	                        </svg>
