@@ -204,6 +204,8 @@ if ($sql_error) {
 			$noofrows = null;
 		}
 		$navigation_array = VT_getSimpleNavigationValues($start, $list_max_entries_per_page, $noofrows);
+		$navigation_array['module'] = $currentModule;
+		$navigation_array['ptab'] = getParentTab();
 	} catch (Exception $e) {
 		$sql_error = true;
 	}
@@ -222,6 +224,7 @@ if ($sql_error) {
 	// Navigation
 		$navigationOutput = getTableHeaderSimpleNavigation($navigation_array, $url_string, $currentModule, 'index', $viewid);
 		$smarty->assign('NAVIGATION', $navigationOutput);
+		$smarty->assign('PAGING_ARRAY', $navigation_array);
 
 		$controller = new ListViewController($adb, $current_user, $queryGenerator);
 

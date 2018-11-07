@@ -197,17 +197,17 @@
 	            </div>
 	            <div class="slds-col  slds-size_1-of-12">
 	                <div class="slds-button-group">
-	                    <button class="slds-button slds-button_icon slds-button_icon-border cbds-bg-white" title="Previous">
+	                    <button type="button" class="slds-button slds-button_icon slds-button_icon-border cbds-bg-white" title="Previous" onclick="getListViewEntries_js('{$PAGING_ARRAY.module}','parenttab={$PAGING_ARRAY.ptab}&start={$PAGING_ARRAY.prev}');">
 	                        <svg class="slds-button__icon" aria-hidden="true">
 	                            <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#left" xmlns:xlink="http://www.w3.org/1999/xlink" />
 	                        </svg>
 	                    </button>
 	                    <div class="slds-form-element slds-border_top slds-border_bottom cbds-bg-white" style="height: 32px;">
 	                      <div class="slds-form-element__control">
-	                        <input id="text-input-id-1" size="3" class="slds-input slds-input_bare" type="text" value="1" />
+	                        <input id="text-input-id-1" size="3" class="slds-input slds-input_bare" type="text" value="{$PAGING_ARRAY.current}" />
 	                      </div>
 	                    </div>
-	                    <button class="slds-button slds-button_icon slds-button_icon-border cbds-bg-white" title="Next">
+	                    <button type="button" class="slds-button slds-button_icon slds-button_icon-border cbds-bg-white" title="Next" onclick="getListViewEntries_js('{$PAGING_ARRAY.module}','parenttab={$PAGING_ARRAY.ptab}&start={$PAGING_ARRAY.next}');">
 	                        <svg class="slds-button__icon" aria-hidden="true">
 	                            <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#right" xmlns:xlink="http://www.w3.org/1999/xlink" />
 	                        </svg>
@@ -221,13 +221,13 @@
 	        <thead>
 	            <tr class="slds-line-height_reset">
 	                <th class="slds-text-title_caps slds-text-align_right" scope="col" style="width: 3.25rem;">
-	                    <span id="column-group-header" class="slds-assistive-text">Choose a row</span>
+	                    <span id="column-group-header" class="slds-assistive-text">Choose a row</span> {* TO-DO: Translate *}
 	                    <div class="slds-th__action slds-th__action_form">
 	                        <div class="slds-checkbox">
 	                            <input type="checkbox" name="options" id="checkbox-1" tabindex="-1" aria-labelledby="check-select-all-label column-group-header" value="checkbox-1">
 	                            <label class="slds-checkbox__label" for="checkbox-1" id="check-select-all-label">
 	                                <span class="slds-checkbox_faux"></span>
-	                                <span class="slds-form-element__label slds-assistive-text">Select All</span>
+	                                <span class="slds-form-element__label slds-assistive-text">Select All</span> {* TO-DO: Translate *}
 	                            </label>
 	                        </div>
 	                    </div>

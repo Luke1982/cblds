@@ -567,7 +567,7 @@
 	<!-- PUBLIC CONTENTS STARTS-->
 	<div id="ListViewContents" class="small" style="width:100%;">
 	{if $MODULE neq "Documents" || $Document_Folder_View eq 0}
-		{include file="ListViewEntries.tpl"}
+		{* {include file="ListViewEntries.tpl"} *}
 	{else}
 		{include file="DocumentsListViewEntries.tpl"}
 	{/if}
