@@ -32,7 +32,7 @@
 	<div class="cbds-shadow-c--small slds-box slds-m-around_medium slds-p-around_none" style="overflow: hidden;">
 	    <div class="slds-theme_inverse slds-p-around_small">
 	        <div class="slds-grid slds-gutters">
-	            <div class="slds-col slds-size_8-of-12">
+	            <div class="slds-col">
 	            	<!-- Listview buttons -->
 	                <div class="slds-button-group" role="group">
 	                	{foreach key=button_check item=button_label from=$BUTTONS}
@@ -86,7 +86,7 @@
 	                </div>
 	                <!-- // Listview buttons -->                   
 	            </div>
-	            <div class="slds-col  slds-size_3-of-12">
+	            <div class="slds-col">
 	                <div class="slds-form-element__control">
 	                    <div class="slds-combobox-group">
 	                        <div class="slds-combobox_object-switcher slds-combobox-addon_start">
@@ -195,9 +195,14 @@
 	                    </div>
 	                </div>                   
 	            </div>
-	            <div class="slds-col  slds-size_1-of-12">
-	                <div class="slds-button-group">
-	                    <button type="button" class="slds-button slds-button_icon slds-button_icon-border cbds-bg-white" title="Previous" onclick="getListViewEntries_js('{$PAGING_ARRAY.module}','parenttab={$PAGING_ARRAY.ptab}&start={$PAGING_ARRAY.prev}');">
+	            <div class="slds-col">
+	                <div class="slds-button-group slds-float_right">
+	                    <button type="button"{if $PAGING_ARRAY.prev == 0} disabled=""{/if}class="slds-button slds-button_icon slds-button_icon-border cbds-bg-white" title="Previous" onclick="getListViewEntries_js('{$PAGING_ARRAY.module}','parenttab={$PAGING_ARRAY.ptab}&start=1');">
+	                        <svg class="slds-button__icon" aria-hidden="true" style="transform: rotate(180deg);">
+	                            <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#macros" xmlns:xlink="http://www.w3.org/1999/xlink" />
+	                        </svg>
+	                    </button>
+	                    <button type="button"{if $PAGING_ARRAY.prev == 0} disabled=""{/if}class="slds-button slds-button_icon slds-button_icon-border cbds-bg-white" title="Previous" onclick="getListViewEntries_js('{$PAGING_ARRAY.module}','parenttab={$PAGING_ARRAY.ptab}&start={$PAGING_ARRAY.prev}');">
 	                        <svg class="slds-button__icon" aria-hidden="true">
 	                            <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#left" xmlns:xlink="http://www.w3.org/1999/xlink" />
 	                        </svg>
@@ -207,9 +212,14 @@
 	                        <input id="text-input-id-1" size="3" class="slds-input slds-input_bare" type="text" value="{$PAGING_ARRAY.current}" />
 	                      </div>
 	                    </div>
-	                    <button type="button" class="slds-button slds-button_icon slds-button_icon-border cbds-bg-white" title="Next" onclick="getListViewEntries_js('{$PAGING_ARRAY.module}','parenttab={$PAGING_ARRAY.ptab}&start={$PAGING_ARRAY.next}');">
+	                    <button type="button"{if $PAGING_ARRAY.current == $PAGING_ARRAY.verylast} disabled=""{/if} class="slds-button slds-button_icon slds-button_icon-border cbds-bg-white" title="Next" onclick="getListViewEntries_js('{$PAGING_ARRAY.module}','parenttab={$PAGING_ARRAY.ptab}&start={$PAGING_ARRAY.next}');">
 	                        <svg class="slds-button__icon" aria-hidden="true">
 	                            <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#right" xmlns:xlink="http://www.w3.org/1999/xlink" />
+	                        </svg>
+	                    </button>
+	                    <button type="button"{if $PAGING_ARRAY.current == $PAGING_ARRAY.verylast} disabled=""{/if} class="slds-button slds-button_icon slds-button_icon-border cbds-bg-white" title="Last" onclick="getListViewEntries_js('{$PAGING_ARRAY.module}','parenttab={$PAGING_ARRAY.ptab}&start={$PAGING_ARRAY.verylast}');">
+	                        <svg class="slds-button__icon" aria-hidden="true">
+	                            <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#macros" xmlns:xlink="http://www.w3.org/1999/xlink" />
 	                        </svg>
 	                    </button>
 	                </div>

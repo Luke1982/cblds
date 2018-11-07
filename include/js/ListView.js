@@ -404,7 +404,6 @@ function getListViewEntries_js(module, url) {
 		}
 		document.getElementById('basicsearchcolumns').innerHTML = '';
 	});
-	return false;
 }
 //for multiselect check box in list view:
 
