@@ -209,7 +209,7 @@
 	                    </button>
 	                    <div class="slds-form-element slds-border_top slds-border_bottom cbds-bg-white" style="height: 32px;">
 	                      <div class="slds-form-element__control">
-	                        <input id="text-input-id-1" size="3" class="slds-input slds-input_bare" type="text" value="{$PAGING_ARRAY.current}" />
+	                        <input id="text-input-id-1" size="5" class="slds-input slds-input_bare" type="text" value="{$PAGING_ARRAY.current} of {$PAGING_ARRAY.verylast}" onchange="getListViewEntries_js('{$MODULE}','parenttab={$PAGING_ARRAY.ptab}&start='+this.value);" onkeypress="return VT_disableFormSubmit(event);" /> {* TO-DO: Translate 'of' *}
 	                      </div>
 	                    </div>
 	                    <button type="button"{if $PAGING_ARRAY.current == $PAGING_ARRAY.verylast} disabled=""{/if} class="slds-button slds-button_icon slds-button_icon-border cbds-bg-white" title="Next" onclick="getListViewEntries_js('{$MODULE}','parenttab={$PAGING_ARRAY.ptab}&start={$PAGING_ARRAY.next}');">
