@@ -286,7 +286,7 @@
 			            <td role="gridcell">
 			                <div class="slds-button-group" role="group">
 			                	{if $cell.edit != false}
-			                    <button class="slds-button slds-button_icon slds-button_icon-border-filled" title="Edit" aria-pressed="false" onclick="location.href='{$cell.edit}'">
+			                    <button type="button" class="slds-button slds-button_icon slds-button_icon-border-filled" title="Edit" aria-pressed="false" onclick="location.href='{$cell.edit}'">
 			                        <svg class="slds-button__icon" aria-hidden="true">
 			                            <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#edit"></use>
 			                        </svg>
@@ -294,7 +294,7 @@
 			                    </button>
 			                	{/if}
 			                	{if $cell.delete != false}
-			                    <button class="slds-button slds-button_icon slds-button_icon-border-filled" title="Delete" aria-pressed="false" onclick="javascript:confirmdelete('{$cell.delete}');">
+			                    <button type="button" class="slds-button slds-button_icon slds-button_icon-border-filled" title="Delete" aria-pressed="false" onclick="javascript:confirmdelete('{$cell.delete}');">
 			                        <svg class="slds-button__icon" aria-hidden="true">
 			                            <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#delete"></use>
 			                        </svg>
@@ -302,7 +302,7 @@
 			                    </button>
 				                {/if}
 			                	{if $cell.changed != false}
-			                    <button class="slds-button slds-button_icon slds-button_icon-border-filled" title="This record has been changed" aria-pressed="false">
+			                    <button type="button" class="slds-button slds-button_icon slds-button_icon-border-filled" title="This record has been changed" aria-pressed="false">
 			                        <svg class="slds-button__icon slds-icon-text-error" aria-hidden="true">
 			                            <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#announcement"></use>
 			                        </svg>
