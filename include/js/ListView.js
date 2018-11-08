@@ -12,13 +12,15 @@ function massedit_togglediv(curTabId, total) {
 	for (var i=0; i<total; i++) {
 		var tagName = document.getElementById('massedit_div'+i);
 		var tagName1 = document.getElementById('tab'+i);
-		tagName.style.display = 'none';
-		tagName1.className = 'dvtUnSelectedCell';
+		tagName.classList.remove("slds-show");
+		tagName.classList.add("slds-hide");
+		tagName1.classList.remove("slds-is-active");
 	}
 	tagName = document.getElementById('massedit_div'+curTabId);
-	tagName.style.display = 'block';
 	tagName1 = document.getElementById('tab'+curTabId);
-	tagName1.className = 'dvtSelectedCell';
+	tagName.classList.add("slds-show");
+	tagName.classList.remove("slds-hide");
+	tagName1.classList.add("slds-is-active");
 }
 
 function massedit_initOnChangeHandlers() {
