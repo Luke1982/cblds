@@ -353,24 +353,62 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 				<textarea value="{$fldvalue}" name="{$fldname}" id="{$fldname}" tabindex="{$vt_tab}" class=detailedViewTextBox onFocus="this.className='detailedViewTextBoxOn'" onBlur="this.className='detailedViewTextBox'" rows=2>{$fldvalue}</textarea>
 			</td>
 		{elseif $uitype eq 15 || $uitype eq 16  || $uitype eq '31' || $uitype eq '32' || $uitype eq '1613' || $uitype eq '1614'}
-			<td width="20%" class="dvtCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}" align=right>
-				<font color="red">{$mandatory_field}</font>
-				{$usefldlabel} {if $MASS_EDIT eq '1'}<input type="checkbox" name="{$fldname}_mass_edit_check" id="{$fldname}_mass_edit_check" class="small" >{/if}
-			</td>
-			<td width="30%" align=left class="dvtCellInfo">
-				{if $MODULE eq 'Calendar'}
-					<select name="{$fldname}" id="{$fldname}" tabindex="{$vt_tab}" class="small" style="width:160px;">
-				{else}
-					<select name="{$fldname}" id="{$fldname}" tabindex="{$vt_tab}" class="small" style="width:280px;">
-				{/if}
-				{foreach item=arr from=$fldvalue}
-					<option value="{$arr[1]}" {$arr[2]}>{$arr[0]}</option>
-				{foreachelse}
-					<option value=""></option>
-					<option value="" style='color: #777777' disabled>{$APP.LBL_NONE}</option>
-				{/foreach}
-				</select>
-			</td>
+            <!-- Field: UI type 15 / 16 / 31 / 32 / 1613 / 1614-->
+            <div class="slds-col slds-size_1-of-2 slds-grid">
+                <div class="slds-form-element slds-p-horizontal_small">
+                    <label class="slds-form-element__label">
+                    	{if $mandatory_field == '*'}<abbr class="slds-required" title="required">* </abbr>{/if}{$usefldlabel}
+                	</label>
+                    <div class="slds-form-element__control">
+                    	{if $MASS_EDIT == '1'}
+                    	{* We're in mass edit. Show checbox *}
+                        <div class="slds-grid">
+                            <div class="slds-col slds-size_1-of-12 slds-m-right_small">
+                                <div class="slds-checkbox_add-button">
+                                    <input class="slds-assistive-text" type="checkbox" name="{$fldname}_mass_edit_check" id="{$fldname}_mass_edit_check" />
+                                    <label for="{$fldname}_mass_edit_check" class="slds-checkbox_faux">
+                                        <span class="slds-assistive-text">{$fldname}</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="slds-col slds-size_11-of-12">
+                                <div class="slds-form-element slds-col slds-grid slds-p-horizontal_none">
+                                    <div class="slds-form-element__control slds-col slds-p-horizontal_none">
+                                        <div class="slds-select_container">
+                                            <select class="slds-select" name="{$fldname}" id="{$fldname}" tabindex="{$vt_tab}">
+											{foreach item=arr from=$fldvalue}
+												<option value="{$arr[1]}" {$arr[2]}>{$arr[0]}</option>
+											{foreachelse}
+												<option value=""></option>
+												<option value="" disabled>{$APP.LBL_NONE}</option>
+											{/foreach}
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {else}
+                        {* Normal edit, no checkbox *}
+                        <div class="slds-form-element slds-col slds-grid slds-p-horizontal_none">
+                            <div class="slds-form-element__control slds-col slds-p-horizontal_none">
+                                <div class="slds-select_container">
+                                    <select class="slds-select" name="{$fldname}" id="{$fldname}" tabindex="{$vt_tab}">
+									{foreach item=arr from=$fldvalue}
+										<option value="{$arr[1]}" {$arr[2]}>{$arr[0]}</option>
+									{foreachelse}
+										<option value=""></option>
+										<option value="" disabled>{$APP.LBL_NONE}</option>
+									{/foreach}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        {/if}
+                    </div>
+                </div>
+            </div>
+            <!-- // Field: UI type 15 / 16 / 31 / 32 / 1613 / 1614 -->
 		{elseif $uitype eq '1615'}
 			<td width="20%" class="dvtCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}" align=right>
 				<font color="red">{$mandatory_field}</font>
