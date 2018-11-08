@@ -292,12 +292,12 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 	                                </div>
 	                            </div>
 	                            <div class="slds-col slds-size_11-of-12">
-	                                <input type="text" tabindex="{$vt_tab}" name="{$fldname}" id="{$fldname}" value="{$fldvalue}" class="detailedViewTextBox slds-input" onFocus="this.className='detailedViewTextBoxOn'" onBlur="this.className='detailedViewTextBox'"{if $uitype == 17} onkeyup="validateUrl('{$fldname}');"{/if} />
+	                                <input type="text" tabindex="{$vt_tab}" name="{$fldname}" id="{$fldname}" value="{$fldvalue}" class="detailedViewTextBox slds-input"{if $uitype == 17} onkeyup="validateUrl('{$fldname}');"{/if} />
 	                            </div>
 	                        </div>
                         {else}
                         	{* Normal mode, don't include the checkbox *}
-                        	<input type="text" tabindex="{$vt_tab}" name="{$fldname}" id="{$fldname}" value="{$fldvalue}" class="detailedViewTextBox slds-input" onFocus="this.className='detailedViewTextBoxOn'" onBlur="this.className='detailedViewTextBox'"{if $uitype == 17} onkeyup="validateUrl('{$fldname}');"{/if} />
+                        	<input type="text" tabindex="{$vt_tab}" name="{$fldname}" id="{$fldname}" value="{$fldvalue}" class="detailedViewTextBox slds-input"{if $uitype == 17} onkeyup="validateUrl('{$fldname}');"{/if} />
                         {/if}
                     </div>
                 </div>
