@@ -204,7 +204,6 @@ if ($sql_error) {
 			$noofrows = null;
 		}
 		$navigation_array = VT_getSimpleNavigationValues($start, $list_max_entries_per_page, $noofrows);
-		$navigation_array['ptab'] = getParentTab();
 	} catch (Exception $e) {
 		$sql_error = true;
 	}

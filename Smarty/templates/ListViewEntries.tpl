@@ -197,27 +197,27 @@
 	            </div>
 	            <div class="slds-col">
 	                <div class="slds-button-group slds-float_right">
-	                    <button type="button"{if $PAGING_ARRAY.prev == 0} disabled=""{/if}class="slds-button slds-button_icon slds-button_icon-border cbds-bg-white" title="Previous" onclick="getListViewEntries_js('{$MODULE}','parenttab={$PAGING_ARRAY.ptab}&start=1');">
+	                    <button type="button"{if $PAGING_ARRAY.prev == 0} disabled=""{/if}class="slds-button slds-button_icon slds-button_icon-border cbds-bg-white" title="Previous" onclick="getListViewEntries_js('{$MODULE}','start=1');">
 	                        <svg class="slds-button__icon" aria-hidden="true" style="transform: rotate(180deg);">
 	                            <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#macros" xmlns:xlink="http://www.w3.org/1999/xlink" />
 	                        </svg>
 	                    </button>
-	                    <button type="button"{if $PAGING_ARRAY.prev == 0} disabled=""{/if}class="slds-button slds-button_icon slds-button_icon-border cbds-bg-white" title="Previous" onclick="getListViewEntries_js('{$MODULE}','parenttab={$PAGING_ARRAY.ptab}&start={$PAGING_ARRAY.prev}');">
+	                    <button type="button"{if $PAGING_ARRAY.prev == 0} disabled=""{/if}class="slds-button slds-button_icon slds-button_icon-border cbds-bg-white" title="Previous" onclick="getListViewEntries_js('{$MODULE}','start={$PAGING_ARRAY.prev}');">
 	                        <svg class="slds-button__icon" aria-hidden="true">
 	                            <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#left" xmlns:xlink="http://www.w3.org/1999/xlink" />
 	                        </svg>
 	                    </button>
 	                    <div class="slds-form-element slds-border_top slds-border_bottom cbds-bg-white" style="height: 32px;">
 	                      <div class="slds-form-element__control">
-	                        <input id="text-input-id-1" size="5" class="slds-input slds-input_bare" type="text" value="{$PAGING_ARRAY.current} of {$PAGING_ARRAY.verylast}" onchange="getListViewEntries_js('{$MODULE}','parenttab={$PAGING_ARRAY.ptab}&start='+this.value);" onkeypress="return VT_disableFormSubmit(event);" /> {* TO-DO: Translate 'of' *}
+	                        <input id="text-input-id-1" size="5" class="slds-input slds-input_bare" type="text" value="{$PAGING_ARRAY.current} of {$PAGING_ARRAY.verylast}" onchange="getListViewEntries_js('{$MODULE}','start='+this.value);" onkeypress="return VT_disableFormSubmit(event);" /> {* TO-DO: Translate 'of' *}
 	                      </div>
 	                    </div>
-	                    <button type="button"{if $PAGING_ARRAY.current == $PAGING_ARRAY.verylast} disabled=""{/if} class="slds-button slds-button_icon slds-button_icon-border cbds-bg-white" title="Next" onclick="getListViewEntries_js('{$MODULE}','parenttab={$PAGING_ARRAY.ptab}&start={$PAGING_ARRAY.next}');">
+	                    <button type="button"{if $PAGING_ARRAY.current == $PAGING_ARRAY.verylast} disabled=""{/if} class="slds-button slds-button_icon slds-button_icon-border cbds-bg-white" title="Next" onclick="getListViewEntries_js('{$MODULE}','start={$PAGING_ARRAY.next}');">
 	                        <svg class="slds-button__icon" aria-hidden="true">
 	                            <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#right" xmlns:xlink="http://www.w3.org/1999/xlink" />
 	                        </svg>
 	                    </button>
-	                    <button type="button"{if $PAGING_ARRAY.current == $PAGING_ARRAY.verylast} disabled=""{/if} class="slds-button slds-button_icon slds-button_icon-border cbds-bg-white" title="Last" onclick="getListViewEntries_js('{$MODULE}','parenttab={$PAGING_ARRAY.ptab}&start={$PAGING_ARRAY.verylast}');">
+	                    <button type="button"{if $PAGING_ARRAY.current == $PAGING_ARRAY.verylast} disabled=""{/if} class="slds-button slds-button_icon slds-button_icon-border cbds-bg-white" title="Last" onclick="getListViewEntries_js('{$MODULE}','start={$PAGING_ARRAY.verylast}');">
 	                        <svg class="slds-button__icon" aria-hidden="true">
 	                            <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#macros" xmlns:xlink="http://www.w3.org/1999/xlink" />
 	                        </svg>
@@ -248,7 +248,7 @@
 	                {if !$header@last}{$label = $header.label|cat:$header.label_add}{else}{$label = 'Actions'|@getTranslatedString}{$arrow = false}{/if}
 
 	                <th aria-label="Name" aria-sort="none" class="slds-text-title_caps slds-is-sortable" scope="col">
-	                    <a class="slds-th__action slds-text-link_reset" href="javascript:void(0);" {if !$header@last}onclick="getListViewEntries_js('{$header.module}','parenttab={$header.ptab}&foldername=Default&order_by={$header.fieldname}&start={$header.start}&sorder={$header.sorder}{$header.s_query}');"{/if} role="button" tabindex="-1">
+	                    <a class="slds-th__action slds-text-link_reset" href="javascript:void(0);" {if !$header@last}onclick="getListViewEntries_js('{$header.module}','foldername=Default&order_by={$header.fieldname}&start={$header.start}&sorder={$header.sorder}{$header.s_query}');"{/if} role="button" tabindex="-1">
 	                        <span class="slds-assistive-text">Sort by: </span>
 	                        <div class="slds-grid slds-grid_vertical-align-center slds-has-flexi-truncate">
 	                            <span class="slds-truncate" title="{$label}">{$label}</span>
