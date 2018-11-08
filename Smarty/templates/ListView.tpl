@@ -589,6 +589,12 @@
 </table>
 <div id="massedit_form_div"></div>
 
+<!-- New Mass Edit -->
+<div class="cbds-massedit" id="cbds-massedit">
+</div>
+<!-- // New Mass Edit -->    
+
+
 </div>
 <div id="relresultssection" style="visibility:hidden;display:none;" class="slds-masseditprogress">
 <div class="slds-grid">

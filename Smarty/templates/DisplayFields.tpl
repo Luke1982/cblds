@@ -11,13 +11,13 @@
 
 {assign var="fromlink" value=""}
 {foreach key=label item=subdata from=$data}
-	{if $header eq 'Product Details'}
-		<tr name="tbl{$header|replace:' ':''}Content" class="createview_field_row">
-	{else}
-		<tr name="tbl{$header|replace:' ':''}Content" style="height:25px" class="createview_field_row">
-	{/if}
+    <!-- Form row -->
+    <div class="slds-grid slds-gutters_small" name="tbl{$header|replace:' ':''}Content">
+        <div class="slds-col slds-has-flexi-truncate slds-grid">	
 	{foreach key=mainlabel item=maindata from=$subdata}
 		{if count($maindata)>0}{include file='EditViewUI.tpl'}{/if}
 	{/foreach}
-	</tr>
+		</div>
+	</div>
+	<!-- // Form row -->
 {/foreach}

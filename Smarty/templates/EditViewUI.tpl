@@ -80,6 +80,46 @@
 		{/if}
 
 		{if $uitype eq '10'}
+            <!-- Field -->
+            <div class="slds-col slds-size_1-of-2 slds-grid">
+                <div class="slds-form-element slds-p-horizontal_small">
+                    <label class="slds-form-element__label">Related to</label>
+                    <div class="slds-form-element__control">
+                        <div class="slds-grid">
+                            <div class="slds-col slds-size_1-of-12 slds-m-right_small">
+                                <div class="slds-checkbox_add-button">
+                                    <input class="slds-assistive-text" type="checkbox" id="add-checkbox-2" value="add-checkbox-2" />
+                                    <label for="add-checkbox-2" class="slds-checkbox_faux">
+                                        <span class="slds-assistive-text">Edit website</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="slds-col slds-grid slds-size_11-of-12">
+                                <div class="slds-col slds-size_10-of-12 slds-p-left--none slds-p-right_xxx-small">
+                                    <input class="slds-input" />
+                                </div>
+                                <div class="slds-col slds-size_2-of-12 slds-p-horizontal_none">
+                                    <div class="slds-button-group">
+                                        <button class="slds-button slds-button_icon slds-button_icon-border" title="Search">
+                                            <svg class="slds-button__icon" aria-hidden="true">
+                                                <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#add"></use>
+                                            </svg>
+                                            <span class="slds-assistive-text">Add</span>
+                                        </button>
+                                        <button class="slds-button slds-button_icon slds-button_icon-border" title="Search">
+                                            <svg class="slds-button__icon" aria-hidden="true">
+                                                <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#delete"></use>
+                                            </svg>
+                                            <span class="slds-assistive-text">Remove</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- // Field -->
 			<td width=20% class="dvtCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}" align=right>
 			<font color="red">{$mandatory_field}</font>
 			{$fldlabel.displaylabel}
@@ -233,8 +273,34 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 				<td width=20% class="dvtCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}" align=right><font color="red">{$mandatory_field}</font>{$usefldlabel} {if $MASS_EDIT eq '1'}<input type="checkbox" name="{$fldname}_mass_edit_check" id="{$fldname}_mass_edit_check" class="small">{/if}</td>
 				<td width=30% align=left class="dvtCellInfo"><input readonly type="text" tabindex="{$vt_tab}" name="{$fldname}" id ="{$fldname}" {if $MODE eq 'edit'} value="{$fldvalue}" {else} value="{$MOD_SEQ_ID}" {/if} class=detailedViewTextBox onFocus="this.className='detailedViewTextBoxOn'" onBlur="this.className='detailedViewTextBox'"></td>
 		{elseif $uitype eq 11 || $uitype eq 1 || $uitype eq 13 || $uitype eq 7}
-			<td width=20% class="dvtCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}" align=right><font color="red">{$mandatory_field}</font>{$usefldlabel} {if $MASS_EDIT eq '1'}<input type="checkbox" name="{$fldname}_mass_edit_check" id="{$fldname}_mass_edit_check" class="small" >{/if}</td>
-			<td width=30% align=left class="dvtCellInfo"><input type="text" tabindex="{$vt_tab}" name="{$fldname}" id ="{$fldname}" value="{$fldvalue}" class=detailedViewTextBox onFocus="this.className='detailedViewTextBoxOn'" onBlur="this.className='detailedViewTextBox'"></td>
+            <!-- Field: UI type 1 / 11 / 13 / 7 -->
+            <div class="slds-col slds-size_1-of-2 slds-grid">
+                <div class="slds-form-element slds-p-horizontal_small">
+                    <label class="slds-form-element__label">
+                    	{if $mandatory_field == '*'}<abbr class="slds-required" title="required">* </abbr>{/if}{$usefldlabel}
+                	</label>
+                    <div class="slds-form-element__control">
+                    	{if $MASS_EDIT eq '1'}
+	                        <div class="slds-grid">
+	                            <div class="slds-col slds-size_1-of-12 slds-m-right_small">
+	                                <div class="slds-checkbox_add-button">
+	                                    <input class="slds-assistive-text" type="checkbox" name="{$fldname}_mass_edit_check" id="{$fldname}_mass_edit_check" />
+	                                    <label for="{$fldname}_mass_edit_check" class="slds-checkbox_faux">
+	                                        <span class="slds-assistive-text">{$usefldlabel}</span>
+	                                    </label>
+	                                </div>
+	                            </div>
+	                            <div class="slds-col slds-size_11-of-12">
+	                                <input type="text" tabindex="{$vt_tab}" name="{$fldname}" id ="{$fldname}" value="{$fldvalue}" class="detailedViewTextBox slds-input" onFocus="this.className='detailedViewTextBoxOn'" onBlur="this.className='detailedViewTextBox'" />
+	                            </div>
+	                        </div>
+                        {else}
+                        	<input type="text" tabindex="{$vt_tab}" name="{$fldname}" id ="{$fldname}" value="{$fldvalue}" class="detailedViewTextBox slds-input" onFocus="this.className='detailedViewTextBoxOn'" onBlur="this.className='detailedViewTextBox'" />
+                        {/if}
+                    </div>
+                </div>
+            </div>
+            <!-- // Field: UI type 1 / 11 / 13 / 7  -->		
 		{elseif $uitype eq 9}
 			<td width=20% class="dvtCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}" align=right><font color="red">{$mandatory_field}</font>{$usefldlabel} {$APP.COVERED_PERCENTAGE} {if $MASS_EDIT eq '1'}<input type="checkbox" name="{$fldname}_mass_edit_check" id="{$fldname}_mass_edit_check" class="small" >{/if}</td>
 			<td width=30% align=left class="dvtCellInfo"><input type="text" tabindex="{$vt_tab}" name="{$fldname}" id ="{$fldname}" value="{$fldvalue}" class=detailedViewTextBox onFocus="this.className='detailedViewTextBoxOn'" onBlur="this.className='detailedViewTextBox'"></td>

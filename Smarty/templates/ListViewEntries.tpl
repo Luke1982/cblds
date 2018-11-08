@@ -44,7 +44,7 @@
 	                        {$button_label}
 	                    </button>
 	                    {elseif $button_check eq 'mass_edit'}
-	                    <button class="slds-button slds-button_inverse" onclick="document.getElementById('cbds-massedit').classList.add('cbds-massedit--active');return mass_edit(this, 'massedit', '{$MODULE}', '{$CATEGORY}');">
+	                    <button type="button" class="slds-button slds-button_inverse" onclick="return mass_edit(this, 'massedit', '{$MODULE}', '{$CATEGORY}');">
 	                        <svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
 	                            <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#mark_all_as_read"></use>
 	                        </svg>
@@ -234,7 +234,7 @@
 	                    <span id="column-group-header" class="slds-assistive-text">Choose a row</span> {* TO-DO: Translate *}
 	                    <div class="slds-th__action slds-th__action_form">
 	                        <div class="slds-checkbox">
-	                            <input type="checkbox" name="options" id="checkbox-1" tabindex="-1" aria-labelledby="check-select-all-label column-group-header" value="checkbox-1">
+	                            <input type="checkbox" name="selectall" id="checkbox-1" tabindex="-1" aria-labelledby="check-select-all-label column-group-header" value="checkbox-1" onclick='toggleSelect_ListView(this.checked,"selected_id");'>
 	                            <label class="slds-checkbox__label" for="checkbox-1" id="check-select-all-label">
 	                                <span class="slds-checkbox_faux"></span>
 	                                <span class="slds-form-element__label slds-assistive-text">Select All</span> {* TO-DO: Translate *}
@@ -270,7 +270,7 @@
 		            <tr aria-selected="false" class="slds-hint-parent">
 		                <td class="slds-text-align_right" role="gridcell">
 		                    <div class="slds-checkbox">
-		                        <input type="checkbox" name="options" id="listview-checkbox-{$entity_id}" tabindex="-1" aria-labelledby="listview-checkboxlabel-{$entity_id} column-group-header" value="{$entity_id}">
+		                        <input type="checkbox" name="selected_id" id="listview-checkbox-{$entity_id}" tabindex="-1" aria-labelledby="listview-checkboxlabel-{$entity_id} column-group-header" value="{$entity_id}" onclick="check_object(this)">
 		                        <label class="slds-checkbox__label" for="listview-checkbox-{$entity_id}" id="listview-checkboxlabel-{$entity_id}">
 		                            <span class="slds-checkbox_faux"></span>
 		                            <span class="slds-form-element__label slds-assistive-text">{* TO-DO: Get correct text here *}</span>
