@@ -360,7 +360,7 @@ class CustomView extends CRMEntity {
 
 			$filter['default'] = $cvrow['setdefault'] == 1 ? true : false;
 
-			$filter_array[] = $filter;
+			$filter_array[$cvrow['cvid']] = $filter;
 		}
 		return $filter_array;
 	}

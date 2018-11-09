@@ -155,7 +155,7 @@
 		                                                <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#search"></use>
 		                                            </svg>
 		                                        </span>
-		                                    <input type="text" class="slds-input slds-combobox__input slds-text-color_default" name="search_text" aria-autocomplete="list" autocomplete="off" role="textbox" placeholder="{$APP.LBL_SEARCH} {$APP.LBL_IN} {$MODULE}">
+		                                    <input type="text" class="slds-input slds-combobox__input slds-text-color_default" id="search_text" name="search_text" aria-autocomplete="list" autocomplete="off" role="textbox" placeholder="{$APP.LBL_SEARCH} {$APP.LBL_IN} {$MODULE}">
 		                                    <input type="submit" style="display:none;" value="{$APP.LBL_SEARCH_NOW_BUTTON}" />
 		                                </div>
 		                            </div>

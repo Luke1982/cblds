@@ -68,8 +68,8 @@
                     <div class="slds-form-element">
                         <div class="slds-select_container">
                             <select class="slds-select" onchange="showDefaultCustomView(this,'{$MODULE}','{$CATEGORY}')">
-                            	{foreach $CUSTOMVIEW_ARRAY as $CV_OPTION}
-								<option {if $CV_OPTION.default} selected="selected"{/if}>{$CV_OPTION.name}</option>
+                            	{foreach $CUSTOMVIEW_ARRAY item='CV_OPTION' key='CV_ID'}
+								<option {if $CV_OPTION.default} selected="selected"{/if} value="{$CV_ID}">{$CV_OPTION.name}</option>
                             	{/foreach}
                             </select>
                         </div>

@@ -290,13 +290,10 @@ function showDefaultCustomView(selectView, module, parenttab) {
 	}).done(function (response) {
 		document.getElementById('status').style.display = 'none';
 		var result = response.split('&#&#&#');
-		document.getElementById('ListViewContents').innerHTML = result[2];
+		document.getElementById('listview-content-wrapper').innerHTML = result[2];
 		if (result[1] != '') {
 			alert(result[1]);
 		}
-		document.getElementById('basicsearchcolumns_real').innerHTML = document.getElementById('basicsearchcolumns').innerHTML;
-		document.getElementById('basicsearchcolumns').innerHTML = '';
-		document.basicSearch.search_text.value = '';
 	});
 }
 
