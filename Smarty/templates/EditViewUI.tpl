@@ -864,46 +864,74 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 				{/if}
 			{/if}
 		{elseif $uitype eq 23 || $uitype eq 5 || $uitype eq 6}
-			<td width="20%" class="dvtCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}" align=right>
-				<font color="red">{$mandatory_field}</font>{$usefldlabel} {if $MASS_EDIT eq '1'}<input type="checkbox" name="{$fldname}_mass_edit_check" id="{$fldname}_mass_edit_check" class="small" >{/if}
-			</td>
-			<td width="30%" align=left class="dvtCellInfo">
-				{foreach key=date_value item=time_value from=$fldvalue}
-					{assign var=date_val value="$date_value"}
-					{assign var=time_val value="$time_value"}
-				{/foreach}
-
-				<input name="{$fldname}" tabindex="{$vt_tab}" id="jscal_field_{$fldname}" type="text" style="border:1px solid #bababa;" size="11" maxlength="10" value="{$date_val}">
-				<img src="{'btnL3Calendar.gif'|@vtiger_imageurl:$THEME}" id="jscal_trigger_{$fldname}" style="vertical-align:middle">
-
-				{if $uitype eq 6}
-					<input name="time_start" tabindex="{$vt_tab}" style="border:1px solid #bababa;" size="5" maxlength="5" type="text" value="{$time_val}">
-				{/if}
-
-				{if $uitype eq 6 && isset($QCMODULE) && $QCMODULE eq 'Event'}
-					<input name="dateFormat" type="hidden" value="{$dateFormat}">
-				{/if}
-				{if $uitype eq 23 && isset($QCMODULE) && $QCMODULE eq 'Event'}
-					<input name="time_end" style="border:1px solid #bababa;" size="5" maxlength="5" type="text" value="{$time_val}">
-				{/if}
-
-				{foreach key=date_format item=date_str from=$secondvalue}
-					{assign var=dateFormat value="$date_format"}
-					{assign var=dateStr value="$date_str"}
-				{/foreach}
-
-				{if $uitype eq 5 || $uitype eq 23}
-					<br><font size=1><em old="(yyyy-mm-dd)">({$dateStr})</em></font>
-				{else}
-					<br><font size=1><em old="(yyyy-mm-dd)">({$dateStr})</em></font>
-				{/if}
+            <!-- Field: UI type 5 / 6 / 23 -->
+            {* Setup some field logic *}
+			{foreach key=date_value item=time_value from=$fldvalue}
+				{assign var=date_val value="$date_value"}
+				{assign var=time_val value="$time_value"}
+			{/foreach}
+			{foreach key=date_format item=date_str from=$secondvalue}
+				{assign var=dateFormat value="$date_format"}
+				{assign var=dateStr value="$date_str"}
+			{/foreach}	
+            <div class="slds-col slds-size_1-of-2 slds-grid">
+                <div class="slds-form-element slds-p-horizontal_small">
+                    <label class="slds-form-element__label">
+                    	{if $mandatory_field == '*'}<abbr class="slds-required" title="required">* </abbr>{/if}{$usefldlabel}&nbsp;<em>({$dateStr})</em>
+                	</label>
+                    <div class="slds-form-element__control">
+                    	{if $MASS_EDIT eq '1'}
+                    	{* We're mass editing, so include the checkbox *}
+                        <div class="slds-grid">
+                            <div class="slds-col slds-size_1-of-12 slds-m-right_small">
+                                <div class="slds-checkbox_add-button">
+                                    <input class="slds-assistive-text" type="checkbox" name="{$fldname}_mass_edit_check" id="{$fldname}_mass_edit_check" />
+                                    <label for="{$fldname}_mass_edit_check" class="slds-checkbox_faux">
+                                        <span class="slds-assistive-text">{$usefldlabel}</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="slds-col slds-grid slds-size_11-of-12">
+                                <div class="slds-col slds-size_10-of-12 slds-p-left--none slds-p-right_xxx-small">
+									<input name="{$fldname}" tabindex="{$vt_tab}" id="jscal_field_{$fldname}" class="slds-input" value="{$date_val}" />
+                                </div>
+                                <div class="slds-col slds-size_2-of-12 slds-p-horizontal_none">
+                                    <button type="button" class="slds-button slds-button_icon slds-button_icon-border" title="{$APP.LBL_SELECT}" id="jscal_trigger_{$fldname}">
+                                        <svg class="slds-button__icon" aria-hidden="true">
+                                            <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#event"></use>
+                                        </svg>
+                                        <span class="slds-assistive-text">{$APP.LBL_SELECT}</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        {else}
+                        {* No mass-edit, normal mode *}
+                        <div class="slds-grid">
+                            <div class="slds-col slds-size_10-of-12 slds-p-left--none slds-p-right_xxx-small">
+                                <input name="{$fldname}" tabindex="{$vt_tab}" id="jscal_field_{$fldname}" class="slds-input" value="{$date_val}" />
+                            </div>
+                            <div class="slds-col slds-size_2-of-12 slds-p-horizontal_none">
+                                <button type="button" class="slds-button slds-button_icon slds-button_icon-border" title="{$APP.LBL_SELECT}" id="jscal_trigger_{$fldname}">
+                                    <svg class="slds-button__icon" aria-hidden="true">
+                                        <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#event"></use>
+                                    </svg>
+                                    <span class="slds-assistive-text">{$APP.LBL_SELECT}</span>
+                                </button>
+                            </div>
+                        </div>                        
+                        {/if}
+                    </div>
+                </div>
 
 				<script type="text/javascript" id='massedit_calendar_{$fldname}'>
 					Calendar.setup ({ldelim}
 						inputField : "jscal_field_{$fldname}", ifFormat : "{$dateFormat}", showsTime : false, button : "jscal_trigger_{$fldname}", singleClick : true, step : 1
 					{rdelim})
-				</script>
-			</td>
+				</script>                
+            </div>
+            <!-- // Field: UI type 5 / 6 / 23 -->		
+
 		{elseif $uitype eq 50}
 			<td width="20%" class="dvtCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}" align=right>
 				<font color="red">{$mandatory_field}</font>{$usefldlabel} {if $MASS_EDIT eq '1'}<input type="checkbox" name="{$fldname}_mass_edit_check" id="{$fldname}_mass_edit_check" class="small" >{/if}
