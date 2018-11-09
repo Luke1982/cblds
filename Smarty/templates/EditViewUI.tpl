@@ -419,6 +419,7 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
                                 </div>
                             </div>
                             <div class="slds-col slds-size_11-of-12">
+                        {/if}
                                 <div class="slds-form-element slds-col slds-grid slds-p-horizontal_none">
                                     <div class="slds-form-element__control slds-col slds-p-horizontal_none">
                                         <div class="slds-select_container">
@@ -433,22 +434,8 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                        {else}
-                        {* Normal edit, no checkbox *}
-                        <div class="slds-form-element slds-col slds-grid slds-p-horizontal_none">
-                            <div class="slds-form-element__control slds-col slds-p-horizontal_none">
-                                <div class="slds-select_container">
-                                    <select class="slds-select" name="{$fldname}" id="{$fldname}" tabindex="{$vt_tab}">
-									{foreach item=arr from=$fldvalue}
-										<option value="{$arr[1]}" {$arr[2]}>{$arr[0]}</option>
-									{foreachelse}
-										<option value=""></option>
-										<option value="" disabled>{$APP.LBL_NONE}</option>
-									{/foreach}
-                                    </select>
-                                </div>
+                        {if $MASS_EDIT == '1'}
+                        {* Close the extra checkbox divs when mass-editing *}
                             </div>
                         </div>
                         {/if}
