@@ -630,17 +630,64 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 				</select>
 			</td>
 		{elseif $uitype eq 51}
+            <!-- Field: UI type 51 -->
+            {* Some field logic *}
 			{if $MODULE eq 'Accounts'}
 				{assign var='popuptype' value = 'specific_account_address'}
 			{else}
 				{assign var='popuptype' value = 'specific_contact_account_address'}
-			{/if}
-			<td width="20%" class="dvtCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}" align=right>
-				<font color="red">{$mandatory_field}</font>{$usefldlabel} {if $MASS_EDIT eq '1'}<input type="checkbox" name="{$fldname}_mass_edit_check" id="{$fldname}_mass_edit_check" class="small" >{/if}
-			</td>
-			<td width="30%" align=left class="dvtCellInfo">
-				<input readonly name="account_name" style="border:1px solid #bababa;" type="text" value="{$fldvalue}"><input name="{$fldname}" type="hidden" value="{$secondvalue}">&nbsp;<img tabindex="{$vt_tab}" src="{'select.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_SELECT}" title="{$APP.LBL_SELECT}" onclick='return window.open("index.php?module=Accounts&action=Popup&popuptype={$popuptype}&form=TasksEditView&form_submit=false&fromlink={$fromlink}&recordid={if isset($ID)}{$ID}{/if}","test{if $fromlink eq 'qcreate'}qc{/if}","width=640,height=602,resizable=0,scrollbars=0");' align="absmiddle" style='cursor:hand;cursor:pointer'>&nbsp;<input type="image" src="{'clear_field.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_CLEAR}" title="{$APP.LBL_CLEAR}" onClick="this.form.account_id.value=''; this.form.account_name.value='';return false;" align="absmiddle" style='cursor:hand;cursor:pointer'>
-			</td>
+			{/if}            
+            <div class="slds-col slds-size_1-of-2 slds-grid">
+                <div class="slds-form-element slds-p-horizontal_small">
+                    <label class="slds-form-element__label">
+                    	{if $mandatory_field == '*'}<abbr class="slds-required" title="required">* </abbr>{/if}{$usefldlabel}
+                	</label>
+                    <div class="slds-form-element__control">
+                    	{if $MASS_EDIT eq '1'}
+                    	{* We're mass editing, so include the checkbox *}
+                        <div class="slds-grid">
+                            <div class="slds-col slds-size_1-of-12 slds-m-right_small">
+                                <div class="slds-checkbox_add-button">
+                                    <input class="slds-assistive-text" type="checkbox" name="{$fldname}_mass_edit_check" id="{$fldname}_mass_edit_check" />
+                                    <label for="{$fldname}_mass_edit_check" class="slds-checkbox_faux">
+                                        <span class="slds-assistive-text">{$usefldlabel}</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="slds-col slds-grid slds-size_11-of-12">
+                    	{else}
+                    		<div class="slds-grid">
+                    	{/if}
+                                <div class="slds-col slds-size_10-of-12 slds-p-left--none slds-p-right_xxx-small">
+                                    <input name="account_name" readonly="readonly" class="slds-input" value="{$fldvalue}" style="background-color: #ffffff; border: 1px solid rgb(221, 219, 218);" />
+                                    <input name="{$fldname}" type="hidden" value="{$secondvalue}">
+                                </div>
+                                <div class="slds-col slds-size_2-of-12 slds-p-horizontal_none">
+                                    <div class="slds-button-group">
+                                        <button type="button" class="slds-button slds-button_icon slds-button_icon-border" title="{$APP.LBL_SELECT}" onclick='return window.open("index.php?module=Accounts&action=Popup&popuptype={$popuptype}&form=TasksEditView&form_submit=false&fromlink={$fromlink}&recordid={if isset($ID)}{$ID}{/if}","test{if $fromlink eq 'qcreate'}qc{/if}","width=640,height=602,resizable=0,scrollbars=0");'>
+                                            <svg class="slds-button__icon" aria-hidden="true">
+                                                <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#add"></use>
+                                            </svg>
+                                            <span class="slds-assistive-text">{$APP.LBL_SELECT}</span>
+                                        </button>
+                                        <button type="button" class="slds-button slds-button_icon slds-button_icon-border" title="{$APP.LBL_CLEAR}" onClick="this.form.account_id.value=''; this.form.account_name.value='';return false;">
+                                            <svg class="slds-button__icon" aria-hidden="true">
+                                                <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#delete"></use>
+                                            </svg>
+                                            <span class="slds-assistive-text">{$APP.LBL_CLEAR}</span> {* TO-DO: Translate *}
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+	                    {if $MASS_EDIT eq '1'}
+	                    {* Close one extra div when mass-editing *}
+	                    </div>
+	                    {/if}
+                    </div>
+                </div>
+            </div>
+            <!-- // Field: UI type 51 -->
+
 		{elseif $uitype eq 73}
             <!-- Field: UI type 73 -->
             <div class="slds-col slds-size_1-of-2 slds-grid">
