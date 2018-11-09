@@ -1667,11 +1667,15 @@ function toggleDiv(id) {
   */
 function toggleAssignType(currType) {
 	if (currType=='U') {
-		getObj('assign_user').style.display='block';
-		getObj('assign_team').style.display='none';
+		getObj('assign_user').classList.add("slds-show");
+		getObj('assign_user').classList.remove("slds-hide");
+		getObj('assign_team').classList.add("slds-hide");
+		getObj('assign_team').classList.remove("slds-show");
 	} else {
-		getObj('assign_user').style.display='none';
-		getObj('assign_team').style.display='block';
+		getObj('assign_team').classList.add("slds-show");
+		getObj('assign_team').classList.remove("slds-hide");
+		getObj('assign_user').classList.add("slds-hide");
+		getObj('assign_user').classList.remove("slds-show");
 	}
 }
 

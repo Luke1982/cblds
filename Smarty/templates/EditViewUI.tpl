@@ -487,61 +487,93 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 			</td>
 
 		{elseif $uitype eq 53}
-			<td width="20%" class="dvtCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}" align=right>
-				<font color="red">{$mandatory_field}</font>{$usefldlabel} {if $MASS_EDIT eq '1'}<input type="checkbox" name="{$fldname}_mass_edit_check" id="{$fldname}_mass_edit_check" class="small" >{/if}
-			</td>
-			<td width="30%" align=left class="dvtCellInfo">
-				{assign var=check value=1}
-				{foreach key=key_one item=arr from=$fldvalue}
-					{foreach key=sel_value item=value from=$arr}
-						{if $value ne ''}
-							{assign var=check value=$check*0}
-						{else}
-							{assign var=check value=$check*1}
-						{/if}
-					{/foreach}
+			<!-- Field: UI type 53 -->
+			{* Some field logic *}
+			{assign var=check value=1}
+			{foreach key=key_one item=arr from=$fldvalue}
+				{foreach key=sel_value item=value from=$arr}
+					{if $value ne ''}
+						{assign var=check value=$check*0}
+					{else}
+						{assign var=check value=$check*1}
+					{/if}
 				{/foreach}
+			{/foreach}
 
-				{assign var=select_user value=''}
-				{assign var=select_group value=''}
-				{if $check eq 0}
-					{assign var=select_user value='checked'}
-					{assign var=style_user value='display:block'}
-					{assign var=style_group value='display:none'}
-				{else}
-					{assign var=select_group value='checked'}
-					{assign var=style_user value='display:none'}
-					{assign var=style_group value='display:block'}
-				{/if}
-
-				<input type="radio" tabindex="{$vt_tab}" name="assigntype" {$select_user} value="U" onclick="toggleAssignType(this.value)" >&nbsp;{$APP.LBL_USER}
-
-				{if $secondvalue neq ''}
-					<input type="radio" name="assigntype" {$select_group} value="T" onclick="toggleAssignType(this.value)">&nbsp;{$APP.LBL_GROUP}
-				{/if}
-
-				<span id="assign_user" style="{$style_user}">
-					<select name="{$fldname}" id="{$fldname}" class="small">
-						{foreach key=key_one item=arr from=$fldvalue}
-							{foreach key=sel_value item=value from=$arr}
-								<option value="{$key_one}" {$value}>{$sel_value}</option>
-							{/foreach}
-						{/foreach}
-					</select>
-				</span>
-
-				{if $secondvalue neq ''}
-					<span id="assign_team" style="{$style_group}">
-						<select name="assigned_group_id" id="assigned_group_id" class="small">
-							{foreach key=key_one item=arr from=$secondvalue}
-								{foreach key=sel_value item=value from=$arr}
-									<option value="{$key_one}" {$value}>{$sel_value}</option>
-								{/foreach}
-							{/foreach}
-						</select>
-					</span>
-				{/if}
-			</td>
+            <div class="slds-col slds-size_1-of-2 slds-grid">
+                <div class="slds-form-element slds-p-horizontal_small">
+                    <label class="slds-form-element__label">
+                    	{if $mandatory_field == '*'}<abbr class="slds-required" title="required">* </abbr>{/if}{$usefldlabel}
+                	</label>
+                	<div class="slds-form-element__control">
+                    	{if $MASS_EDIT eq '1'}
+                    	{* We're mass editing, so include the checkbox *}                		
+                        <div class="slds-grid">
+                            <div class="slds-col slds-size_1-of-12 slds-m-right_small">
+                                <div class="slds-checkbox_add-button">
+                                    <input class="slds-assistive-text" type="checkbox" name="{$fldname}_mass_edit_check" id="{$fldname}_mass_edit_check" />
+                                    <label for="{$fldname}_mass_edit_check" class="slds-checkbox_faux">
+                                        <span class="slds-assistive-text">{$usefldlabel}</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="slds-col slds-size_11-of-12">
+                        {/if}
+                                <div class="slds-form-element slds-col slds-grid slds-p-horizontal_none">
+                                    <div class="slds-form-element__control slds-col slds-p-horizontal_none">
+                                        <div class="slds-grid">
+                                            <div class="slds-col slds-size_5-of-12 slds-p-horizontal_none">
+                                                <div class="slds-radio_button-group">
+                                                    <span class="slds-button slds-radio_button">
+                                                        <input tabindex="{$vt_tab}" name="assigntype" id="assigntype_u" type="radio"{if $check == 0} checked="checked"{/if} value="U" onclick="toggleAssignType(this.value)">
+                                                        <label class="slds-radio_button__label" for="assigntype_u">
+                                                            <span class="slds-radio_faux">{$APP.LBL_USER}</span>
+                                                        </label>
+                                                    </span>
+                                                    {if $secondvalue neq ''}
+                                                    <span class="slds-button slds-radio_button">
+                                                        <input tabindex="{$vt_tab}" name="assigntype" id="assigntype_t" type="radio"{if $check != 0} checked="checked"{/if} value="T" onclick="toggleAssignType(this.value)">
+                                                        <label class="slds-radio_button__label" for="assigntype_t">
+                                                            <span class="slds-radio_faux">{$APP.LBL_GROUP}</span>
+                                                        </label>
+                                                    </span>
+                                                    {/if}
+                                                </div>
+                                            </div>
+                                            <div class="slds-col slds-size_7-of-12 slds-p-horizontal_none">
+                                                <div class="slds-select_container{if $check != 0} slds-hide{else} slds-show{/if}" id="assign_user">
+                                                    <select class="slds-select" name="{$fldname}" id="{$fldname}">
+														{foreach key=key_one item=arr from=$fldvalue}
+															{foreach key=sel_value item=value from=$arr}
+																<option value="{$key_one}" {$value}>{$sel_value}</option>
+															{/foreach}
+														{/foreach}
+                                                    </select>
+                                                </div>
+                                                {if $secondvalue neq ''}
+                                                <div class="slds-select_container{if $check == 0} slds-hide{else} slds-show{/if}" id="assign_team">
+                                                    <select class="slds-select" name="assigned_group_id" id="assigned_group_id">
+														{foreach key=key_one item=arr from=$secondvalue}
+															{foreach key=sel_value item=value from=$arr}
+																<option value="{$key_one}" {$value}>{$sel_value}</option>
+															{/foreach}
+														{/foreach}
+                                                    </select>
+                                                </div>
+                                                {/if}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                        {if $MASS_EDIT eq '1'}
+                    	{* We're mass editing, so close the checkbox extra divs *}
+                            </div>
+                        </div>
+                        {/if}
+                    </div>
+                </div>
+            </div>
+			<!-- // Field: UI type 53 -->		
 		{elseif $uitype eq 52 || $uitype eq 77}
 			<td width="20%" class="dvtCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}" align=right>
 				<font color="red">{$mandatory_field}</font>{$usefldlabel} {if $MASS_EDIT eq '1'}<input type="checkbox" name="{$fldname}_mass_edit_check" id="{$fldname}_mass_edit_check" class="small" >{/if}
