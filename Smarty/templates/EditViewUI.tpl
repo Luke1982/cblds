@@ -288,7 +288,8 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 		{elseif $uitype eq 3 || $uitype eq 4}<!-- Non Editable field, only configured value will be loaded -->
 				<td width=20% class="dvtCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}" align=right><font color="red">{$mandatory_field}</font>{$usefldlabel} {if $MASS_EDIT eq '1'}<input type="checkbox" name="{$fldname}_mass_edit_check" id="{$fldname}_mass_edit_check" class="small">{/if}</td>
 				<td width=30% align=left class="dvtCellInfo"><input readonly type="text" tabindex="{$vt_tab}" name="{$fldname}" id ="{$fldname}" {if $MODE eq 'edit'} value="{$fldvalue}" {else} value="{$MOD_SEQ_ID}" {/if} class=detailedViewTextBox onFocus="this.className='detailedViewTextBoxOn'" onBlur="this.className='detailedViewTextBox'"></td>
-		{elseif $uitype eq 11 || $uitype eq 1 || $uitype eq 13 || $uitype eq 7 || $uitype eq 17}
+
+		{elseif $uitype eq 11 || $uitype eq 1 || $uitype eq 13 || $uitype eq 7 || $uitype eq 17 || $uitype eq 85}
             <!-- Field: UI type 1 / 11 / 13 / 7 / 17 -->
             <div class="slds-col slds-size_1-of-2 slds-grid">
                 <div class="slds-form-element slds-p-horizontal_small">
@@ -308,10 +309,18 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
                                 </div>
                             </div>
                             <div class="slds-col slds-size_11-of-12">
+                            	<div class="slds-form-element__control{if $uitype eq 85} slds-input-has-icon slds-input-has-icon_left{/if}">
                         {else}
                         	<div class="slds-col slds-size_12-of-12">
+                        		<div class="slds-form-element__control{if $uitype eq 85} slds-input-has-icon slds-input-has-icon_left{/if}">
                         {/if}
-                                <input type="text" tabindex="{$vt_tab}" name="{$fldname}" id="{$fldname}" value="{$fldvalue}" class="detailedViewTextBox slds-input"{if $uitype == 17} onkeyup="validateUrl('{$fldname}');"{/if} />
+									{if $uitype eq 85}
+									<svg class="slds-icon slds-input__icon slds-input__icon_left slds-icon-text-default" aria-hidden="true">
+										<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#call" xmlns:xlink="http://www.w3.org/1999/xlink" />
+									</svg>									
+									{/if}
+                                	<input type="text" tabindex="{$vt_tab}" name="{$fldname}" id="{$fldname}" value="{$fldvalue}" class="detailedViewTextBox slds-input"{if $uitype == 17} onkeyup="validateUrl('{$fldname}');"{/if} />
+                            	</div>
                             </div>
                         </div>
                     </div>
@@ -930,19 +939,6 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
                 </div>
             </div>
             <!-- // Field: UI type 76 -->
-
-		{elseif $uitype eq 85}
-            <td width="20%" class="dvtCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}" align=right>
-                <font color="red">{$mandatory_field}</font>
-                {$usefldlabel}
-                {if $MASS_EDIT eq '1'}
-                	<input type="checkbox" name="{$fldname}_mass_edit_check" id="{$fldname}_mass_edit_check" class="small" >
-                {/if}
-            </td>
-            <td width="30%" align=left class="dvtCellInfo">
-				<img src="{'skype.gif'|@vtiger_imageurl:$THEME}" alt="Skype" title="Skype" align="absmiddle"></img>
-				<input class='detailedViewTextBox' type="text" tabindex="{$vt_tab}" name="{$fldname}" style="border:1px solid #bababa;" size="27" onFocus="this.className='detailedViewTextBoxOn'" onBlur="this.className='detailedViewTextBox'" value="{$fldvalue}">
-            </td>
 
 		{elseif $uitype eq 71 || $uitype eq 72}
             <!-- Field: UI type 71 / 72 -->
