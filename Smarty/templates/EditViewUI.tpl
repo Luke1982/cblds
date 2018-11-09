@@ -1713,25 +1713,40 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 		</td>
 
 		{elseif $uitype eq 83} <!-- Handle the Tax in Inventory -->
-			{foreach item=tax key=count from=$TAX_DETAILS}
-				{if $tax.check_value eq 1}
-					{assign var=check_value value="checked"}
-					{assign var=show_value value="visible"}
-				{else}
-					{assign var=check_value value=""}
-					{assign var=show_value value="hidden"}
-				{/if}
-				<td align="right" class="dvtCellLabel" style="border:0px solid red;">
-					{$tax.taxlabel} {$APP.COVERED_PERCENTAGE}
-					<input type="checkbox" name="{$tax.check_name}" id="{$tax.check_name}" class="small" onclick="fnshowHide(this,'{$tax.taxname}')" {$check_value}>
-				</td>
-				<td class="dvtCellInfo" align="left" style="border:0px solid red;">
-					<input type="text" class="detailedViewTextBox" name="{$tax.taxname}" id="{$tax.taxname}" value="{$tax.percentage}" style="visibility:{$show_value};" onBlur="fntaxValidation('{$tax.taxname}')">
-				</td>
-			   </tr>
-			{/foreach}
+            <!-- Field: UI type 83 -->
+            <div class="slds-col slds-size_1-of-2 slds-grid">
+            	<div class="slds-form slds-form_stacked slds-size_12-of-12" role="list">
+	            	{foreach item=tax key=count from=$TAX_DETAILS}
+					{if $tax.check_value eq 1}
+						{assign var=check_value value="checked"}
+					{else}
+						{assign var=check_value value=""}
+					{/if}	            	
+	            	<div class="slds-form slds-form_horizontal slds-p-bottom_xx-small">
+	                    <label class="slds-form-element__label">
+	                    	{if $mandatory_field == '*'}<abbr class="slds-required" title="required">* </abbr>{/if}{$tax.taxlabel} {$APP.COVERED_PERCENTAGE}
+	                	</label>
+	                    <div class="slds-form-element__control">
+	                        <div class="slds-grid">                    	
+	                            <div class="slds-col slds-size_1-of-12 slds-m-right_small">
+	                                <div class="slds-checkbox_add-button">
+	                                    <input class="slds-assistive-text" type="checkbox" name="{$tax.check_name}" id="{$tax.check_name}" onclick="fnshowHide(this,'{$tax.taxname}')" {$check_value} />
+	                                    <label for="{$tax.check_name}" class="slds-checkbox_faux">
+	                                        <span class="slds-assistive-text">{$tax.taxlabel}</span>
+	                                    </label>
+	                                </div>
+	                            </div>
+	                            <div class="slds-col slds-size_11-of-12">
+	                                <input type="text" name="{$tax.taxname}" id="{$tax.taxname}" value="{$tax.percentage}" class="detailedViewTextBox slds-input{if $check_value == 'checked'} slds-show{else} slds-hide{/if}" onBlur="fntaxValidation('{$tax.taxname}')" />
+	                            </div>
+	                        </div>
+	                    </div>
+		            </div>
+	                {/foreach}
+			    </div>
+            </div>
+            <!-- // Field: UI type 83 -->		
 
-			<td colspan="2" class="dvtCellInfo">&nbsp;</td>
 		{else}
 			{* just show field on screen *}
 			<td width=20% class="dvtCellLabel" align=right>{$fldlabel}</td>

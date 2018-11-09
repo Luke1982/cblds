@@ -2878,9 +2878,11 @@ function toggleShowHide(showid, hideid) {
 // Refactored APIs from DisplayFiels.tpl
 function fnshowHide(currObj, txtObj) {
 	if (currObj.checked == true) {
-		document.getElementById(txtObj).style.visibility = 'visible';
+		document.getElementById(txtObj).classList.add("slds-show");
+		document.getElementById(txtObj).classList.remove("slds-hide");
 	} else {
-		document.getElementById(txtObj).style.visibility = 'hidden';
+		document.getElementById(txtObj).classList.add("slds-hide");
+		document.getElementById(txtObj).classList.remove("slds-show");
 	}
 }
 
