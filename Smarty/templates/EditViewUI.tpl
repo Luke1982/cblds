@@ -443,7 +443,7 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
                 </div>
             </div>
             <!-- // Field: UI type 24 -->
-		{elseif $uitype eq 15 || $uitype eq 16  || $uitype eq '31' || $uitype eq '32' || $uitype eq '1613' || $uitype eq '1614'}
+		{elseif $uitype eq 15 || $uitype eq 16  || $uitype eq 77 || $uitype eq '31' || $uitype eq '32' || $uitype eq '1613' || $uitype eq '1614'}
             <!-- Field: UI type 15 / 16 / 31 / 32 / 1613 / 1614-->
             <div class="slds-col slds-size_1-of-2 slds-grid">
                 <div class="slds-form-element slds-p-horizontal_small">
@@ -468,12 +468,20 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
                                     <div class="slds-form-element__control slds-col slds-p-horizontal_none">
                                         <div class="slds-select_container">
                                             <select class="slds-select" name="{$fldname}" id="{$fldname}" tabindex="{$vt_tab}">
-											{foreach item=arr from=$fldvalue}
-												<option value="{$arr[1]}" {$arr[2]}>{$arr[0]}</option>
-											{foreachelse}
-												<option value=""></option>
-												<option value="" disabled>{$APP.LBL_NONE}</option>
-											{/foreach}
+                                            {if $uitype != 77}
+												{foreach item=arr from=$fldvalue}
+													<option value="{$arr[1]}" {$arr[2]}>{$arr[0]}</option>
+												{foreachelse}
+													<option value=""></option>
+													<option value="" disabled>{$APP.LBL_NONE}</option>
+												{/foreach}
+											{else}
+												{foreach key=key_one item=arr from=$fldvalue}
+													{foreach key=sel_value item=value from=$arr}
+														<option value="{$key_one}" {$value}>{$sel_value}</option>
+													{/foreach}
+												{/foreach}											
+											{/if}
                                             </select>
                                         </div>
                                     </div>
@@ -628,7 +636,7 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
                 </div>
             </div>
 			<!-- // Field: UI type 53 -->		
-		{elseif $uitype eq 52 || $uitype eq 77}
+		{elseif $uitype eq 52}	
 			<td width="20%" class="dvtCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}" align=right>
 				<font color="red">{$mandatory_field}</font>{$usefldlabel} {if $MASS_EDIT eq '1'}<input type="checkbox" name="{$fldname}_mass_edit_check" id="{$fldname}_mass_edit_check" class="small" >{/if}
 			</td>
