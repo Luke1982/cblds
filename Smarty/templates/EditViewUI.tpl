@@ -319,8 +319,36 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
             </div>
             <!-- // Field: UI type 1 / 11 / 13 / 7 / 17 -->
 		{elseif $uitype eq 9}
-			<td width=20% class="dvtCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}" align=right><font color="red">{$mandatory_field}</font>{$usefldlabel} {$APP.COVERED_PERCENTAGE} {if $MASS_EDIT eq '1'}<input type="checkbox" name="{$fldname}_mass_edit_check" id="{$fldname}_mass_edit_check" class="small" >{/if}</td>
-			<td width=30% align=left class="dvtCellInfo"><input type="text" tabindex="{$vt_tab}" name="{$fldname}" id ="{$fldname}" value="{$fldvalue}" class=detailedViewTextBox onFocus="this.className='detailedViewTextBoxOn'" onBlur="this.className='detailedViewTextBox'"></td>
+            <!-- Field: UI type 9 -->
+            <div class="slds-col slds-size_1-of-2 slds-grid">
+                <div class="slds-form-element slds-p-horizontal_small">
+                    <label class="slds-form-element__label">
+                    	{if $mandatory_field == '*'}<abbr class="slds-required" title="required">* </abbr>{/if}{$usefldlabel} {$APP.COVERED_PERCENTAGE}
+                	</label>
+                    <div class="slds-form-element__control">
+                        <div class="slds-grid">                    	
+	                	{if $MASS_EDIT eq '1'}
+	            		{* Mass edit mode, so include the checkbox *}
+                            <div class="slds-col slds-size_1-of-12 slds-m-right_small">
+                                <div class="slds-checkbox_add-button">
+                                    <input class="slds-assistive-text" type="checkbox" name="{$fldname}_mass_edit_check" id="{$fldname}_mass_edit_check" />
+                                    <label for="{$fldname}_mass_edit_check" class="slds-checkbox_faux">
+                                        <span class="slds-assistive-text">{$usefldlabel}</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="slds-col slds-size_11-of-12">
+                        {else}
+                        	<div class="slds-col slds-size_12-of-12">
+                        {/if}
+                                <input type="text" tabindex="{$vt_tab}" name="{$fldname}" id ="{$fldname}" value="{$fldvalue}" class="slds-input" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- // Field: UI type 9 -->		
+
 		{elseif $uitype eq 19 || $uitype eq 20}
             <!-- Field: UI type 19 and 20-->
             {* Some field logic *}
