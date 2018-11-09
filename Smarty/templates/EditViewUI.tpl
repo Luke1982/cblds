@@ -998,30 +998,63 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 			</td>
 
 		{elseif $uitype eq 56}
-			<td width="20%" class="dvtCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}" align=right>
-				<font color="red">{$mandatory_field}</font>{$usefldlabel} {if $MASS_EDIT eq '1'}<input type="checkbox" name="{$fldname}_mass_edit_check" id="{$fldname}_mass_edit_check" class="small" >{/if}
-			</td>
-			<!-- For Portal Information we need a hidden field existing_portal with the current portal value -->
-			{if $fldname eq 'portal'}
-				<td width="30%" align=left class="dvtCellInfo">
-					<input type="hidden" name="existing_portal" value="{$fldvalue}">
-					<input name="{$fldname}" id="{$fldname}" type="checkbox" tabindex="{$vt_tab}" {if $fldvalue eq 1}checked{/if}>
-				</td>
-			{else}
-				{if $fldvalue eq 1}
-					<td width="30%" align=left class="dvtCellInfo">
-						<input name="{$fldname}" id="{$fldname}" type="checkbox" tabindex="{$vt_tab}" checked>
-					</td>
-				{elseif $fldname eq 'filestatus'&& $MODE eq 'create'}
-					<td width="30%" align=left class="dvtCellInfo">
-						<input name="{$fldname}" id="{$fldname}" type="checkbox" tabindex="{$vt_tab}" checked>
-					</td>
-				{else}
-					<td width="30%" align=left class="dvtCellInfo">
-						<input name="{$fldname}" id="{$fldname}" tabindex="{$vt_tab}" type="checkbox">
-					</td>
-				{/if}
-			{/if}
+			<!-- Field: UI type 56 -->
+	        <div class="slds-col slds-size_1-of-2 slds-grid">
+	            <div class="slds-form-element slds-p-horizontal_small">
+                    <label class="slds-form-element__label">
+                    	{if $mandatory_field == '*'}<abbr class="slds-required" title="required">* </abbr>{/if}{$usefldlabel}
+                	</label>
+	                <div class="slds-form-element__control">
+		                {if $MASS_EDIT == '1'}
+		                {* Mass-editing, include the checkbox *}	                	
+	                    <div class="slds-grid">
+	                        <div class="slds-col slds-size_1-of-12 slds-m-right_small">
+	                            <div class="slds-checkbox_add-button">
+	                                <input class="slds-assistive-text" type="checkbox" id="add-checkbox-2" value="add-checkbox-2" />
+	                                <label for="add-checkbox-2" class="slds-checkbox_faux">
+	                                    <span class="slds-assistive-text">Edit website</span>
+	                                </label>
+	                            </div>
+	                        </div>
+	                        <div class="slds-col slds-size_11-of-12">
+	                    {/if}
+	                            <label class="slds-checkbox_toggle">
+								<!-- For Portal Information we need a hidden field existing_portal with the current portal value -->
+								{if $fldname eq 'portal'}
+									<td width="30%" align=left class="dvtCellInfo">
+										<input type="hidden" name="existing_portal" value="{$fldvalue}">
+										<input aria-describedby="{$fldname}" name="{$fldname}" id="{$fldname}" type="checkbox" tabindex="{$vt_tab}" {if $fldvalue eq 1}checked{/if}>
+									</td>
+								{else}
+									{if $fldvalue eq 1}
+										<td width="30%" align=left class="dvtCellInfo">
+											<input aria-describedby="{$fldname}" name="{$fldname}" id="{$fldname}" type="checkbox" tabindex="{$vt_tab}" checked>
+										</td>
+									{elseif $fldname eq 'filestatus'&& $MODE eq 'create'}
+										<td width="30%" align=left class="dvtCellInfo">
+											<input aria-describedby="{$fldname}" name="{$fldname}" id="{$fldname}" type="checkbox" tabindex="{$vt_tab}" checked>
+										</td>
+									{else}
+										<td width="30%" align=left class="dvtCellInfo">
+											<input aria-describedby="{$fldname}" name="{$fldname}" id="{$fldname}" tabindex="{$vt_tab}" type="checkbox">
+										</td>
+									{/if}
+								{/if}	                            	
+	                                <span id="{$fldname}" class="slds-checkbox_faux_container" aria-live="assertive">
+	                                    <span class="slds-checkbox_faux"></span>
+	                                    <span class="slds-checkbox_on">Yes</span> {* TO-DO: translate *}
+	                                    <span class="slds-checkbox_off">No</span> {* TO-DO: translate *}
+	                                </span>
+	                            </label>
+		                {if $MASS_EDIT == '1'}
+		                {* Mass-editing, close the two extra divs *}	                            
+	                        </div>
+	                    </div>
+	                    {/if}
+	                </div>
+	            </div>
+	        </div>			
+			<!-- // Field: UI type 56 -->
 		{elseif $uitype eq 23 || $uitype eq 5 || $uitype eq 6}
             <!-- Field: UI type 5 / 6 / 23 -->
             {* Setup some field logic *}
@@ -1191,49 +1224,83 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 		   </tr>
 
 		{elseif $uitype eq 55 || $uitype eq 255}
-			<td width="20%" class="dvtCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}" align=right>
-			{if $MASS_EDIT eq '1' && $fldvalue neq ''}
-				{$APP.Salutation}<input type="checkbox" name="salutationtype_mass_edit_check" id="salutationtype_mass_edit_check" class="small" ><br />
-			{/if}
-			{if $uitype eq 55}
-				{$usefldlabel}{if $MASS_EDIT eq '1'}<input type="checkbox" name="{$fldname}_mass_edit_check" id="{$fldname}_mass_edit_check" class="small" >{/if}
-			{elseif $uitype eq 255}
-				<font color="red">{$mandatory_field}</font>{$usefldlabel}{if $MASS_EDIT eq '1'}<input type="checkbox" name="{$fldname}_mass_edit_check" id="{$fldname}_mass_edit_check" class="small" >{/if}
-			{/if}
-			</td>
-
-			<td width="30%" align=left class="dvtCellInfo">
-			{if $fldvalue neq ''}
-			<select name="salutationtype" class="small">
-				{foreach item=arr from=$fldvalue}
-				<option value="{$arr[1]}" {$arr[2]}>
-				{$arr[0]}
-				</option>
-				{/foreach}
-			</select>
-			{if $MASS_EDIT eq '1'}<br />{/if}
-			{/if}
-			{if (isset($maindata['extendedfieldinfo']) && isset($maindata['extendedfieldinfo']['searchfields']))}
-				{assign var="autocomp" value=$maindata['extendedfieldinfo'] }
-				<div style="position: relative;">
-				<input
-					type="text"
-					name="{$fldname}"
-					id="{$fldname}"
-					tabindex="{$vt_tab}"
-					value="{$secondvalue}"
-					tabindex="{$vt_tab}"
-					autocomplete="off"
-					class="autocomplete-input detailedViewTextBox"
-					data-autocomp='{$maindata["extendedfieldinfo"]|@json_encode}' />
-					<div id="listbox-unique-id" role="listbox" class="">
-						<ul class="slds-listbox slds-listbox_vertical slds-dropdown slds-dropdown_fluid relation-autocomplete__target" style="opacity: 0; width: 100%; list-style-type: none; width: 90%; left: 0; transform: translateX(0); max-width: none;" role="presentation"></ul>
-					</div>
-				</div>
-			{else}
-				<input type="text" name="{$fldname}" id="{$fldname}" tabindex="{$vt_tab}" class=detailedViewTextBox onFocus="this.className='detailedViewTextBoxOn'" onBlur="this.className='detailedViewTextBox'" style="width:58%;" value= "{$secondvalue}" >
-			{/if}
-			</td>
+            <!-- Field: UI type 55 / 255 -->
+            <div class="slds-col slds-size_1-of-2 slds-grid">
+                <div class="slds-form-element slds-p-horizontal_small">
+                    <label class="slds-form-element__label">
+                    	{if $fldvalue != ''}{$APP.Salutation}<br>{/if}
+                    	{if $mandatory_field == '*' || $uitype == 255}<abbr class="slds-required" title="required">* </abbr>{/if}{$usefldlabel}                	
+                	</label>
+                    <div class="slds-form-element__control">
+                    	{if $MASS_EDIT eq '1'}
+                    	{* We're mass editing, so include the checkbox *}
+                        <div class="slds-grid">
+                            <div class="slds-col slds-size_1-of-12 slds-m-right_small">
+                                <div class="slds-checkbox_add-button">
+                                    <input class="slds-assistive-text" type="checkbox" name="{$fldname}_mass_edit_check" id="{$fldname}_mass_edit_check" />
+                                    <label for="{$fldname}_mass_edit_check" class="slds-checkbox_faux">
+                                        <span class="slds-assistive-text">{$usefldlabel}</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="slds-col slds-grid slds-size_11-of-12">
+                    	{else}
+                    		<div class="slds-grid">
+                    	{/if}
+								<div class="slds-col slds-grid slds-p-horizontal_none">
+									{if $fldvalue neq ''}
+									<div class="slds-col slds-size_2-of-12 slds-p-horizontal_none">
+		                                <div class="slds-checkbox_add-button">
+		                                    <input class="slds-assistive-text" type="checkbox" name="salutationtype_mass_edit_check" id="salutationtype_mass_edit_check" />
+		                                    <label for="salutation_mass_edit_check" class="slds-checkbox_faux">
+		                                        <span class="slds-assistive-text">{$APP.Salutation}</span>
+		                                    </label>
+		                                </div>
+									</div>
+									<div class="slds-col slds-size_4-of-12 slds-p-right_xxx-small slds-p-left_none">
+										<div class="slds-select_container">
+											<select class="slds-select" name="salutationtype">
+												{foreach item=arr from=$fldvalue}
+												<option value="{$arr[1]}" {$arr[2]}>
+												{$arr[0]}
+												</option>
+												{/foreach}
+											</select>
+										</div>										
+									</div>
+									{/if}
+									<div class="slds-col slds-size_{if $fldvalue neq ''}6{else}12{/if}-of-12 slds-p-horizontal_none">
+									{if (isset($maindata['extendedfieldinfo']) && isset($maindata['extendedfieldinfo']['searchfields']))}
+										{assign var="autocomp" value=$maindata['extendedfieldinfo'] }
+										<div style="position: relative;">
+										<input
+											type="text"
+											name="{$fldname}"
+											id="{$fldname}"
+											tabindex="{$vt_tab}"
+											value="{$secondvalue}"
+											tabindex="{$vt_tab}"
+											autocomplete="off"
+											class="autocomplete-input slds-input"
+											data-autocomp='{$maindata["extendedfieldinfo"]|@json_encode}' />
+											<div id="listbox-unique-id" role="listbox" class="">
+												<ul class="slds-listbox slds-listbox_vertical slds-dropdown slds-dropdown_fluid relation-autocomplete__target" style="opacity: 0; width: 100%; list-style-type: none; width: 90%; left: 0; transform: translateX(0); max-width: none;" role="presentation"></ul>
+											</div>
+										</div>
+									{else}
+										<input type="text" name="{$fldname}" id="{$fldname}" tabindex="{$vt_tab}" class="slds-input" value= "{$secondvalue}" >
+									{/if}										
+									</div>
+								</div>
+                            </div>
+                        {if $MASS_EDIT eq '1'}
+                        {* Close an extra div when doing mass-edit *}
+                        </div>
+                        {/if}
+                    </div>
+                </div>
+            </div>
+            <!-- // Field: UI type 55 / 255 -->		
 
 		{elseif $uitype eq 22}
 			<td width="20%" class="dvtCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}" align=right>
