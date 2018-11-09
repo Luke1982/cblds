@@ -331,43 +331,68 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 			<td width=20% class="dvtCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}" align=right><font color="red">{$mandatory_field}</font>{$usefldlabel} {$APP.COVERED_PERCENTAGE} {if $MASS_EDIT eq '1'}<input type="checkbox" name="{$fldname}_mass_edit_check" id="{$fldname}_mass_edit_check" class="small" >{/if}</td>
 			<td width=30% align=left class="dvtCellInfo"><input type="text" tabindex="{$vt_tab}" name="{$fldname}" id ="{$fldname}" value="{$fldvalue}" class=detailedViewTextBox onFocus="this.className='detailedViewTextBoxOn'" onBlur="this.className='detailedViewTextBox'"></td>
 		{elseif $uitype eq 19 || $uitype eq 20}
-			<!-- In Add Comment we should not display anything -->
+            <!-- Field: UI type 19 and 20-->
+            {* Some field logic *}
+            {* In Add Comment we should not display anything *}
 			{assign var="i18nAddComment" value='LBL_ADD_COMMENT'|@getTranslatedString:$MODULE}
+			{assign var="i18nSolution" value='Solution'|@getTranslatedString:$MODULE}
 			{if $fldlabel eq $i18nAddComment}
 				{assign var=fldvalue value=""}
-			{/if}
-			<td width=20% class="dvtCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}" align=right>
-					<font color="red">{$mandatory_field}</font>
-				{$usefldlabel} {if $MASS_EDIT eq '1'}<input type="checkbox" name="{$fldname}_mass_edit_check" id="{$fldname}_mass_edit_check" class="small" >{/if}
-			</td>
-			<td colspan=3 class="dvtCellInfo">
-				<textarea class="detailedViewTextBox" tabindex="{$vt_tab}" onFocus="this.className='detailedViewTextBoxOn'" name="{$fldname}" id="{$fldname}" onBlur="this.className='detailedViewTextBox'" cols="90" rows="8">{$fldvalue}</textarea>
-				{assign var="i18nSolution" value='Solution'|@getTranslatedString:$MODULE}
-				{if $fldlabel eq $i18nSolution}
-				<input type="hidden" name="helpdesk_solution" id="helpdesk_solution" value='{$fldvalue}'>
-				{/if}
-				{if ($fldname eq 'notecontent') || (isset($maindata['extendedfieldinfo']) && isset($maindata['extendedfieldinfo']['RTE']) && $maindata['extendedfieldinfo']['RTE'] && vt_hasRTE())}
-				<script>
-					CKEDITOR.replace('{$fldname}',
-					{ldelim}
-						extraPlugins : 'uicolor',
-						uiColor: '#dfdff1',
-							on : {ldelim}
-								instanceReady : function( ev ) {ldelim}
-									 this.dataProcessor.writer.setRules( 'p',  {ldelim}
-										indent : false,
-										breakBeforeOpen : false,
-										breakAfterOpen : false,
-										breakBeforeClose : false,
-										breakAfterClose : false
-								{rdelim});
-							{rdelim}
+			{/if}            
+            <div class="slds-col slds-size_2-of-2 slds-grid">
+                <div class="slds-form-element slds-p-horizontal_small">
+                    <label class="slds-form-element__label">
+                    	{if $mandatory_field == '*'}<abbr class="slds-required" title="required">* </abbr>{/if}{$usefldlabel}
+                	</label>
+                    <div class="slds-form-element__control">
+                    	{if $MASS_EDIT eq '1'}
+                    	{* Mass-edit so include the checkbox *}
+	                        <div class="slds-grid">
+	                            <div class="slds-col slds-size_1-of-12 slds-m-right_small">
+	                                <div class="slds-checkbox_add-button">
+	                                    <input class="slds-assistive-text" type="checkbox" name="{$fldname}_mass_edit_check" id="{$fldname}_mass_edit_check" />
+	                                    <label for="{$fldname}_mass_edit_check" class="slds-checkbox_faux">
+	                                        <span class="slds-assistive-text">{$usefldlabel}</span>
+	                                    </label>
+	                                </div>
+	                            </div>
+	                            <div class="slds-col slds-size_11-of-12">
+                        {/if}
+	                                <textarea value="{$fldvalue}" name="{$fldname}" id="{$fldname}" tabindex="{$vt_tab}" class="slds-textarea" rows="8">{$fldvalue}</textarea>
+									{if $fldlabel eq $i18nSolution}
+									<input type="hidden" name="helpdesk_solution" id="helpdesk_solution" value='{$fldvalue}'>
+									{/if}	                                
+	                    {if $MASS_EDIT eq '1'}
+	                    {* Close the extra checkbox divs when mass-editing *}
+	                            </div>
+	                        </div>
+                        {/if}
+                    </div>
+                </div>
+            </div>
+			{if ($fldname eq 'notecontent') || (isset($maindata['extendedfieldinfo']) && isset($maindata['extendedfieldinfo']['RTE']) && $maindata['extendedfieldinfo']['RTE'] && vt_hasRTE())}
+			<script>
+				CKEDITOR.replace('{$fldname}',
+				{ldelim}
+					extraPlugins : 'uicolor',
+					uiColor: '#dfdff1',
+						on : {ldelim}
+							instanceReady : function( ev ) {ldelim}
+								 this.dataProcessor.writer.setRules( 'p',  {ldelim}
+									indent : false,
+									breakBeforeOpen : false,
+									breakAfterOpen : false,
+									breakBeforeClose : false,
+									breakAfterClose : false
+							{rdelim});
 						{rdelim}
-					{rdelim});
-					var oCKeditor{$fldname} = CKEDITOR.instances[{$fldname}];
-				</script>
-				{/if}
-			</td>
+					{rdelim}
+				{rdelim});
+				var oCKeditor{$fldname} = CKEDITOR.instances[{$fldname}];
+			</script>
+			{/if}            
+            <!-- // Field: UI type 19 and 20 -->		
+
 		{elseif $uitype eq 21 || $uitype eq 24}
             <!-- Field: UI type 24 -->
             <div class="slds-col slds-size_1-of-2 slds-grid">
