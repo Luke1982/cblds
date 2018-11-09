@@ -1166,7 +1166,7 @@ function run_massedit() {
 		var rdo = document.getElementById('relresultssection');
 		rdo.style.visibility = 'visible';
 		rdo.style.display = 'block';
-		document.getElementById('massedit').style.display = 'none';
+		document.getElementById('cbds-massedit').classList.remove("cbds-massedit--active");
 
 		var worker  = new Worker('massedit-worker.js');
 		//a message is received

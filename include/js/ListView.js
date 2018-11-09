@@ -102,7 +102,6 @@ function mass_edit(obj, divid, module, parenttab) {
 			return false;
 		}
 	}
-	fnvshobj(obj, divid);
 }
 
 function mass_edit_formload(idstring, module, parenttab) {
@@ -131,10 +130,11 @@ function mass_edit_formload(idstring, module, parenttab) {
 	}).done(function (response) {
 		document.getElementById('status').style.display='none';
 		var result = response;
-		document.getElementById('massedit_form_div').innerHTML=result;
+		document.getElementById('cbds-massedit').innerHTML=result;
+		document.getElementById('cbds-massedit').classList.add("cbds-massedit--active");
 		document.getElementById('massedit_form')['massedit_recordids'].value = document.getElementById('massedit_form')['idstring'].value;
 		document.getElementById('massedit_form')['massedit_module'].value = module;
-		vtlib_executeJavascriptInElement(document.getElementById('massedit_form_div'));
+		vtlib_executeJavascriptInElement(document.getElementById('cbds-massedit'));
 	});
 }
 
