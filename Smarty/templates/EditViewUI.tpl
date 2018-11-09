@@ -80,108 +80,100 @@
 		{/if}
 
 		{if $uitype eq '10'}
-            <!-- Field -->
+            <!-- Field: UI type 10 -->
+            {* Some field logic *}
+			{assign var="use_parentmodule" value=$fldlabel.options.0}
+			{assign var=vtui10func value=$use_parentmodule|getvtlib_open_popup_window_function:$fldname:$MODULE}
+           	{if count($fldlabel.options) eq 1}
+           	<input type='hidden' class='small' name="{$fldname}_type" id="{$fldname}_type" value="{$use_parentmodule}">
+           	<input id="{$fldname}" name="{$fldname}" type="hidden" value="{$fldvalue.entityid}">
+           	{/if}
             <div class="slds-col slds-size_1-of-2 slds-grid">
                 <div class="slds-form-element slds-p-horizontal_small">
-                    <label class="slds-form-element__label">Related to</label>
+                    <label class="slds-form-element__label">
+                    	{if $mandatory_field == '*'}<abbr class="slds-required" title="required">* </abbr>{/if}{$fldlabel.displaylabel}
+					</label>
                     <div class="slds-form-element__control">
                         <div class="slds-grid">
+                        	{if $MASS_EDIT == '1'}
+                        	{* Mass-editing, add the checkbox *}
                             <div class="slds-col slds-size_1-of-12 slds-m-right_small">
                                 <div class="slds-checkbox_add-button">
-                                    <input class="slds-assistive-text" type="checkbox" id="add-checkbox-2" value="add-checkbox-2" />
-                                    <label for="add-checkbox-2" class="slds-checkbox_faux">
-                                        <span class="slds-assistive-text">Edit website</span>
+                                    <input class="slds-assistive-text" type="checkbox" name="{$fldname}_mass_edit_check" id="{$fldname}_mass_edit_check" />
+                                    <label for="{$fldname}_mass_edit_check" class="slds-checkbox_faux">
+                                        <span class="slds-assistive-text">{$fldname}</span>
                                     </label>
                                 </div>
-                            </div>
+							</div>
                             <div class="slds-col slds-grid slds-size_11-of-12">
-                                <div class="slds-col slds-size_10-of-12 slds-p-left--none slds-p-right_xxx-small">
-                                    <input class="slds-input" />
+                            {/if}
+                            	<div class="slds-col slds-size_4-of-12 slds-p-left--none slds-p-right_xxx-small">
+                            		<div class="slds-select_container">
+                            			{if $fromlink eq 'qcreate'}
+                            			<select class="slds-select" id="{$fldname}_type" name="{$fldname}_type" onChange='document.QcEditView.{$fldname}_display.value=""; document.QcEditView.{$fldname}.value="";'>
+                        				{else}
+                        				<select id="{$fldname}_type" class="slds-select" name="{$fldname}_type" onChange='document.EditView.{$fldname}_display.value=""; document.EditView.{$fldname}.value="";document.getElementById("qcform").innerHTML=""'>
+                        				{/if}
+                        				{foreach item=option from=$fldlabel.options}
+                        				<option value="{$option}"
+                        				{if $fldlabel.selected == $option}selected{/if}>
+                        				{$option|@getTranslatedString:$option}
+	                        			</option>
+	                        			{/foreach}
+                            			</select>
+                            		</div>                            		
+                            	</div>
+                                <div class="slds-col slds-size_6-of-12 slds-p-left--none slds-p-right_xxx-small">
+								{if ( isset($maindata['extendedfieldinfo']) && isset($maindata['extendedfieldinfo']['searchfields']) )}
+									{assign var="autocomp" value=$maindata['extendedfieldinfo'] }
+									<input
+										id="{$fldname}_display"
+										name="{$fldname}_display"
+										type="text"
+										value="{$fldvalue.displayvalue}"
+										autocomplete="off"
+										class="autocomplete-input slds-input"
+										style="background-color: #ffffff; border: 1px solid rgb(221, 219, 218);" 
+										data-autocomp='{$maindata["extendedfieldinfo"]|@json_encode}'>
+										<div id="listbox-unique-id" role="listbox" class="">
+											<ul class="slds-listbox slds-listbox_vertical slds-dropdown slds-dropdown_fluid relation-autocomplete__target" style="opacity: 0; width: 100%; list-style-type: none; width: 90%; left: 0; transform: translateX(0); max-width: none;" role="presentation"></ul>
+										</div>										
+								{else}
+									<input
+										id="{$fldname}_display"
+										name="{$fldname}_display"
+										readonly
+										type="text"
+										class="autocomplete-input slds-input" 
+										style="background-color: #ffffff; border: 1px solid rgb(221, 219, 218);"
+										value="{$fldvalue.displayvalue}">
+								{/if}
                                 </div>
                                 <div class="slds-col slds-size_2-of-12 slds-p-horizontal_none">
                                     <div class="slds-button-group">
-                                        <button class="slds-button slds-button_icon slds-button_icon-border" title="Search">
+                                        <button type="button" class="slds-button slds-button_icon slds-button_icon-border" title="{'LBL_SELECT'|@getTranslatedString}" onclick='return {$vtui10func}("{$fromlink}","{$fldname}","{$MODULE}","{if isset($ID)}{$ID}{/if}");'>
                                             <svg class="slds-button__icon" aria-hidden="true">
                                                 <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#add"></use>
                                             </svg>
-                                            <span class="slds-assistive-text">Add</span>
+                                            <span class="slds-assistive-text">{'LBL_SELECT'|@getTranslatedString}</span>
                                         </button>
-                                        <button class="slds-button slds-button_icon slds-button_icon-border" title="Search">
+                                        <button type="button" class="slds-button slds-button_icon slds-button_icon-border" title="{'LBL_CLEAR'|@getTranslatedString}" onClick="this.form.{$fldname}.value=''; this.form.{$fldname}_display.value=''; return false;">
                                             <svg class="slds-button__icon" aria-hidden="true">
                                                 <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#delete"></use>
                                             </svg>
-                                            <span class="slds-assistive-text">Remove</span>
+                                            <span class="slds-assistive-text">{'LBL_CLEAR'|@getTranslatedString}</span>
                                         </button>
                                     </div>
                                 </div>
+                            {if $MASS_EDIT == '1'}
+                            {* Close the extra div when mass-editing *}
                             </div>
+                            {/if}
                         </div>
                     </div>
                 </div>
             </div>
-            <!-- // Field -->
-			<td width=20% class="dvtCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}" align=right>
-			<font color="red">{$mandatory_field}</font>
-			{$fldlabel.displaylabel}
-
-			{assign var="use_parentmodule" value=$fldlabel.options.0}
-			{assign var=vtui10func value=$use_parentmodule|getvtlib_open_popup_window_function:$fldname:$MODULE}
-			{if count($fldlabel.options) eq 1}
-				<input type='hidden' class='small' name="{$fldname}_type" id="{$fldname}_type" value="{$use_parentmodule}">
-			{else}
-				<br>
-				{if $fromlink eq 'qcreate'}
-				<select id="{$fldname}_type" class="small" style="max-width:175px" name="{$fldname}_type" onChange='document.QcEditView.{$fldname}_display.value=""; document.QcEditView.{$fldname}.value="";'>
-				{else}
-				<select id="{$fldname}_type" class="small" style="max-width:175px" name="{$fldname}_type" onChange='document.EditView.{$fldname}_display.value=""; document.EditView.{$fldname}.value="";document.getElementById("qcform").innerHTML=""'>
-				{/if}
-				{foreach item=option from=$fldlabel.options}
-					<option value="{$option}"
-					{if $fldlabel.selected == $option}selected{/if}>
-					{$option|@getTranslatedString:$option}
-					</option>
-				{/foreach}
-				</select>
-			{/if}
-			{if $MASS_EDIT eq '1'}<input type="checkbox" name="{$fldname}_mass_edit_check" id="{$fldname}_mass_edit_check" class="small" >{/if}
-			{$fldhelplink}
-
-			</td>
-			<td width="30%" align=left class="dvtCellInfo">
-				<input id="{$fldname}" name="{$fldname}" type="hidden" value="{$fldvalue.entityid}">
-
-				<div style="position: relative;">
-				{if ( isset($maindata['extendedfieldinfo']) && isset($maindata['extendedfieldinfo']['searchfields']) )}
-					{assign var="autocomp" value=$maindata['extendedfieldinfo'] }
-					<input
-						id="{$fldname}_display"
-						name="{$fldname}_display"
-						type="text"
-						style="border:1px solid #bababa;"
-						value="{$fldvalue.displayvalue}"
-						autocomplete="off"
-						class="autocomplete-input"
-						data-autocomp='{$maindata["extendedfieldinfo"]|@json_encode}'>&nbsp;
-				{else}
-					<input
-						id="{$fldname}_display"
-						name="{$fldname}_display"
-						readonly
-						type="text"
-						style="border:1px solid #bababa;"
-						value="{$fldvalue.displayvalue}">&nbsp;
-				{/if}
-				<img src="{'select.gif'|@vtiger_imageurl:$THEME}" tabindex="{$vt_tab}"
-alt="{'LBL_SELECT'|@getTranslatedString}" title="{'LBL_SELECT'|@getTranslatedString}" onclick='return {$vtui10func}("{$fromlink}","{$fldname}","{$MODULE}","{if isset($ID)}{$ID}{/if}");' align="absmiddle" style='cursor:hand;cursor:pointer'>&nbsp;
-				<input type="image" src="{'clear_field.gif'|@vtiger_imageurl:$THEME}"
-alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedString}" onClick="this.form.{$fldname}.value=''; this.form.{$fldname}_display.value=''; return false;" align="absmiddle" style='cursor:hand;cursor:pointer'>&nbsp;
-				{if ( isset($maindata['extendedfieldinfo']) && isset($maindata['extendedfieldinfo']['searchfields']) )}
-					<div id="listbox-unique-id" role="listbox" class="">
-						<ul class="slds-listbox slds-listbox_vertical slds-dropdown slds-dropdown_fluid relation-autocomplete__target" style="opacity: 0; width: 100%; list-style-type: none; width: 90%; left: 0; transform: translateX(0); max-width: none;" role="presentation"></ul>
-					</div>
-				{/if}
-				</div>
-			</td>
+            <!-- // Field: UI type 10  -->
 
 		{elseif $uitype eq 2}
             <!-- Field: UI type 2 -->
