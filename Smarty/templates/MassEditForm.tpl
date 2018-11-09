@@ -58,7 +58,7 @@
 <div class="slds-backdrop slds-backdrop_open"></div>
 <!-- LDS mass edit modal -->
 
-<table border=0 cellspacing=0 cellpadding=5 width=100% align=center>
+{*<table border=0 cellspacing=0 cellpadding=5 width=100% align=center>
 	<tr>
 		<td class="small">
 			<!-- popup specific content fill in starts -->
@@ -128,10 +128,10 @@
 					</td>
 				</tr>
 			</table>
-			</form>
+			</form> 
 		</td>
 	</tr>
-</table>
+</table>*}
 
 <script type="text/javascript" id="massedit_javascript">
 	window.fieldname = new Array({$VALIDATION_DATA_FIELDNAME});
