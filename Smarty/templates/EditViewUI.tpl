@@ -367,7 +367,7 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 			{if $fldlabel eq $i18nAddComment}
 				{assign var=fldvalue value=""}
 			{/if}            
-            <div class="slds-col slds-size_2-of-2 slds-grid">
+            <div class="slds-col slds-grid">
                 <div class="slds-form-element slds-p-horizontal_small">
                     <label class="slds-form-element__label">
                     	{if $mandatory_field == '*'}<abbr class="slds-required" title="required">* </abbr>{/if}{$usefldlabel}
