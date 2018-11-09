@@ -909,84 +909,108 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
             </td>
 
 		{elseif $uitype eq 71 || $uitype eq 72}
-			<td width="20%" class="dvtCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}" align=right>
-				<font color="red">{$mandatory_field}</font>{$usefldlabel} {if $MASS_EDIT eq '1'}<input type="checkbox" name="{$fldname}_mass_edit_check" id="{$fldname}_mass_edit_check" class="small" >{/if}
-			</td>
-			<td width="30%" align=left class="dvtCellInfo">
-				{if $fldname eq "unit_price"}
-					<span id="multiple_currencies">
-						<input name="{$fldname}" id="{$fldname}" tabindex="{$vt_tab}" type="text" class=detailedViewTextBox onFocus="this.className='detailedViewTextBoxOn'" onBlur="this.className='detailedViewTextBox'; updateUnitPrice('unit_price', '{$BASE_CURRENCY}');"  value="{$fldvalue}" style="width:60%;">
-					{if $MASS_EDIT neq 1}
-						&nbsp;<a href="javascript:void(0);" onclick="updateUnitPrice('unit_price', '{$BASE_CURRENCY}'); toggleShowHide('currency_class','multiple_currencies');">{$APP.LBL_MORE_CURRENCIES} &raquo;</a>
-					{/if}
-					</span>
-					{if $MASS_EDIT neq 1}
-					<div id="currency_class" class="multiCurrencyEditUI">
-						<input type="hidden" name="base_currency" id="base_currency" value="{$BASE_CURRENCY}" />
-						<input type="hidden" name="base_conversion_rate" id="base_currency" value="{$BASE_CURRENCY}" />
-						<table width="100%" height="100%" class="small" cellpadding="5">
-						<tr class="detailedViewHeader">
-							<th colspan="4">
-								<b>{'LBL_PRODUCT_PRICES'|@getTranslatedString:'Products'}</b>
-							</th>
-							<th align="right">
-								<img border="0" style="cursor: pointer;" onclick="toggleShowHide('multiple_currencies','currency_class');" src="{'close.gif'|@vtiger_imageurl:$THEME}"/>
-							</th>
-						</tr>
-						<tr class="detailedViewHeader">
-							<th>{$APP.LBL_CURRENCY}</th>
-							<th>{$APP.LBL_PRICE}</th>
-							<th>{$APP.LBL_CONVERSION_RATE}</th>
-							<th>{$APP.LBL_RESET_PRICE}</th>
-							<th>{$APP.LBL_BASE_CURRENCY}</th>
-						</tr>
-						{foreach item=price key=count from=$PRICE_DETAILS}
-							<tr>
-								{if $price.check_value eq 1 || $price.is_basecurrency eq 1}
-									{assign var=check_value value="checked"}
-									{assign var=disable_value value=""}
-								{else}
-									{assign var=check_value value=""}
-									{assign var=disable_value value="disabled=true"}
-								{/if}
+            <!-- Field: UI type 71 / 72 -->
+            <div class="slds-col slds-size_1-of-2 slds-grid">
+                <div class="slds-form-element slds-p-horizontal_small">
+                    <label class="slds-form-element__label">
+                    	{if $mandatory_field == '*'}<abbr class="slds-required" title="required">* </abbr>{/if}{$usefldlabel}
+                	</label>
+                    <div class="slds-form-element__control">
+                        <div class="slds-grid">                    	
+	                	{if $MASS_EDIT eq '1'}
+	            		{* Mass edit mode, so include the checkbox *}
+                            <div class="slds-col slds-size_1-of-12 slds-m-right_small">
+                                <div class="slds-checkbox_add-button">
+                                    <input class="slds-assistive-text" type="checkbox" name="{$fldname}_mass_edit_check" id="{$fldname}_mass_edit_check" />
+                                    <label for="{$fldname}_mass_edit_check" class="slds-checkbox_faux">
+                                        <span class="slds-assistive-text">{$usefldlabel}</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="slds-col slds-size_11-of-12">
+                        {else}
+                        	<div class="slds-col slds-grid slds-size_12-of-12">
+                        {/if}
+                        	{if $fldname eq "unit_price" && $MASS_EDIT != 1}
+                        		<div class="slds-col slds-size_10-of-12">
+                                	<input type="text" tabindex="{$vt_tab}" name="{$fldname}" id="{$fldname}" value="{$fldvalue}" class="slds-input" onBlur="updateUnitPrice('unit_price', '{$BASE_CURRENCY}');"/>
+                                </div>
+                                <div class="slds-col slds-size_2-of-12">
+                                	<button type="button" class="slds-button slds-button_neutral" onclick="updateUnitPrice('unit_price', '{$BASE_CURRENCY}'); toggleShowHide('currency_class','multiple_currencies');">{$APP.LBL_MORE_CURRENCIES}</button>
+                                </div>
+								<div id="currency_class" class="multiCurrencyEditUI">
+									<input type="hidden" name="base_currency" id="base_currency" value="{$BASE_CURRENCY}" />
+									<input type="hidden" name="base_conversion_rate" id="base_currency" value="{$BASE_CURRENCY}" />
+									<table width="100%" height="100%" class="small" cellpadding="5">
+									<tr class="detailedViewHeader">
+										<th colspan="4">
+											<b>{'LBL_PRODUCT_PRICES'|@getTranslatedString:'Products'}</b>
+										</th>
+										<th align="right">
+											<img border="0" style="cursor: pointer;" onclick="toggleShowHide('multiple_currencies','currency_class');" src="{'close.gif'|@vtiger_imageurl:$THEME}"/>
+										</th>
+									</tr>
+									<tr class="detailedViewHeader">
+										<th>{$APP.LBL_CURRENCY}</th>
+										<th>{$APP.LBL_PRICE}</th>
+										<th>{$APP.LBL_CONVERSION_RATE}</th>
+										<th>{$APP.LBL_RESET_PRICE}</th>
+										<th>{$APP.LBL_BASE_CURRENCY}</th>
+									</tr>
+									{foreach item=price key=count from=$PRICE_DETAILS}
+										<tr>
+											{if $price.check_value eq 1 || $price.is_basecurrency eq 1}
+												{assign var=check_value value="checked"}
+												{assign var=disable_value value=""}
+											{else}
+												{assign var=check_value value=""}
+												{assign var=disable_value value="disabled=true"}
+											{/if}
 
-								{if $price.is_basecurrency eq 1}
-									{assign var=base_cur_check value="checked"}
-								{else}
-									{assign var=base_cur_check value=""}
-								{/if}
+											{if $price.is_basecurrency eq 1}
+												{assign var=base_cur_check value="checked"}
+											{else}
+												{assign var=base_cur_check value=""}
+											{/if}
 
-								{if $price.curname eq $BASE_CURRENCY}
-									{assign var=call_js_update_func value="updateUnitPrice('$BASE_CURRENCY', 'unit_price');"}
-								{else}
-									{assign var=call_js_update_func value=""}
-								{/if}
+											{if $price.curname eq $BASE_CURRENCY}
+												{assign var=call_js_update_func value="updateUnitPrice('$BASE_CURRENCY', 'unit_price');"}
+											{else}
+												{assign var=call_js_update_func value=""}
+											{/if}
 
-								<td align="right" class="dvtCellLabel">
-									{$price.currencylabel|@getTranslatedCurrencyString} ({$price.currencysymbol})
-									<input type="checkbox" name="cur_{$price.curid}_check" id="cur_{$price.curid}_check" class="small" onclick="fnenableDisable(this,'{$price.curid}'); updateCurrencyValue(this,'{$price.curname}','{$BASE_CURRENCY}','{$price.conversionrate}');" {$check_value}>
-								</td>
-								<td class="dvtCellInfo" align="left">
-									<input {$disable_value} type="text" size="10" class="small" name="{$price.curname}" id="{$price.curname}" value="{$price.curvalue}" onBlur="{$call_js_update_func} fnpriceValidation('{$price.curname}');">
-								</td>
-								<td class="dvtCellInfo" align="left">
-									<input disabled=true type="text" size="10" class="small" name="cur_conv_rate{$price.curid}" value="{$price.conversionrate}">
-								</td>
-								<td class="dvtCellInfo" align="center">
-									<input {$disable_value} type="button" class="crmbutton small edit" id="cur_reset{$price.curid}"  onclick="updateCurrencyValue(this,'{$price.curname}','{$BASE_CURRENCY}','{$price.conversionrate}');" value="{$APP.LBL_RESET}"/>
-								</td>
-								<td class="dvtCellInfo">
-									<input {$disable_value} type="radio" class="detailedViewTextBox" id="base_currency{$price.curid}" name="base_currency_input" value="{$price.curname}" {$base_cur_check} onchange="updateBaseCurrencyValue()" />
-								</td>
-							</tr>
-						{/foreach}
-						</table>
-					</div>
-					{/if}
-				{else}
-					<input name="{$fldname}" tabindex="{$vt_tab}" type="text" class=detailedViewTextBox onFocus="this.className='detailedViewTextBoxOn'" onBlur="this.className='detailedViewTextBox'"  value="{$fldvalue}">
-				{/if}
-			</td>
+											<td align="right" class="dvtCellLabel">
+												{$price.currencylabel|@getTranslatedCurrencyString} ({$price.currencysymbol})
+												<input type="checkbox" name="cur_{$price.curid}_check" id="cur_{$price.curid}_check" class="small" onclick="fnenableDisable(this,'{$price.curid}'); updateCurrencyValue(this,'{$price.curname}','{$BASE_CURRENCY}','{$price.conversionrate}');" {$check_value}>
+											</td>
+											<td class="dvtCellInfo" align="left">
+												<input {$disable_value} type="text" size="10" class="small" name="{$price.curname}" id="{$price.curname}" value="{$price.curvalue}" onBlur="{$call_js_update_func} fnpriceValidation('{$price.curname}');">
+											</td>
+											<td class="dvtCellInfo" align="left">
+												<input disabled=true type="text" size="10" class="small" name="cur_conv_rate{$price.curid}" value="{$price.conversionrate}">
+											</td>
+											<td class="dvtCellInfo" align="center">
+												<input {$disable_value} type="button" class="crmbutton small edit" id="cur_reset{$price.curid}"  onclick="updateCurrencyValue(this,'{$price.curname}','{$BASE_CURRENCY}','{$price.conversionrate}');" value="{$APP.LBL_RESET}"/>
+											</td>
+											<td class="dvtCellInfo">
+												<input {$disable_value} type="radio" class="detailedViewTextBox" id="base_currency{$price.curid}" name="base_currency_input" value="{$price.curname}" {$base_cur_check} onchange="updateBaseCurrencyValue()" />
+											</td>
+										</tr>
+									{/foreach}
+									</table>
+								</div>                                
+                            </div>
+                            {else}
+                        		<div class="slds-col slds-size_12-of-12 slds-p-horizontal_none">
+                                	<input type="text" tabindex="{$vt_tab}" name="{$fldname}" id="{$fldname}" value="{$fldvalue}" class="slds-input" />
+                                </div>
+                            </div>                            
+                            {/if}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- // Field: UI type 71 / 72 -->		
 
 		{elseif $uitype eq 56}
 			<!-- Field: UI type 56 -->
