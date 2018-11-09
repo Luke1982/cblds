@@ -91,7 +91,7 @@
                         {foreach from=$SEARCHLISTHEADER key='fieldname' item='label'}
                         {if $label@first}{$first_bas_search_col = $fieldname}{$first_bas_search_val = $label}{/if}
                         {/foreach}
-                        <input type="hidden" name="search_field" id="bas_searchfield" value="$first_bas_search_col" />        		
+                        <input type="hidden" name="search_field" id="bas_searchfield" value="{$first_bas_search_col}" />        		
 						<input type="hidden" name="searchtype" value="BasicSearch">
 						<input type="hidden" name="module" value="{$MODULE}" id="curmodule">
 						<input name="maxrecords" type="hidden" value="{$MAX_RECORDS}" id='maxrecords'>
