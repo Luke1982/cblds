@@ -690,7 +690,7 @@ function callSearch(searchtype) {
 		getObj(data_td_id).className = 'searchAlph';
 	}
 	gPopupAlphaSearchUrl = '';
-	var search_fld_val = document.getElementById('bas_searchfield').options[document.getElementById('bas_searchfield').selectedIndex].value;
+	var search_fld_val = document.getElementById('bas_searchfield').value;
 	var search_txt_val = encodeURIComponent(document.basicSearch.search_text.value);
 	var urlstring = '';
 	if (searchtype == 'Basic') {
@@ -715,7 +715,7 @@ function callSearch(searchtype) {
 		if (result[1] != '') {
 			alert(result[1]);
 		}
-		document.getElementById('basicsearchcolumns').innerHTML = '';
+		// document.getElementById('basicsearchcolumns').innerHTML = '';
 	});
 	return false;
 }

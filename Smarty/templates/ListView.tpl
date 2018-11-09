@@ -493,7 +493,7 @@
 	<td class="showPanelBg" valign="top" width=100% style="padding:10px;">
 	<!-- SIMPLE SEARCH -->
 <div id="searchAcc" style="{$DEFAULT_SEARCH_PANEL_STATUS};position:relative;">
-<form name="basicSearch" method="post" action="index.php" onSubmit="document.basicSearch.searchtype.searchlaunched='basic';return callSearch('Basic');">
+{*<form name="basicSearch" method="post" action="index.php" onSubmit="document.basicSearch.searchtype.searchlaunched='basic';return callSearch('Basic');">
 <table width="100%" cellpadding="5" cellspacing="0" class="searchUIBasic small" align="center" border=0>
 	<tr>
 		<td class="searchUIName small" nowrap align="left">
@@ -532,7 +532,7 @@
 		</td>
 	</tr>
 </table>
-</form><br class="searchbreak">
+</form><br class="searchbreak">*}
 </div>
 <!-- ADVANCED SEARCH -->
 <div id="advSearch" style="display:none;">
