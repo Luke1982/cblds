@@ -289,12 +289,12 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 				<td width=20% class="dvtCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}" align=right><font color="red">{$mandatory_field}</font>{$usefldlabel} {if $MASS_EDIT eq '1'}<input type="checkbox" name="{$fldname}_mass_edit_check" id="{$fldname}_mass_edit_check" class="small">{/if}</td>
 				<td width=30% align=left class="dvtCellInfo"><input readonly type="text" tabindex="{$vt_tab}" name="{$fldname}" id ="{$fldname}" {if $MODE eq 'edit'} value="{$fldvalue}" {else} value="{$MOD_SEQ_ID}" {/if} class=detailedViewTextBox onFocus="this.className='detailedViewTextBoxOn'" onBlur="this.className='detailedViewTextBox'"></td>
 
-		{elseif $uitype eq 11 || $uitype eq 1 || $uitype eq 13 || $uitype eq 7 || $uitype eq 17 || $uitype eq 85}
-            <!-- Field: UI type 1 / 11 / 13 / 7 / 17 -->
+		{elseif $uitype eq 11 || $uitype eq 1 || $uitype eq 13 || $uitype eq 7 || $uitype eq 17 || $uitype eq 85 || $uitype eq 14}
+            <!-- Field: UI type 1 / 11 / 13 / 7 / 17 / 85 / 14 -->
             <div class="slds-col slds-size_1-of-2 slds-grid">
                 <div class="slds-form-element slds-p-horizontal_small">
                     <label class="slds-form-element__label">
-                    	{if $mandatory_field == '*'}<abbr class="slds-required" title="required">* </abbr>{/if}{$usefldlabel}
+                    	{if $mandatory_field == '*'}<abbr class="slds-required" title="required">* </abbr>{/if}{$usefldlabel}{if $uitype == 14}&nbsp;{"LBL_TIMEFIELD"|@getTranslatedString}{/if}
                 	</label>
                     <div class="slds-form-element__control">
                         <div class="slds-grid">                    	
@@ -1355,13 +1355,6 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 			</td>
 			<td width="30%" align=left class="dvtCellInfo">
 				<textarea name="{$fldname}" cols="30" tabindex="{$vt_tab}" rows="2">{$fldvalue}</textarea>
-			</td>
-		{elseif $uitype eq 14}
-			<td width="20%" class="dvtCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}" align=right>
-				<font color="red">{$mandatory_field}</font>{$usefldlabel} {"LBL_TIMEFIELD"|@getTranslatedString}{if $MASS_EDIT eq '1'}<input type="checkbox" name="{$fldname}_mass_edit_check" id="{$fldname}_mass_edit_check" class="small" >{/if}
-			</td>
-			<td width=10% align=left class="dvtCellInfo">
-				<input type="text" tabindex="{$vt_tab}" name="{$fldname}" id ="{$fldname}" value="{$fldvalue}" class=detailedViewTextBox onFocus="this.className='detailedViewTextBoxOn'" onBlur="this.className='detailedViewTextBox'">
 			</td>
 		{elseif $uitype eq '69m'}
 			<td width="20%" class="dvtCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}" align=right>
