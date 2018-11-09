@@ -296,25 +296,24 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
                     	{if $mandatory_field == '*'}<abbr class="slds-required" title="required">* </abbr>{/if}{$usefldlabel}
                 	</label>
                     <div class="slds-form-element__control">
-                    	{if $MASS_EDIT eq '1'}
-                    		{* Mass edit mode, so include the checkbox *}
-	                        <div class="slds-grid">
-	                            <div class="slds-col slds-size_1-of-12 slds-m-right_small">
-	                                <div class="slds-checkbox_add-button">
-	                                    <input class="slds-assistive-text" type="checkbox" name="{$fldname}_mass_edit_check" id="{$fldname}_mass_edit_check" />
-	                                    <label for="{$fldname}_mass_edit_check" class="slds-checkbox_faux">
-	                                        <span class="slds-assistive-text">{$usefldlabel}</span>
-	                                    </label>
-	                                </div>
-	                            </div>
-	                            <div class="slds-col slds-size_11-of-12">
-	                                <input type="text" tabindex="{$vt_tab}" name="{$fldname}" id="{$fldname}" value="{$fldvalue}" class="detailedViewTextBox slds-input"{if $uitype == 17} onkeyup="validateUrl('{$fldname}');"{/if} />
-	                            </div>
-	                        </div>
+                        <div class="slds-grid">                    	
+	                	{if $MASS_EDIT eq '1'}
+	            		{* Mass edit mode, so include the checkbox *}
+                            <div class="slds-col slds-size_1-of-12 slds-m-right_small">
+                                <div class="slds-checkbox_add-button">
+                                    <input class="slds-assistive-text" type="checkbox" name="{$fldname}_mass_edit_check" id="{$fldname}_mass_edit_check" />
+                                    <label for="{$fldname}_mass_edit_check" class="slds-checkbox_faux">
+                                        <span class="slds-assistive-text">{$usefldlabel}</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="slds-col slds-size_11-of-12">
                         {else}
-                        	{* Normal mode, don't include the checkbox *}
-                        	<input type="text" tabindex="{$vt_tab}" name="{$fldname}" id="{$fldname}" value="{$fldvalue}" class="detailedViewTextBox slds-input"{if $uitype == 17} onkeyup="validateUrl('{$fldname}');"{/if} />
+                        	<div class="slds-col slds-size_12-of-12">
                         {/if}
+                                <input type="text" tabindex="{$vt_tab}" name="{$fldname}" id="{$fldname}" value="{$fldvalue}" class="detailedViewTextBox slds-input"{if $uitype == 17} onkeyup="validateUrl('{$fldname}');"{/if} />
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
