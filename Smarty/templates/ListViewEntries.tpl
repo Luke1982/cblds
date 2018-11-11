@@ -30,6 +30,7 @@
 	<input name="current_page_boxes" id="current_page_boxes" type="hidden" value="{$CURRENT_PAGE_BOXES}">
 	<!-- LDS listview table -->
 	<div class="cbds-shadow-c--small slds-box slds-m-around_medium slds-p-around_none" style="overflow: hidden;">
+		<!-- Listview table control header -->
 	    <div class="slds-theme_inverse slds-p-around_small">
 	        <div class="slds-grid slds-gutters">
 	            <div class="slds-col">
@@ -121,15 +122,7 @@
 		                                                        <div class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small" role="presentation">
 		                                                            <h3 class="slds-text-title_caps" role="presentation">Columns</h3>
 		                                                        </div>
-		                                                    </li>
-{* 		                                                    <li role="presentation" class="slds-listbox__item">
-		                                                        <div id="{$fieldname}" class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small" role="option" onclick="document.getElementById('bas_searchfield').value = '{$SEARCHLISTHEADER.all}'; document.getElementById('cbds-bas-search__sel-col').value = 'All Columns'; document.getElementById('cbds-bas-search__lv-cols').classList.remove('slds-is-open');">
-		                                                            <span class="slds-media__figure slds-listbox__option-icon"></span>
-		                                                            <span class="slds-media__body">
-		                                                                    <span class="slds-truncate" title="All Columns">All Columns</span>
-		                                                            </span>
-		                                                        </div>
-		                                                    </li>	 *}	                                                    
+		                                                    </li>                                                  
 		                                                    {foreach from=$SEARCHLISTHEADER key='fieldname' item='label'}
 		                                                    <li role="presentation" class="slds-listbox__item">
 		                                                        <div id="{$fieldname}" class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small" role="option" onclick="document.getElementById('bas_searchfield').value = '{$fieldname}'; document.getElementById('cbds-bas-search__sel-col').value = '{$label}'; document.getElementById('cbds-bas-search__lv-cols').classList.remove('slds-is-open');">
@@ -194,7 +187,26 @@
 	                </div>
 	            </div>
 	        </div>
+	        <!-- 'Select all records' subrow in listview control header -->
+	        <div class="slds-grid slds-gutters slds-hide slds-p-top_small" id="cbds-listview-selectall__row">
+	        	<div class="slds-col slds-align_absolute-center">
+	        		<button type="button" id="selectAllRec" class="slds-button slds-button_neutral" onClick="toggleSelectAll_Records('{$MODULE}',true,'selected_id')">
+	        			<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
+	        				<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#check"></use>
+	        			</svg>
+	        			{$APP.LBL_SELECT_ALL} <span id="count"> </span> {$APP.LBL_RECORDS_IN} {$MODULE|@getTranslatedString:$MODULE}
+	        		</button>
+	        		<button type="button" id="deSelectAllRec" class="slds-button slds-button_neutral slds-hide" onClick="toggleSelectAll_Records('{$MODULE}',false,'selected_id')">
+	        			<svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
+	        				<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
+	        			</svg>
+	        			{$APP.LBL_DESELECT_ALL} {$MODULE|@getTranslatedString:$MODULE}
+	        		</button>
+	        	</div>
+	        </div>
+	        <!-- // 'Select all records' subrow in listview control header -->
 	    </div>
+	    <!-- // Listview table control header -->
 	    <!-- Main listview table -->
 	    <table aria-multiselectable="true" class="slds-table slds-table_bordered slds-table_fixed-layout slds-table_resizable-cols" role="grid">
 	        <thead>
@@ -203,8 +215,8 @@
 	                    <span id="column-group-header" class="slds-assistive-text">Choose a row</span> {* TO-DO: Translate *}
 	                    <div class="slds-th__action slds-th__action_form">
 	                        <div class="slds-checkbox">
-	                            <input type="checkbox" name="selectall" id="checkbox-1" tabindex="-1" aria-labelledby="check-select-all-label column-group-header" value="checkbox-1" onclick='toggleSelect_ListView(this.checked,"selected_id");'>
-	                            <label class="slds-checkbox__label" for="checkbox-1" id="check-select-all-label">
+	                            <input type="checkbox" name="selectall" id="selectCurrentPageRec" tabindex="-1" aria-labelledby="check-select-all-label column-group-header" value="selectCurrentPageRec" onclick='toggleSelect_ListView(this.checked,"selected_id");'>
+	                            <label class="slds-checkbox__label" for="selectCurrentPageRec" id="check-select-all-label">
 	                                <span class="slds-checkbox_faux"></span>
 	                                <span class="slds-form-element__label slds-assistive-text">Select All</span> {* TO-DO: Translate *}
 	                            </label>
@@ -368,12 +380,12 @@
 					<td class="lvtCol">{$header}</td>
 				{/foreach}
 			</tr>
-			<tr>
+			{*<tr>
 				<td id="linkForSelectAll" class="linkForSelectAll" style="display:none;" colspan=15>
 					<span id="selectAllRec" class="selectall" style="display:inline;" onClick="toggleSelectAll_Records('{$MODULE}',true,'selected_id')">{$APP.LBL_SELECT_ALL} <span id="count"> </span> {$APP.LBL_RECORDS_IN} {$MODULE|@getTranslatedString:$MODULE}</span>
 					<span id="deSelectAllRec" class="selectall" style="display:none;" onClick="toggleSelectAll_Records('{$MODULE}',false,'selected_id')">{$APP.LBL_DESELECT_ALL} {$MODULE|@getTranslatedString:$MODULE}</span>
 				</td>
-			</tr>
+			</tr>*}
 			<!-- Table Contents -->
 			{foreach item=entity key=entity_id from=$LISTENTITY}
 				<tr bgcolor=white onMouseOver="this.className='lvtColDataHover'" onMouseOut="this.className='lvtColData'" id="row_{$entity_id}">

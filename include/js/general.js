@@ -2840,20 +2840,23 @@ function toggleSelect_ListView(state, relCheckName, groupParentElementId) {
 			}
 		}
 	} else {
-		if (state==true) {
+		if (state==true) {		
 			var count = document.getElementById('numOfRows').value;
 			if (count == '') {
 				getNoOfRows();
 				count = document.getElementById('numOfRows').value;
 			}
 			if (parseInt(document.getElementById('maxrecords').value) < parseInt(count)) {
-				document.getElementById('linkForSelectAll').style.display='table-cell';
+				document.getElementById('cbds-listview-selectall__row').classList.remove('slds-hide');
+				document.getElementById('cbds-listview-selectall__row').classList.add('slds-show');					
 			}
 		} else {
 			if (document.getElementById('allselectedboxes').value == 'all') {
-				document.getElementById('linkForSelectAll').style.display='table-cell';
+				document.getElementById('cbds-listview-selectall__row').classList.remove('slds-hide');
+				document.getElementById('cbds-listview-selectall__row').classList.add('slds-show');					
 			} else {
-				document.getElementById('linkForSelectAll').style.display='none';
+				document.getElementById('cbds-listview-selectall__row').classList.remove('slds-show');
+				document.getElementById('cbds-listview-selectall__row').classList.add('slds-hide');				
 			}
 		}
 	}
@@ -4459,15 +4462,18 @@ function toggleSelectAll_Records(module, state, relCheckName) {
 	toggleSelect_ListView(state, relCheckName);
 	if (state == true) {
 		document.getElementById('allselectedboxes').value = 'all';
-		document.getElementById('selectAllRec').style.display = 'none';
-		document.getElementById('deSelectAllRec').style.display = 'inline';
+		document.getElementById('selectAllRec').classList.add("slds-hide");
+		document.getElementById('deSelectAllRec').classList.remove("slds-hide");
+		document.getElementById('deSelectAllRec').classList.add("slds-show");
 	} else {
 		document.getElementById('allselectedboxes').value = '';
 		document.getElementById('excludedRecords').value = '';
 		document.getElementById('selectCurrentPageRec').checked = false;
-		document.getElementById('selectAllRec').style.display = 'inline';
-		document.getElementById('deSelectAllRec').style.display = 'none';
-		document.getElementById('linkForSelectAll').style.display = 'none';
+		document.getElementById('selectAllRec').classList.remove("slds-hide");
+		document.getElementById('deSelectAllRec').classList.add("slds-hide");
+		document.getElementById('deSelectAllRec').classList.remove("slds-show");
+		document.getElementById('cbds-listview-selectall__row').classList.add("slds-hide");
+		document.getElementById('cbds-listview-selectall__row').classList.remove("slds-show");
 	}
 }
 
@@ -4505,7 +4511,8 @@ function getNoOfRows(id) {
 			document.getElementById('numOfRows').value = response;
 			document.getElementById('count').innerHTML = response;
 			if (parseInt(document.getElementById('maxrecords').value) < parseInt(response)) {
-				document.getElementById('linkForSelectAll').style.display='table-cell';
+				document.getElementById('cbds-listview-selectall__row').classList.remove('slds-hide');
+				document.getElementById('cbds-listview-selectall__row').classList.add('slds-show');				
 			}
 		} else {
 			document.getElementById('numOfRows_'+id).value = response;

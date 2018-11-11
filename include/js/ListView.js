@@ -384,9 +384,12 @@ function getListViewEntries_js(module, url) {
 			document.getElementById('numOfRows').value = count;
 			document.getElementById('count').innerHTML = count;
 			if (all_selected == 'all') {
-				document.getElementById('linkForSelectAll').style.display = 'table-cell';
-				document.getElementById('selectAllRec').style.display = 'none';
-				document.getElementById('deSelectAllRec').style.display = 'inline';
+				document.getElementById('cbds-listview-selectall__row').classList.remove('slds-hide');
+				document.getElementById('cbds-listview-selectall__row').classList.add('slds-show');
+				document.getElementById('selectAllRec').classList.add('slds-hide');
+				document.getElementById('selectAllRec').classList.remove('slds-show');
+				document.getElementById('deSelectAllRec').classList.remove('slds-hide');
+				document.getElementById('deSelectAllRec').classList.add('slds-show');
 				exculdedArray=excludedRecords.split(';');
 				obj = document.getElementsByName('selected_id');
 				viewForSelectLink = showSelectAllLink(obj, exculdedArray);
@@ -394,7 +397,8 @@ function getListViewEntries_js(module, url) {
 				document.getElementById('allselectedboxes').value = 'all';
 				document.getElementById('excludedRecords').value = document.getElementById('excludedRecords').value+excludedRecords;
 			} else {
-				document.getElementById('linkForSelectAll').style.display = 'none';
+				document.getElementById('cbds-listview-selectall__row').classList.add('slds-hide');
+				document.getElementById('cbds-listview-selectall__row').classList.remove('slds-show');
 				update_selected_checkbox();
 			}
 		}
