@@ -265,7 +265,8 @@ function massDelete(module) {
 			}).done(function (response) {
 				document.getElementById('status').style.display='none';
 				var result = response.split('&#&#&#');
-				document.getElementById('ListViewContents').innerHTML= result[2];
+				document.getElementById('listview-content-wrapper').innerHTML= result[2];
+				updateRecordCountInfo();
 				if (result[1] != '') {
 					alert(result[1]);
 				}

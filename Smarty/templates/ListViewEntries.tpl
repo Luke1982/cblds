@@ -14,7 +14,6 @@
 {include file='applicationmessage.tpl'}
 {/if}
 <script type="text/javascript" src="include/js/ListView.js"></script>
-{* <form name="massdelete" method="POST" id="massdelete" onsubmit="VtigerJS_DialogBox.block();"> *}
 	<input name='search_url' id="search_url" type='hidden' value='{$SEARCH_URL}'>
 	<input name="idlist" id="idlist" type="hidden">
 	<input name="change_owner" type="hidden">
@@ -304,5 +303,4 @@
 	    <!-- // Main listview table -->
 	</div>	
 	<!-- // LDS listview table -->
-{* </form> *}
 <div id="basicsearchcolumns" style="display:none;"><select name="search_field" id="bas_searchfield" class="txtBox" style="width:150px">{html_options options=$SEARCHLISTHEADER}</select></div>
