@@ -421,12 +421,12 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 			{/if}            
             <!-- // Field: UI type 19 and 20 -->		
 
-		{elseif $uitype eq 21 || $uitype eq 24}
-            <!-- Field: UI type 24 -->
+		{elseif $uitype eq 21 || $uitype eq 22 || $uitype eq 24}
+            <!-- Field: UI type 21 / 22 / 24 -->
             <div class="slds-col slds-size_1-of-2 slds-grid">
                 <div class="slds-form-element slds-p-horizontal_small">
                     <label class="slds-form-element__label">
-                    	{if $mandatory_field == '*'}<abbr class="slds-required" title="required">* </abbr>{/if}{$usefldlabel}
+                    	{if $mandatory_field == '*' || $uitype == 22}<abbr class="slds-required" title="required">* </abbr>{/if}{$usefldlabel}
                 	</label>
                     <div class="slds-form-element__control">
                     	{if $MASS_EDIT eq '1'}
@@ -451,7 +451,8 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
                     </div>
                 </div>
             </div>
-            <!-- // Field: UI type 24 -->
+            <!-- // Field: UI type 21 / 22 / 24 -->
+
 		{elseif $uitype eq 15 || $uitype eq 16  || $uitype eq 77 || $uitype eq '31' || $uitype eq '32' || $uitype eq '1613' || $uitype eq '1614'}
             <!-- Field: UI type 15 / 16 / 31 / 32 / 1613 / 1614-->
             <div class="slds-col slds-size_1-of-2 slds-grid">
@@ -1349,13 +1350,6 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
             </div>
             <!-- // Field: UI type 55 / 255 -->		
 
-		{elseif $uitype eq 22}
-			<td width="20%" class="dvtCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}" align=right>
-				<font color="red">{$mandatory_field}</font>{$usefldlabel} {if $MASS_EDIT eq '1'}<input type="checkbox" name="{$fldname}_mass_edit_check" id="{$fldname}_mass_edit_check" class="small" >{/if}
-			</td>
-			<td width="30%" align=left class="dvtCellInfo">
-				<textarea name="{$fldname}" cols="30" tabindex="{$vt_tab}" rows="2">{$fldvalue}</textarea>
-			</td>
 		{elseif $uitype eq '69m'}
 			<td width="20%" class="dvtCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}" align=right>
 				<font color="red">{$mandatory_field}</font>{$usefldlabel}
