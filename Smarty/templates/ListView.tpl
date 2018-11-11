@@ -52,7 +52,9 @@
                     <div class="slds-page-header__name">
                         <div class="slds-page-header__name-title">
                             <h1>
-                                <span class="slds-page-header__title slds-truncate" title="{$MODULE|@getTranslatedString:$MODULE}">{$MODULE|@getTranslatedString:$MODULE}</span>
+                                <span class="slds-page-header__title slds-truncate" title="{$MODULE|@getTranslatedString:$MODULE}">
+                                	<a class="slds-text-link_faux" href="/index.php?action=index&module={$MODULE}">{$MODULE|@getTranslatedString:$MODULE}</a>
+                                </span>
                             </h1>
                             <span>
                             	{$APP.LBL_SHOWING}
