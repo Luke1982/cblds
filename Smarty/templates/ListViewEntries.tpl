@@ -315,17 +315,19 @@
 							{/if}
 
 							{if $SQLERROR}
-								<table border="0" cellpadding="5" cellspacing="0" width="98%">
-								<tr>
-									<td rowspan="2" width="25%"><img src="{'empty.png'|@vtiger_imageurl:$THEME}" height="60" width="61"></td>
-									<td style="border-bottom: 1px solid rgb(204, 204, 204);" nowrap="nowrap" width="75%">
-										<span class="genHeaderSmall">{$APP.LBL_NO_DATA}</span>
-									</td>
-								</tr>
-								<tr>
-									<td class="small" align="left" nowrap="nowrap">{'ERROR_GETTING_FILTER'|@getTranslatedString:$MODULE}</td>
-								</tr>
-								</table>
+								<section role="alertdialog" tabindex="-1" aria-labelledby="prompt-heading-id" aria-describedby="prompt-message-wrapper" class="slds-modal slds-fade-in-open slds-modal_prompt cbds-whitespace--normal" aria-modal="true">
+									<div class="slds-modal__container">
+										<header class="slds-modal__header slds-theme_error slds-theme_alert-texture">
+											<h2 class="slds-text-heading_medium" id="prompt-heading-id">{$APP.LBL_NO_DATA}</h2>
+										</header>
+										<div class="slds-modal__content slds-p-around_medium" id="prompt-message-wrapper">
+											<p>{'ERROR_GETTING_FILTER'|@getTranslatedString:$MODULE}</p>
+										</div>
+										<footer class="slds-modal__footer slds-theme_default slds-size_12-of-12">
+										</footer>
+									</div>
+								</section>
+								<div class="slds-backdrop slds-backdrop_open"></div>
 							{else}
 								{if $CHECK.EditView eq 'yes' && $MODULE neq 'Emails'}
 								<section role="alertdialog" tabindex="-1" aria-labelledby="prompt-heading-id" aria-describedby="prompt-message-wrapper" class="slds-modal slds-fade-in-open slds-modal_prompt cbds-whitespace--normal" aria-modal="true">
@@ -352,25 +354,26 @@
 											</button>
 											<button onclick="gotourl('index.php?module=Calendar4You&amp;action=EventEditView&amp;return_module=Calendar4You&amp;activity_mode=Task&amp;return_action=DetailView&amp;parenttab={$CATEGORY}');"type="button" class="slds-button slds-button_neutral">
 												{$APP.LBL_CREATE} {$APP.LBL_A} {$APP.Task}
-											</button>											
+											</button>
 											{/if}
 										</footer>
 									</div>
 								</section>
 								<div class="slds-backdrop slds-backdrop_open"></div>
 								{else}
-									<table border="0" cellpadding="5" cellspacing="0" width="98%">
-									<tr>
-										<td rowspan="2" width="25%"><img src="{'denied.gif'|@vtiger_imageurl:$THEME}"></td>
-										<td style="border-bottom: 1px solid rgb(204, 204, 204);" nowrap="nowrap" width="75%"><span class="genHeaderSmall">{$APP.LBL_NO_DATA}</span></td>
-									</tr>
-									<tr>
-										<td class="small" align="left" nowrap="nowrap">{$APP.LBL_YOU_ARE_NOT_ALLOWED_TO_CREATE} {$APP.$vowel_conf}
-										{$MODULE_CREATE|@getTranslatedString:$MODULE}
-										<br>
-										</td>
-									</tr>
-									</table>
+									<section role="alertdialog" tabindex="-1" aria-labelledby="prompt-heading-id" aria-describedby="prompt-message-wrapper" class="slds-modal slds-fade-in-open slds-modal_prompt cbds-whitespace--normal" aria-modal="true">
+										<div class="slds-modal__container">
+											<header class="slds-modal__header slds-theme_error slds-theme_alert-texture">
+												<h2 class="slds-text-heading_medium" id="prompt-heading-id">{$APP.LBL_NO_DATA}</h2>
+											</header>
+											<div class="slds-modal__content slds-p-around_medium" id="prompt-message-wrapper">
+												<p>{$APP.LBL_YOU_ARE_NOT_ALLOWED_TO_CREATE} {$APP.$vowel_conf} {$MODULE_CREATE|@getTranslatedString:$MODULE}</p>
+											</div>
+											<footer class="slds-modal__footer slds-theme_default slds-size_12-of-12">
+											</footer>
+										</div>
+									</section>
+									<div class="slds-backdrop slds-backdrop_open"></div>
 								{/if}
 							{/if} {* SQL ERROR ELSE END *}
 						</div>
