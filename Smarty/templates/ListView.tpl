@@ -54,7 +54,14 @@
                             <h1>
                                 <span class="slds-page-header__title slds-truncate" title="{$MODULE|@getTranslatedString:$MODULE}">{$MODULE|@getTranslatedString:$MODULE}</span>
                             </h1>
-                            <span>{$recordListRange}</span>
+                            <span>
+                            	{$APP.LBL_SHOWING}
+                            	<span id="cbds-listview-rec-info__range-start">{$recordListRange.info.limitStartRecord}</span>
+                            	-
+                            	<span id="cbds-listview-rec-info__range-end">{$recordListRange.info.limitEndRecord}</span>
+                            	{$APP.LBL_LIST_OF}
+                            	<span id="cbds-listview-rec-info__range-total">{$recordListRange.info.totalrows}</span>
+                            </span>
                         </div>
                     </div>
                 </div>

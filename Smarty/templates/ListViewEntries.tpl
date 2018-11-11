@@ -28,6 +28,9 @@
 	<input name="selectedboxes" id="selectedboxes" type="hidden" value="{$SELECTEDIDS}">
 	<input name="allselectedboxes" id="allselectedboxes" type="hidden" value="{$ALLSELECTEDIDS}">
 	<input name="current_page_boxes" id="current_page_boxes" type="hidden" value="{$CURRENT_PAGE_BOXES}">
+	<input type="hidden" id="listview-records-startrecord" value="{$recordListRange.info.limitStartRecord}" />
+	<input type="hidden" id="listview-records-endrecord" value="{$recordListRange.info.limitEndRecord}" />
+	<input type="hidden" id="listview-records-totalrows" value="{$recordListRange.info.totalrows}" />
 	<!-- LDS listview table -->
 	<div class="cbds-shadow-c--small slds-box slds-m-around_medium slds-p-around_none" style="overflow: hidden;">
 		<!-- Listview table control header -->

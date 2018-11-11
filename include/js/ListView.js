@@ -291,6 +291,7 @@ function showDefaultCustomView(selectView, module, parenttab) {
 		document.getElementById('status').style.display = 'none';
 		var result = response.split('&#&#&#');
 		document.getElementById('listview-content-wrapper').innerHTML = result[2];
+		updateRecordCountInfo();
 		if (result[1] != '') {
 			alert(result[1]);
 		}
@@ -350,6 +351,8 @@ function getListViewEntries_js(module, url) {
 		document.getElementById('status').style.display='none';
 		var result = response.split('&#&#&#');
 		document.getElementById('listview-content-wrapper').innerHTML= result[2];
+		// Update the record count info
+		updateRecordCountInfo();
 
 		if (module == 'Documents' && Document_Folder_View) {
 			obj = document.getElementsByName('folderidVal');
@@ -407,6 +410,12 @@ function getListViewEntries_js(module, url) {
 		}
 		document.getElementById('basicsearchcolumns').innerHTML = '';
 	});
+}
+
+function updateRecordCountInfo() {
+	document.getElementById("cbds-listview-rec-info__range-start").innerText = document.getElementById("listview-records-startrecord").value;
+	document.getElementById("cbds-listview-rec-info__range-end").innerText = document.getElementById("listview-records-endrecord").value;
+	document.getElementById("cbds-listview-rec-info__range-total").innerText = document.getElementById("listview-records-totalrows").value;	
 }
 //for multiselect check box in list view:
 

@@ -3885,14 +3885,18 @@ function getRecordRangeMessage($listResult, $limitStartRecord, $totalRows = '') 
 	global $adb, $app_strings;
 	$numRows = $adb->num_rows($listResult);
 	$recordListRangeMsg = '';
+	$recordListInfo = array();
 	if ($numRows > 0) {
 		$recordListRangeMsg = $app_strings['LBL_SHOWING'] . ' ' . $app_strings['LBL_RECORDS'] .
 				' ' . ($limitStartRecord + 1) . ' - ' . ($limitStartRecord + $numRows);
+		$recordListInfo['limitStartRecord'] = $limitStartRecord + 1;
+		$recordListInfo['limitEndRecord'] = $limitStartRecord + $numRows;
 		if (GlobalVariable::getVariable('Application_ListView_Compute_Page_Count', 0)) {
 			$recordListRangeMsg .= ' ' . $app_strings['LBL_LIST_OF'] . " $totalRows";
+			$recordListInfo['totalrows'] = $totalRows;
 		}
 	}
-	return $recordListRangeMsg;
+	return array('msg' => $recordListRangeMsg, 'info' => $recordListInfo);
 }
 
 function listQueryNonAdminChange($query, $module, $scope = '') {
