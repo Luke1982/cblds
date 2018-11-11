@@ -254,8 +254,8 @@
 		            <tr aria-selected="false" class="slds-hint-parent">
 		                <td class="slds-text-align_right" role="gridcell">
 		                    <div class="slds-checkbox">
-		                        <input type="checkbox" name="selected_id" id="listview-checkbox-{$entity_id}" tabindex="-1" aria-labelledby="listview-checkboxlabel-{$entity_id} column-group-header" value="{$entity_id}" onclick="check_object(this)">
-		                        <label class="slds-checkbox__label" for="listview-checkbox-{$entity_id}" id="listview-checkboxlabel-{$entity_id}">
+		                        <input type="checkbox" name="selected_id" id="{$entity_id}" tabindex="-1" aria-labelledby="{$entity_id} column-group-header" value="{$entity_id}" onclick="check_object(this)">
+		                        <label class="slds-checkbox__label" for="{$entity_id}" id="listview-checkboxlabel-{$entity_id}">
 		                            <span class="slds-checkbox_faux"></span>
 		                            <span class="slds-form-element__label slds-assistive-text">{* TO-DO: Get correct text here *}</span>
 		                        </label>
