@@ -18,6 +18,10 @@ hr {
 .calendar {
   z-index: 100000
 }
+
+.cbds-whitespace--normal {
+  white-space: normal;
+}
   
 .dvtCellInfo ul { 
    list-style-type: disc; 

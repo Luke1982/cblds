@@ -297,6 +297,81 @@
 		                {/if}
 	                {/foreach}
 	            </tr>
+			{foreachelse}
+				<tr>
+					<td colspan="{$smarty.foreach.listviewforeach.iteration+1}">
+						<div id="no_entries_found" style="height: 24rem;">
+							{assign var=vowel_conf value='LBL_A'}
+							{if $MODULE eq 'Accounts' || $MODULE eq 'Invoice'}
+								{assign var=vowel_conf value='LBL_AN'}
+							{/if}
+							{assign var=MODULE_CREATE value=$SINGLE_MOD}
+							{if $MODULE eq 'HelpDesk'}
+								{assign var=MODULE_CREATE value='Ticket'}
+							{/if}
+
+							{if $SQLERROR}
+								<table border="0" cellpadding="5" cellspacing="0" width="98%">
+								<tr>
+									<td rowspan="2" width="25%"><img src="{'empty.png'|@vtiger_imageurl:$THEME}" height="60" width="61"></td>
+									<td style="border-bottom: 1px solid rgb(204, 204, 204);" nowrap="nowrap" width="75%">
+										<span class="genHeaderSmall">{$APP.LBL_NO_DATA}</span>
+									</td>
+								</tr>
+								<tr>
+									<td class="small" align="left" nowrap="nowrap">{'ERROR_GETTING_FILTER'|@getTranslatedString:$MODULE}</td>
+								</tr>
+								</table>
+							{else}
+								{if $CHECK.EditView eq 'yes' && $MODULE neq 'Emails'}
+								<section role="alertdialog" tabindex="-1" aria-labelledby="prompt-heading-id" aria-describedby="prompt-message-wrapper" class="slds-modal slds-fade-in-open slds-modal_prompt cbds-whitespace--normal" aria-modal="true">
+									<div class="slds-modal__container">
+										<header class="slds-modal__header slds-theme_error slds-theme_alert-texture">
+											<h2 class="slds-text-heading_medium" id="prompt-heading-id">{$APP.LBL_NO_DATA}</h2>
+										</header>
+										<div class="slds-modal__content slds-p-around_medium" id="prompt-message-wrapper">
+											<p>There may have been no records created for this module at all, or you have selected a filter for which no record meets the criteria. Please select an option below of choose a different filter.</p>
+										</div>
+										<footer class="slds-modal__footer slds-theme_default slds-size_12-of-12">
+											{if $MODULE neq 'Calendar'}
+											<button onclick="gotourl('index.php?module={$MODULE}&action=EditView&return_action=DetailView&parenttab={$CATEGORY}');"type="button" class="slds-button slds-button_neutral">
+												{$APP.LBL_CREATE} {$APP.$vowel_conf} {$MODULE_CREATE|@getTranslatedString:$MODULE}
+											</button>
+												{if $CHECK.Import eq 'yes' && $MODULE neq 'Documents'}
+												<button onclick="gotourl('index.php?module={$MODULE}&action=Import&step=1&return_module={$MODULE}&return_action=ListView&parenttab={$CATEGORY}');"type="button" class="slds-button slds-button_neutral">
+													{$APP.LBL_IMPORT} {$MODULE|@getTranslatedString:$MODULE}
+												</button>
+												{/if}
+											{else}
+											<button onclick="gotourl('index.php?module=Calendar4You&amp;action=EventEditView&amp;return_module=Calendar4You&amp;activity_mode=Events&amp;return_action=DetailView&amp;parenttab={$CATEGORY}');"type="button" class="slds-button slds-button_neutral">
+												{$APP.LBL_CREATE} {$APP.LBL_AN} {$APP.Event}
+											</button>
+											<button onclick="gotourl('index.php?module=Calendar4You&amp;action=EventEditView&amp;return_module=Calendar4You&amp;activity_mode=Task&amp;return_action=DetailView&amp;parenttab={$CATEGORY}');"type="button" class="slds-button slds-button_neutral">
+												{$APP.LBL_CREATE} {$APP.LBL_A} {$APP.Task}
+											</button>											
+											{/if}
+										</footer>
+									</div>
+								</section>
+								<div class="slds-backdrop slds-backdrop_open"></div>
+								{else}
+									<table border="0" cellpadding="5" cellspacing="0" width="98%">
+									<tr>
+										<td rowspan="2" width="25%"><img src="{'denied.gif'|@vtiger_imageurl:$THEME}"></td>
+										<td style="border-bottom: 1px solid rgb(204, 204, 204);" nowrap="nowrap" width="75%"><span class="genHeaderSmall">{$APP.LBL_NO_DATA}</span></td>
+									</tr>
+									<tr>
+										<td class="small" align="left" nowrap="nowrap">{$APP.LBL_YOU_ARE_NOT_ALLOWED_TO_CREATE} {$APP.$vowel_conf}
+										{$MODULE_CREATE|@getTranslatedString:$MODULE}
+										<br>
+										</td>
+									</tr>
+									</table>
+								{/if}
+							{/if} {* SQL ERROR ELSE END *}
+						</div>
+					</td>
+				</tr>
 	            {/foreach}
 	        </tbody>
 	    </table>
