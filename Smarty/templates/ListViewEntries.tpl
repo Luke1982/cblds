@@ -216,6 +216,7 @@
 	                <th class="slds-text-title_caps slds-text-align_right" scope="col" style="width: 3.25rem;">
 	                    <span id="column-group-header" class="slds-assistive-text">Choose a row</span> {* TO-DO: Translate *}
 	                    <div class="slds-th__action slds-th__action_form">
+	                    	{if $LISTENTITY_ARRAY|count > 0}
 	                        <div class="slds-checkbox">
 	                            <input type="checkbox" name="selectall" id="selectCurrentPageRec" tabindex="-1" aria-labelledby="check-select-all-label column-group-header" value="selectCurrentPageRec" onclick='toggleSelect_ListView(this.checked,"selected_id");'>
 	                            <label class="slds-checkbox__label" for="selectCurrentPageRec" id="check-select-all-label">
@@ -223,6 +224,7 @@
 	                                <span class="slds-form-element__label slds-assistive-text">Select All</span> {* TO-DO: Translate *}
 	                            </label>
 	                        </div>
+	                        {/if}
 	                    </div>
 	                </th>
 	                {foreach name="listviewforeach" item=header from=$LISTHEADER_ARRAY}
