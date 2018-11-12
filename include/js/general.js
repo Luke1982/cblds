@@ -5596,9 +5596,11 @@ AutocompleteRelation.prototype.MinCharsToSearch = function () {
 		 *
 		 */
 		getCurSelIndex: function() {
+			var curSelIndex = 0;
 			for (var i = 0; i < this.optionNodes.length; i++) {
-				if (this.optionNodes[i].getElementsByClassName("slds-truncate")[0].innerHTML == this.input.value) return i;
+				if (this.optionNodes[i].getElementsByClassName("slds-truncate")[0].innerHTML == this.input.value) curSelIndex = i;
 			}
+			return curSelIndex;
 		}
 	}
 
@@ -5645,3 +5647,15 @@ AutocompleteRelation.prototype.MinCharsToSearch = function () {
 	return ldsCombobox;
 
 });
+
+function initCbdsComboboxes() {
+	window.Comboboxes = [];
+	let cbdsComboBoxes = document.getElementsByClassName("cbds-lds__combobox");
+	for (var i = 0; i < cbdsComboBoxes.length; i++) {
+		window.Comboboxes.push(new ldsCombobox(cbdsComboBoxes[i], {
+			"onSelect" : false
+		}));
+	}
+}
+
+addOnloadEvent(initCbdsComboboxes);
