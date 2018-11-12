@@ -204,8 +204,8 @@
     </div>
     <!-- // Top base row -->
     <!-- Advanced search row -->
-    <div class="slds-grid slds-m-top--large cbds-advanced-search--inactive" id="cbds-advanced-search">
-    	<form name="advSearch" method="post" action="index.php" onSubmit="document.basicSearch.searchtype.searchlaunched='advance';return callSearch('Advanced');">
+    <form name="advSearch" method="post" action="index.php" onSubmit="document.basicSearch.searchtype.searchlaunched='advance';return callSearch('Advanced');">
+	    <div class="slds-grid slds-m-top--large cbds-advanced-search--inactive" id="cbds-advanced-search">
 	        <div class="slds-col">
 	            <div class="slds-expression">
 	                <h2 class="slds-expression__title">{$APP.LBL_SEARCH}</h2>
@@ -220,10 +220,10 @@
 	                                <div class="slds-form-element">
 	                                    <label class="slds-form-element__label" for="combobox-id-91">Take Action When</label>
 	                                    <div class="slds-form-element__control">
-	                                        <div class="slds-combobox_container">
+	                                        <div class="slds-combobox_container cbds-lds__combobox">
 	                                            <div class="slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click" aria-expanded="false" aria-haspopup="listbox" role="combobox" id="combobox-1">
 	                                                <div class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_right" role="none">
-	                                                    <input class="slds-input slds-combobox__input slds-combobox__input-value" id="combobox-id-91" aria-controls="listbox-id-91" autocomplete="off" role="textbox" type="text" placeholder="Select an Option" readonly="" value="Any Condition Is Met in This Group" onfocus="document.getElementById('combobox-1').classList.add('slds-is-open');" onblur="document.getElementById('combobox-1').classList.remove('slds-is-open');">
+	                                                    <input class="slds-input slds-combobox__input slds-combobox__input-value" id="combobox-id-91" aria-controls="listbox-id-91" autocomplete="off" role="textbox" type="text" placeholder="Select an Option" readonly="" value="Any Condition Is Met in This Group">
 	                                                    <span class="slds-icon_container slds-icon-utility-down slds-input__icon slds-input__icon_right">
 	                                                        <svg class="slds-icon slds-icon slds-icon_x-small slds-icon-text-default" aria-hidden="true">
 	                                                            <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#down"></use>
@@ -485,8 +485,8 @@
 	                </div>
 	            </div>               
 	        </div>
-    	</form>
-    </div>
+	    </div>
+    </form>
     <!-- // Advanced search row -->
 </div>
 <!-- // Page header -->
