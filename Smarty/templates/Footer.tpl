@@ -7,7 +7,7 @@
 		{/if}
 	</div>
 	<div class="slds-col">
-		<span>&copy; 2004 - {date('Y')}</span>
+		<span>&copy; 2004 - {date('Y')}<a href='{$coreBOS_uiapp_url}' target='_blank'>{$coreBOS_uiapp_companyname}</a></span>
 	</div>
 	<div class="slds-col">
 		<span>{if $$calculate_response_time}Server response time: {$deltaTime}{/if}</span>
