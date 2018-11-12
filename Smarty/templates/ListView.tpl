@@ -205,285 +205,287 @@
     <!-- // Top base row -->
     <!-- Advanced search row -->
     <div class="slds-grid slds-m-top--large cbds-advanced-search--inactive" id="cbds-advanced-search">
-        <div class="slds-col">
-            <div class="slds-expression">
-                <h2 class="slds-expression__title">Advanced search</h2>
-                <ul>
-                    <li class="slds-expression__group">
-                        <fieldset>
-                            <legend class="slds-expression__legend slds-expression__legend_group">
-                                <span>AND</span>
-                                <span class="slds-assistive-text">Condition Group 1</span>
-                            </legend>
-                            <div class="slds-expression__options">
-                                <div class="slds-form-element">
-                                    <label class="slds-form-element__label" for="combobox-id-91">Take Action When</label>
-                                    <div class="slds-form-element__control">
-                                        <div class="slds-combobox_container">
-                                            <div class="slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click" aria-expanded="false" aria-haspopup="listbox" role="combobox" id="combobox-1">
-                                                <div class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_right" role="none">
-                                                    <input class="slds-input slds-combobox__input slds-combobox__input-value" id="combobox-id-91" aria-controls="listbox-id-91" autocomplete="off" role="textbox" type="text" placeholder="Select an Option" readonly="" value="Any Condition Is Met in This Group" onfocus="document.getElementById('combobox-1').classList.add('slds-is-open');" onblur="document.getElementById('combobox-1').classList.remove('slds-is-open');">
-                                                    <span class="slds-icon_container slds-icon-utility-down slds-input__icon slds-input__icon_right">
-                                                        <svg class="slds-icon slds-icon slds-icon_x-small slds-icon-text-default" aria-hidden="true">
-                                                            <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#down"></use>
-                                                        </svg>
-                                                    </span>
-                                                </div>
-                                                <div id="listbox-id-91" class="slds-dropdown slds-dropdown_length-5 slds-dropdown_fluid" role="listbox">
-                                                    <ul class="slds-listbox slds-listbox_vertical" role="presentation">
-                                                        <li role="presentation" class="slds-listbox__item">
-                                                            <div id="listbox-option-id-383" class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small" role="option">
-                                                                <span class="slds-media__figure slds-listbox__option-icon"></span>
-                                                                <span class="slds-media__body">
-                                                                    <span class="slds-truncate" title="All Conditions Are Met for This Group">
-                                                                        All Conditions Are Met for This Group
-                                                                    </span>
-                                                                </span>
-                                                            </div>
-                                                        </li>
-                                                        <li role="presentation" class="slds-listbox__item">
-                                                            <div aria-selected="true" id="listbox-option-id-384" class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small slds-is-selected slds-has-focus" role="option">
-                                                                <span class="slds-media__figure slds-listbox__option-icon">
-                                                                    <span class="slds-icon_container slds-icon-utility-check slds-current-color">
-                                                                        <svg class="slds-icon slds-icon_x-small" aria-hidden="true">
-                                                                            <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#check"></use>
-                                                                        </svg>
-                                                                    </span>
-                                                                </span>
-                                                                <span class="slds-media__body">
-                                                                    <span class="slds-truncate" title="Any Condition Is Met for This Group">
-                                                                        <span class="slds-assistive-text">
-                                                                            Current Selection:
-                                                                        </span>
-                                                                        Any Condition Is Met for This Group
-                                                                    </span>
-                                                                </span>
-                                                            </div>
-                                                        </li>
-                                                        <li role="presentation" class="slds-listbox__item">
-                                                            <div id="listbox-option-id-385" class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small" role="option">
-                                                                <span class="slds-media__figure slds-listbox__option-icon"></span>
-                                                                <span class="slds-media__body">
-                                                                    <span class="slds-truncate" title="Custom Logic Is Met for This Group">
-                                                                        Custom Logic Is Met for This Group
-                                                                    </span>
-                                                                </span>
-                                                            </div>
-                                                        </li>
-                                                        <li role="presentation" class="slds-listbox__item">
-                                                            <div id="listbox-option-id-386" class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small" role="option">
-                                                                <span class="slds-media__figure slds-listbox__option-icon"></span>
-                                                                <span class="slds-media__body">
-                                                                    <span class="slds-truncate" title="Always (No Criteria)">
-                                                                        Always (No Criteria)
-                                                                    </span>
-                                                                </span>
-                                                            </div>
-                                                        </li>
-                                                        <li role="presentation" class="slds-listbox__item">
-                                                            <div id="listbox-option-id-387" class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small" role="option">
-                                                                <span class="slds-media__figure slds-listbox__option-icon"></span>
-                                                                <span class="slds-media__body">
-                                                                    <span class="slds-truncate" title="Formula Evaluates To True">
-                                                                        Formula Evaluates To True
-                                                                    </span>
-                                                                </span>
-                                                            </div>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <ul>
-                                <li class="slds-expression__row slds-expression__row_group">
-                                    <fieldset>
-                                        <legend class="slds-expression__legend">
-                                            <span class="slds-assistive-text">Condition 1 of Condition Group 1</span>
-                                        </legend>
-                                        <div class="slds-grid slds-gutters_xx-small">
-                                            <div class="slds-col">
-                                                <div class="slds-form-element">
-                                                    <label class="slds-form-element__label" for="combobox-id-92">Resource</label>
-                                                    <div class="slds-form-element__control">
-                                                        <div class="slds-combobox_container">
-                                                            <div class="slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click" aria-expanded="false" aria-haspopup="listbox" role="combobox">
-                                                                <div class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_right" role="none">
-                                                                    <input class="slds-input slds-combobox__input slds-combobox__input-value" id="combobox-id-92" aria-controls="listbox-id-92" autocomplete="off" role="textbox" type="text" placeholder="Select an Option" readonly="" value="Resource 1">
-                                                                    <span class="slds-icon_container slds-icon-utility-down slds-input__icon slds-input__icon_right">
-                                                                        <svg class="slds-icon slds-icon slds-icon_x-small slds-icon-text-default" aria-hidden="true">
-                                                                            <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#down"></use>
-                                                                        </svg>
-                                                                    </span>
-                                                                </div>
-                                                                <div id="listbox-id-92" class="slds-dropdown slds-dropdown_length-5 slds-dropdown_fluid" role="listbox">
-                                                                    <ul class="slds-listbox slds-listbox_vertical" role="presentation">
-                                                                        <li role="presentation" class="slds-listbox__item">
-                                                                            <div aria-selected="true" id="listbox-option-id-388" class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small slds-is-selected slds-has-focus" role="option">
-                                                                                <span class="slds-media__figure slds-listbox__option-icon">
-                                                                                    <span class="slds-icon_container slds-icon-utility-check slds-current-color">
-                                                                                        <svg class="slds-icon slds-icon_x-small" aria-hidden="true">
-                                                                                            <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#check"></use>
-                                                                                        </svg>
-                                                                                    </span>
-                                                                                </span>
-                                                                                <span class="slds-media__body">
-                                                                                    <span class="slds-truncate" title="Resource 1">
-                                                                                        <span class="slds-assistive-text">
-                                                                                            Current Selection:
-                                                                                        </span>
-                                                                                        Resource 1
-                                                                                    </span>
-                                                                                </span>
-                                                                            </div>
-                                                                        </li>
-                                                                        <li role="presentation" class="slds-listbox__item">
-                                                                            <div id="listbox-option-id-389" class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small" role="option">
-                                                                                <span class="slds-media__figure slds-listbox__option-icon"></span>
-                                                                                <span class="slds-media__body">
-                                                                                    <span class="slds-truncate" title="Resource 2">
-                                                                                        Resource 2
-                                                                                    </span>
-                                                                                </span>
-                                                                            </div>
-                                                                        </li>
-                                                                        <li role="presentation" class="slds-listbox__item">
-                                                                            <div id="listbox-option-id-390" class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small" role="option">
-                                                                                <span class="slds-media__figure slds-listbox__option-icon"></span>
-                                                                                <span class="slds-media__body">
-                                                                                    <span class="slds-truncate" title="Resource 3">
-                                                                                        Resource 3
-                                                                                    </span>
-                                                                                </span>
-                                                                            </div>
-                                                                        </li>
-                                                                        <li role="presentation" class="slds-listbox__item">
-                                                                            <div id="listbox-option-id-391" class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small" role="option">
-                                                                                <span class="slds-media__figure slds-listbox__option-icon"></span>
-                                                                                <span class="slds-media__body">
-                                                                                    <span class="slds-truncate" title="Resource 4">
-                                                                                        Resource 4
-                                                                                    </span>
-                                                                                </span>
-                                                                            </div>
-                                                                        </li>
-                                                                    </ul>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="slds-col slds-grow-none">
-                                                <div class="slds-form-element">
-                                                    <label class="slds-form-element__label" for="combobox-id-93">Operator</label>
-                                                    <div class="slds-form-element__control">
-                                                        <div class="slds-combobox_container">
-                                                            <div class="slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click" aria-expanded="false" aria-haspopup="listbox" role="combobox">
-                                                                <div class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_right" role="none">
-                                                                    <input class="slds-input slds-combobox__input" id="combobox-id-93" aria-controls="listbox-id-93" autocomplete="off" role="textbox" type="text" placeholder="Select an Option" readonly="" value="">
-                                                                    <span class="slds-icon_container slds-icon-utility-down slds-input__icon slds-input__icon_right">
-                                                                        <svg class="slds-icon slds-icon slds-icon_x-small slds-icon-text-default" aria-hidden="true">
-                                                                            <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#down"></use>
-                                                                        </svg>
-                                                                    </span>
-                                                                </div>
-                                                                <div id="listbox-id-93" class="slds-dropdown slds-dropdown_length-5 slds-dropdown_fluid" role="listbox">
-                                                                    <ul class="slds-listbox slds-listbox_vertical" role="presentation">
-                                                                        <li role="presentation" class="slds-listbox__item">
-                                                                            <div id="listbox-option-id-392" class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small" role="option">
-                                                                                <span class="slds-media__figure slds-listbox__option-icon"></span>
-                                                                                <span class="slds-media__body">
-                                                                                    <span class="slds-truncate" title="Equals">
-                                                                                        Equals
-                                                                                    </span>
-                                                                                </span>
-                                                                            </div>
-                                                                        </li>
-                                                                        <li role="presentation" class="slds-listbox__item">
-                                                                            <div id="listbox-option-id-393" class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small" role="option">
-                                                                                <span class="slds-media__figure slds-listbox__option-icon"></span>
-                                                                                <span class="slds-media__body">
-                                                                                    <span class="slds-truncate" title="Does Not Equal">
-                                                                                        Does Not Equal
-                                                                                    </span>
-                                                                                </span>
-                                                                            </div>
-                                                                        </li>
-                                                                        <li role="presentation" class="slds-listbox__item">
-                                                                            <div id="listbox-option-id-394" class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small" role="option">
-                                                                                <span class="slds-media__figure slds-listbox__option-icon"></span>
-                                                                                <span class="slds-media__body">
-                                                                                    <span class="slds-truncate" title="Greater Than">
-                                                                                        Greater Than
-                                                                                    </span>
-                                                                                </span>
-                                                                            </div>
-                                                                        </li>
-                                                                        <li role="presentation" class="slds-listbox__item">
-                                                                            <div id="listbox-option-id-395" class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small" role="option">
-                                                                                <span class="slds-media__figure slds-listbox__option-icon"></span>
-                                                                                <span class="slds-media__body">
-                                                                                    <span class="slds-truncate" title="Less Than">
-                                                                                        Less Than
-                                                                                    </span>
-                                                                                </span>
-                                                                            </div>
-                                                                        </li>
-                                                                    </ul>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="slds-col">
-                                                <div class="slds-form-element">
-                                                    <label class="slds-form-element__label" for="text-input-id-35">Value</label>
-                                                    <div class="slds-form-element__control">
-                                                        <input id="text-input-id-35" class="slds-input" type="text" value="">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="slds-col slds-grow-none">
-                                                <div class="slds-form-element"><span class="slds-form-element__label">&nbsp;</span>
-                                                    <div class="slds-form-element__control">
-                                                        <button class="slds-button slds-button_icon slds-button_icon-border-filled" title="Delete Condition 1 of Condition Group 1">
-                                                            <svg class="slds-button__icon" aria-hidden="true">
-                                                                <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#delete"></use>
-                                                            </svg>
-                                                            <span class="slds-assistive-text">
-                                                                Delete Condition 1 of Condition Group 1
-                                                            </span>
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </fieldset>
-                                </li>
-                            </ul>
-                            <div class="slds-expression__buttons">
-                                <button class="slds-button slds-button_neutral">
-                                    <svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
-                                        <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#add"></use>
-                                    </svg>Add Condition
-                                </button>
-                            </div>
-                        </fieldset>
-                    </li>
-                </ul>
-                <div class="slds-expression__buttons">
-                    <button class="slds-button slds-button_neutral">
-                        <svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
-                            <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#add"></use>
-                        </svg>Add Group
-                    </button>
-                </div>
-            </div>               
-        </div>
+    	<form name="advSearch" method="post" action="index.php" onSubmit="document.basicSearch.searchtype.searchlaunched='advance';return callSearch('Advanced');">
+	        <div class="slds-col">
+	            <div class="slds-expression">
+	                <h2 class="slds-expression__title">{$APP.LBL_SEARCH}</h2>
+	                <ul>
+	                    <li class="slds-expression__group">
+	                        <fieldset>
+	                            <legend class="slds-expression__legend slds-expression__legend_group">
+	                                <span>AND</span>
+	                                <span class="slds-assistive-text">Condition Group 1</span>
+	                            </legend>
+	                            <div class="slds-expression__options">
+	                                <div class="slds-form-element">
+	                                    <label class="slds-form-element__label" for="combobox-id-91">Take Action When</label>
+	                                    <div class="slds-form-element__control">
+	                                        <div class="slds-combobox_container">
+	                                            <div class="slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click" aria-expanded="false" aria-haspopup="listbox" role="combobox" id="combobox-1">
+	                                                <div class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_right" role="none">
+	                                                    <input class="slds-input slds-combobox__input slds-combobox__input-value" id="combobox-id-91" aria-controls="listbox-id-91" autocomplete="off" role="textbox" type="text" placeholder="Select an Option" readonly="" value="Any Condition Is Met in This Group" onfocus="document.getElementById('combobox-1').classList.add('slds-is-open');" onblur="document.getElementById('combobox-1').classList.remove('slds-is-open');">
+	                                                    <span class="slds-icon_container slds-icon-utility-down slds-input__icon slds-input__icon_right">
+	                                                        <svg class="slds-icon slds-icon slds-icon_x-small slds-icon-text-default" aria-hidden="true">
+	                                                            <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#down"></use>
+	                                                        </svg>
+	                                                    </span>
+	                                                </div>
+	                                                <div id="listbox-id-91" class="slds-dropdown slds-dropdown_length-5 slds-dropdown_fluid" role="listbox">
+	                                                    <ul class="slds-listbox slds-listbox_vertical" role="presentation">
+	                                                        <li role="presentation" class="slds-listbox__item">
+	                                                            <div id="listbox-option-id-383" class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small" role="option">
+	                                                                <span class="slds-media__figure slds-listbox__option-icon"></span>
+	                                                                <span class="slds-media__body">
+	                                                                    <span class="slds-truncate" title="All Conditions Are Met for This Group">
+	                                                                        All Conditions Are Met for This Group
+	                                                                    </span>
+	                                                                </span>
+	                                                            </div>
+	                                                        </li>
+	                                                        <li role="presentation" class="slds-listbox__item">
+	                                                            <div aria-selected="true" id="listbox-option-id-384" class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small slds-is-selected slds-has-focus" role="option">
+	                                                                <span class="slds-media__figure slds-listbox__option-icon">
+	                                                                    <span class="slds-icon_container slds-icon-utility-check slds-current-color">
+	                                                                        <svg class="slds-icon slds-icon_x-small" aria-hidden="true">
+	                                                                            <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#check"></use>
+	                                                                        </svg>
+	                                                                    </span>
+	                                                                </span>
+	                                                                <span class="slds-media__body">
+	                                                                    <span class="slds-truncate" title="Any Condition Is Met for This Group">
+	                                                                        <span class="slds-assistive-text">
+	                                                                            Current Selection:
+	                                                                        </span>
+	                                                                        Any Condition Is Met for This Group
+	                                                                    </span>
+	                                                                </span>
+	                                                            </div>
+	                                                        </li>
+	                                                        <li role="presentation" class="slds-listbox__item">
+	                                                            <div id="listbox-option-id-385" class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small" role="option">
+	                                                                <span class="slds-media__figure slds-listbox__option-icon"></span>
+	                                                                <span class="slds-media__body">
+	                                                                    <span class="slds-truncate" title="Custom Logic Is Met for This Group">
+	                                                                        Custom Logic Is Met for This Group
+	                                                                    </span>
+	                                                                </span>
+	                                                            </div>
+	                                                        </li>
+	                                                        <li role="presentation" class="slds-listbox__item">
+	                                                            <div id="listbox-option-id-386" class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small" role="option">
+	                                                                <span class="slds-media__figure slds-listbox__option-icon"></span>
+	                                                                <span class="slds-media__body">
+	                                                                    <span class="slds-truncate" title="Always (No Criteria)">
+	                                                                        Always (No Criteria)
+	                                                                    </span>
+	                                                                </span>
+	                                                            </div>
+	                                                        </li>
+	                                                        <li role="presentation" class="slds-listbox__item">
+	                                                            <div id="listbox-option-id-387" class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small" role="option">
+	                                                                <span class="slds-media__figure slds-listbox__option-icon"></span>
+	                                                                <span class="slds-media__body">
+	                                                                    <span class="slds-truncate" title="Formula Evaluates To True">
+	                                                                        Formula Evaluates To True
+	                                                                    </span>
+	                                                                </span>
+	                                                            </div>
+	                                                        </li>
+	                                                    </ul>
+	                                                </div>
+	                                            </div>
+	                                        </div>
+	                                    </div>
+	                                </div>
+	                            </div>
+	                            <ul>
+	                                <li class="slds-expression__row slds-expression__row_group">
+	                                    <fieldset>
+	                                        <legend class="slds-expression__legend">
+	                                            <span class="slds-assistive-text">Condition 1 of Condition Group 1</span>
+	                                        </legend>
+	                                        <div class="slds-grid slds-gutters_xx-small">
+	                                            <div class="slds-col">
+	                                                <div class="slds-form-element">
+	                                                    <label class="slds-form-element__label" for="combobox-id-92">Resource</label>
+	                                                    <div class="slds-form-element__control">
+	                                                        <div class="slds-combobox_container">
+	                                                            <div class="slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click" aria-expanded="false" aria-haspopup="listbox" role="combobox">
+	                                                                <div class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_right" role="none">
+	                                                                    <input class="slds-input slds-combobox__input slds-combobox__input-value" id="combobox-id-92" aria-controls="listbox-id-92" autocomplete="off" role="textbox" type="text" placeholder="Select an Option" readonly="" value="Resource 1">
+	                                                                    <span class="slds-icon_container slds-icon-utility-down slds-input__icon slds-input__icon_right">
+	                                                                        <svg class="slds-icon slds-icon slds-icon_x-small slds-icon-text-default" aria-hidden="true">
+	                                                                            <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#down"></use>
+	                                                                        </svg>
+	                                                                    </span>
+	                                                                </div>
+	                                                                <div id="listbox-id-92" class="slds-dropdown slds-dropdown_length-5 slds-dropdown_fluid" role="listbox">
+	                                                                    <ul class="slds-listbox slds-listbox_vertical" role="presentation">
+	                                                                        <li role="presentation" class="slds-listbox__item">
+	                                                                            <div aria-selected="true" id="listbox-option-id-388" class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small slds-is-selected slds-has-focus" role="option">
+	                                                                                <span class="slds-media__figure slds-listbox__option-icon">
+	                                                                                    <span class="slds-icon_container slds-icon-utility-check slds-current-color">
+	                                                                                        <svg class="slds-icon slds-icon_x-small" aria-hidden="true">
+	                                                                                            <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#check"></use>
+	                                                                                        </svg>
+	                                                                                    </span>
+	                                                                                </span>
+	                                                                                <span class="slds-media__body">
+	                                                                                    <span class="slds-truncate" title="Resource 1">
+	                                                                                        <span class="slds-assistive-text">
+	                                                                                            Current Selection:
+	                                                                                        </span>
+	                                                                                        Resource 1
+	                                                                                    </span>
+	                                                                                </span>
+	                                                                            </div>
+	                                                                        </li>
+	                                                                        <li role="presentation" class="slds-listbox__item">
+	                                                                            <div id="listbox-option-id-389" class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small" role="option">
+	                                                                                <span class="slds-media__figure slds-listbox__option-icon"></span>
+	                                                                                <span class="slds-media__body">
+	                                                                                    <span class="slds-truncate" title="Resource 2">
+	                                                                                        Resource 2
+	                                                                                    </span>
+	                                                                                </span>
+	                                                                            </div>
+	                                                                        </li>
+	                                                                        <li role="presentation" class="slds-listbox__item">
+	                                                                            <div id="listbox-option-id-390" class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small" role="option">
+	                                                                                <span class="slds-media__figure slds-listbox__option-icon"></span>
+	                                                                                <span class="slds-media__body">
+	                                                                                    <span class="slds-truncate" title="Resource 3">
+	                                                                                        Resource 3
+	                                                                                    </span>
+	                                                                                </span>
+	                                                                            </div>
+	                                                                        </li>
+	                                                                        <li role="presentation" class="slds-listbox__item">
+	                                                                            <div id="listbox-option-id-391" class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small" role="option">
+	                                                                                <span class="slds-media__figure slds-listbox__option-icon"></span>
+	                                                                                <span class="slds-media__body">
+	                                                                                    <span class="slds-truncate" title="Resource 4">
+	                                                                                        Resource 4
+	                                                                                    </span>
+	                                                                                </span>
+	                                                                            </div>
+	                                                                        </li>
+	                                                                    </ul>
+	                                                                </div>
+	                                                            </div>
+	                                                        </div>
+	                                                    </div>
+	                                                </div>
+	                                            </div>
+	                                            <div class="slds-col slds-grow-none">
+	                                                <div class="slds-form-element">
+	                                                    <label class="slds-form-element__label" for="combobox-id-93">Operator</label>
+	                                                    <div class="slds-form-element__control">
+	                                                        <div class="slds-combobox_container">
+	                                                            <div class="slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click" aria-expanded="false" aria-haspopup="listbox" role="combobox">
+	                                                                <div class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_right" role="none">
+	                                                                    <input class="slds-input slds-combobox__input" id="combobox-id-93" aria-controls="listbox-id-93" autocomplete="off" role="textbox" type="text" placeholder="Select an Option" readonly="" value="">
+	                                                                    <span class="slds-icon_container slds-icon-utility-down slds-input__icon slds-input__icon_right">
+	                                                                        <svg class="slds-icon slds-icon slds-icon_x-small slds-icon-text-default" aria-hidden="true">
+	                                                                            <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#down"></use>
+	                                                                        </svg>
+	                                                                    </span>
+	                                                                </div>
+	                                                                <div id="listbox-id-93" class="slds-dropdown slds-dropdown_length-5 slds-dropdown_fluid" role="listbox">
+	                                                                    <ul class="slds-listbox slds-listbox_vertical" role="presentation">
+	                                                                        <li role="presentation" class="slds-listbox__item">
+	                                                                            <div id="listbox-option-id-392" class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small" role="option">
+	                                                                                <span class="slds-media__figure slds-listbox__option-icon"></span>
+	                                                                                <span class="slds-media__body">
+	                                                                                    <span class="slds-truncate" title="Equals">
+	                                                                                        Equals
+	                                                                                    </span>
+	                                                                                </span>
+	                                                                            </div>
+	                                                                        </li>
+	                                                                        <li role="presentation" class="slds-listbox__item">
+	                                                                            <div id="listbox-option-id-393" class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small" role="option">
+	                                                                                <span class="slds-media__figure slds-listbox__option-icon"></span>
+	                                                                                <span class="slds-media__body">
+	                                                                                    <span class="slds-truncate" title="Does Not Equal">
+	                                                                                        Does Not Equal
+	                                                                                    </span>
+	                                                                                </span>
+	                                                                            </div>
+	                                                                        </li>
+	                                                                        <li role="presentation" class="slds-listbox__item">
+	                                                                            <div id="listbox-option-id-394" class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small" role="option">
+	                                                                                <span class="slds-media__figure slds-listbox__option-icon"></span>
+	                                                                                <span class="slds-media__body">
+	                                                                                    <span class="slds-truncate" title="Greater Than">
+	                                                                                        Greater Than
+	                                                                                    </span>
+	                                                                                </span>
+	                                                                            </div>
+	                                                                        </li>
+	                                                                        <li role="presentation" class="slds-listbox__item">
+	                                                                            <div id="listbox-option-id-395" class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small" role="option">
+	                                                                                <span class="slds-media__figure slds-listbox__option-icon"></span>
+	                                                                                <span class="slds-media__body">
+	                                                                                    <span class="slds-truncate" title="Less Than">
+	                                                                                        Less Than
+	                                                                                    </span>
+	                                                                                </span>
+	                                                                            </div>
+	                                                                        </li>
+	                                                                    </ul>
+	                                                                </div>
+	                                                            </div>
+	                                                        </div>
+	                                                    </div>
+	                                                </div>
+	                                            </div>
+	                                            <div class="slds-col">
+	                                                <div class="slds-form-element">
+	                                                    <label class="slds-form-element__label" for="text-input-id-35">Value</label>
+	                                                    <div class="slds-form-element__control">
+	                                                        <input id="text-input-id-35" class="slds-input" type="text" value="">
+	                                                    </div>
+	                                                </div>
+	                                            </div>
+	                                            <div class="slds-col slds-grow-none">
+	                                                <div class="slds-form-element"><span class="slds-form-element__label">&nbsp;</span>
+	                                                    <div class="slds-form-element__control">
+	                                                        <button class="slds-button slds-button_icon slds-button_icon-border-filled" title="Delete Condition 1 of Condition Group 1">
+	                                                            <svg class="slds-button__icon" aria-hidden="true">
+	                                                                <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#delete"></use>
+	                                                            </svg>
+	                                                            <span class="slds-assistive-text">
+	                                                                Delete Condition 1 of Condition Group 1
+	                                                            </span>
+	                                                        </button>
+	                                                    </div>
+	                                                </div>
+	                                            </div>
+	                                        </div>
+	                                    </fieldset>
+	                                </li>
+	                            </ul>
+	                            <div class="slds-expression__buttons">
+	                                <button class="slds-button slds-button_neutral">
+	                                    <svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
+	                                        <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#add"></use>
+	                                    </svg>Add Condition
+	                                </button>
+	                            </div>
+	                        </fieldset>
+	                    </li>
+	                </ul>
+	                <div class="slds-expression__buttons">
+	                    <button class="slds-button slds-button_neutral">
+	                        <svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
+	                            <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#add"></use>
+	                        </svg>Add Group
+	                    </button>
+	                </div>
+	            </div>               
+	        </div>
+    	</form>
     </div>
     <!-- // Advanced search row -->
 </div>
