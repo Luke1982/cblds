@@ -5359,7 +5359,8 @@ AutocompleteRelation.prototype.MinCharsToSearch = function () {
 		this.curSelIndex = this.getCurSelIndex(),
 		this.fallBackIndex = this.getCurSelIndex(),
 		this.onSelect = typeof params.onSelect == "function" ? params.onSelect : false,
-		this._val = this.optionNodes[this.curSelIndex].getAttribute("data-value");
+		this._val = this.optionNodes[this.curSelIndex].getAttribute("data-value"),
+		this.parentForm = _findUp(this.input, "$FORM");
 
 		/* Instance listeners */
 		_on(el, "mousedown", this.handleClick, this);
@@ -5367,6 +5368,10 @@ AutocompleteRelation.prototype.MinCharsToSearch = function () {
 		_on(this.input, "focus", this.trigger, this);
 		_on(this.input, "keyup", this.trigger, this);
 		_on(this.input, "blur", this.close, this);
+
+		if (this.parentForm !== undefined) {
+			_on(this.parentForm, "keydown", this.preventFormSubmit, this);
+		}
 	}
 
 	ldsCombobox.prototype = {
@@ -5383,6 +5388,20 @@ AutocompleteRelation.prototype.MinCharsToSearch = function () {
 				this.open();
 			} else {
 				this.handleKeys(e);
+			}
+		},
+
+		/*
+		 * Method: 'preventFormSubmit'
+		 * Prevents a parent form from submitting when enter key is pressed to select an option.
+		 * This method is only invoked when this input is a child of a form and the options
+		 * box is open.
+		 *
+		 * @param: Event object
+		 */
+		preventFormSubmit: function(e) {
+			if (_getKey(e.keyCode) === "enter" && this.active) {
+				e.preventDefault();
 			}
 		},
 
@@ -5620,6 +5639,7 @@ AutocompleteRelation.prototype.MinCharsToSearch = function () {
 		while (element = element.parentElement) {
 			if ( (searchterm.charAt(0) === "#" && element.id === searchterm.slice(1) )
 				|| ( searchterm.charAt(0) === "." && element.classList.contains(searchterm.slice(1) ) 
+				|| ( searchterm.charAt(0) === "$" && element.tagName === searchterm.slice(1) ) 
 				|| ( element.hasAttribute(searchterm) ))) {
 				return element;
 			} else if (element == document.body) {
