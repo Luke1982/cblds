@@ -209,15 +209,12 @@
 	        <div class="slds-col">
 	            <div class="slds-expression">
 	                <h2 class="slds-expression__title">{$APP.LBL_SEARCH}</h2>
-	                <ul>
+	                <ul id="cbds-adv-cond__groups">
 	                    <li class="slds-expression__group">
 	                        <fieldset>
 	                            <ul>
 	                                <li class="slds-expression__row slds-expression__row_group">
 	                                    <fieldset>
-	                                        <legend class="slds-expression__legend">
-	                                            <span class="slds-assistive-text">Condition 1 of Condition Group 1</span>
-	                                        </legend>
 	                                        <div class="slds-grid slds-gutters_xx-small">
 	                                            <div class="slds-col">
 	                                                <div class="slds-form-element">

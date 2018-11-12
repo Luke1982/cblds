@@ -291,7 +291,7 @@ function add_grouping_criteria(grouping_criteria) {ldelim}
 		{if isset($CRITERIA_GROUPS) && $CRITERIA_GROUPS|@count > 0}
 			add_grouping_criteria({json_encode($CRITERIA_GROUPS)});
 		{else}
-			addNewConditionGroup('adv_filter_div');
+			addNewConditionGroup('cbds-adv-cond__groups');
 		{/if}
 	{/if}
 </script>
