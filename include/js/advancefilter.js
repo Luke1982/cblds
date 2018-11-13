@@ -350,7 +350,8 @@ function vt_getElementsByName(tagName, elementName) {
 		this.groups = [],
 		this.rowCnt = 0,
 		this.grpCnt = 1,
-		this.conds  = {};
+		this.conds  = {},
+		this.grpCont= document.getElementById("cbds-adv-cond__groups");
 
 		var intialConds = this.getInitConditions()
 		for (var i = 0; i < intialConds.length; i++) {
@@ -493,9 +494,7 @@ function vt_getElementsByName(tagName, elementName) {
 		 * @param  : event object
 		 */
 		addGroup: function(e) {
-			var groupHold  = document.getElementById("cbds-adv-cond__groups"),
-				firstGroup = groupHold.children[0],
-				newGroup   = firstGroup.cloneNode(true),
+			var newGroup   = this.cloneFirstGroup(),
 				firstCond  = newGroup.getElementsByClassName("slds-expression__row")[0],
 				newCond    = firstCond.cloneNode(true);
 
@@ -508,8 +507,19 @@ function vt_getElementsByName(tagName, elementName) {
 			newGroup.getElementsByTagName("UL")[0].appendChild(newCond);
 			this.initCondRow(newCond);
 
-			groupHold.appendChild(newGroup);
+			this.grpCont.appendChild(newGroup);
 		},
+
+		/*
+		 * Method: 'cloneFirstGroup'
+		 * Get a clone of the first group div
+		 *
+		 * @return  : cloned group node
+		 */
+		cloneFirstGroup: function() {
+			var firstGroup = this.grpCont.children[0];
+			return firstGroup.cloneNode(true);
+		},		
 
 		/*
 		 * Method: 'removeCond'
