@@ -519,6 +519,9 @@ function vt_getElementsByName(tagName, elementName) {
 			this.insertCond(newCond, this.grpCnt);
 			this.initCondRow(newCond);
 
+			if (this.getCondGroupNo(newGroup) != 1)
+				this.enCapability(newGroup, "group-controls");
+
 			this.grpCont.appendChild(newGroup);
 		},
 
@@ -601,20 +604,24 @@ function vt_getElementsByName(tagName, elementName) {
 		 * Method: 'enCapability'
 		 * Enable a specific row capability, like delete, or choose glue
 		 *
-		 * @param  : condition object
+		 * @param  : condition object / group node
 		 * @param  : capability name
 		 */
-		enCapability: function(cond, cap) {
+		enCapability: function(obj, cap) {
 			switch (cap) {
 				case "delete":
-					this.enElement(cond, "adv-filt-row__delete");
+					this.enElement(obj, "adv-filt-row__delete");
 					break;
 				case "date":
-					this.enElement(cond, "adv-filt-row__date-but");
-					if (!cond.datePicker) this.enDate(cond);
+					this.enElement(obj, "adv-filt-row__date-but");
+					if (!obj.datePicker) this.enDate(obj);
 					break;
 				case "glue":
-					this.enElement(cond, "adv-filt-row__glue");
+					this.enElement(obj, "adv-filt-row__glue");
+					break;
+				case "group-controls":
+					this.showEl(obj.getElementsByClassName("adv-filt-group-controls")[0]);
+					break;
 				default:
 					return false;
 			}
@@ -647,6 +654,17 @@ function vt_getElementsByName(tagName, elementName) {
 		enElement: function(cond, className) {
 			var el = cond.el.getElementsByClassName(className)[0];
 			el.removeAttribute("disabled");
+		},
+
+		/*
+		 * Method: 'showEl'
+		 * Show an element
+		 *
+		 * @param  : node
+		 */
+		showEl: function(node) {
+			node.classList.remove("slds-hide");
+			node.classList.add("slds-show");
 		},
 
 		/*

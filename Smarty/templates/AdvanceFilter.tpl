@@ -298,8 +298,18 @@ function add_grouping_criteria(grouping_criteria) {ldelim}
     <li class="slds-expression__group" data-group-no="1" data-rowcount="1">
         <fieldset>
             <ul>
-                <li class="slds-expression__row slds-expression__row_group slds-p-horizontal_none" data-row-no="1">
+                <li class="slds-expression__row slds-expression__row_group slds-p-horizontal_none slds-m-top_none" data-row-no="1">
                     <fieldset>
+                    	<div class="slds-grid slds-gutters_xx-small adv-filt-group-controls slds-hide">
+                    		<div class="slds-col">
+                    			<button type="button" class="slds-button slds-button_icon slds-button_icon-border slds-float_right" title="{$APP.LBL_DELETE_GROUP}">
+                    				<svg class="slds-button__icon" aria-hidden="true">
+                    					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
+                    				</svg>
+                    				<span class="slds-assistive-text">{$APP.LBL_DELETE_GROUP}</span>
+                    			</button>                    			
+                    		</div>
+                    	</div>
                         <div class="slds-grid slds-gutters_xx-small">
                             <div class="slds-col slds-size_1-of-12">
                                 <div class="slds-form-element">
