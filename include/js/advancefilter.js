@@ -654,8 +654,9 @@ function vt_getElementsByName(tagName, elementName) {
 	function cbAdvancedFilter(el) {
 		/* Public attributes */
 		this.el     = el,
-		this.groups = document.getElementsByClassName("slds-expression__group"),
+		this.groups = [],
 		this.rowCnt = 0,
+		this.grpCnt = 1,
 		this.conds  = {};
 
 		var intialConds = this.getInitConditions()
@@ -666,6 +667,12 @@ function vt_getElementsByName(tagName, elementName) {
 
 		/* Global listeners */
 		_on(window, "click", this.handleClicks, this); // Please don't bind clicks to elements
+
+		/* Startup */
+		var curGroups = document.getElementsByClassName("slds-expression__group");
+		for (var i = curGroups.length - 1; i >= 0; i--) {
+			this.groups.push(curGroups[i]);
+		}
 
 		/* TEST area */
 		// console.log(this);
@@ -731,13 +738,18 @@ function vt_getElementsByName(tagName, elementName) {
 		 * @return : group node
 		 */
 		getCondGroupByNo: function(no) {
-			for (var i = this.groups.length - 1; i >= 0; i--) {
-				if (parseInt(this.groups[i].getAttribute("data-group-no")) == no) {
-					return this.groups[i];
-				} else {
-					return false;
-				}
+			var groups = this.groups,
+				retGroup = false;
+
+			for (var i = groups.length - 1; i >= 0; i--) {
+				(function(_i){
+					if (parseInt(groups[_i].getAttribute("data-group-no")) == no) {
+						retGroup = groups[_i];
+					}
+				})(i);
 			}
+
+			return retGroup;
 		},
 
 		/*
@@ -754,6 +766,10 @@ function vt_getElementsByName(tagName, elementName) {
 					break;
 				case "delete-cond":
 					this.removeCond(e);
+					break;
+				case "add-group":
+					this.addGroup(e);
+					break;
 				default:
 					return false;
 			}
@@ -767,7 +783,7 @@ function vt_getElementsByName(tagName, elementName) {
 		 */
 		addCond: function(e) {
 			var groupNo   = this.getCondGroupNo(e.target),
-				group     = this.getCondGroupByNo(groupNo)
+				group     = this.getCondGroupByNo(groupNo),
 				groupList = group.getElementsByTagName("UL")[0],
 				firstCond = group.getElementsByClassName("slds-expression__row")[0],
 				newCond   = firstCond.cloneNode(true),
@@ -775,6 +791,31 @@ function vt_getElementsByName(tagName, elementName) {
 
 			groupList.appendChild(newCond);
 			this.initCondRow(newCond);
+		},
+
+		/*
+		 * Method: 'addGroup'
+		 * Add a condition group
+		 *
+		 * @param  : event object
+		 */
+		addGroup: function(e) {
+			var groupHold  = document.getElementById("cbds-adv-cond__groups"),
+				firstGroup = groupHold.children[0],
+				newGroup   = firstGroup.cloneNode(true),
+				firstCond  = newGroup.getElementsByClassName("slds-expression__row")[0],
+				newCond    = firstCond.cloneNode(true);
+
+			this.groups.push(newGroup);
+			this.grpCnt++;
+			newGroup.setAttribute("data-group-no", this.grpCnt);
+			newGroup.setAttribute("data-rowcount", 1);
+
+			newGroup.getElementsByTagName("UL")[0].innerHTML = "";
+			newGroup.getElementsByTagName("UL")[0].appendChild(newCond);
+			this.initCondRow(newCond);
+
+			groupHold.appendChild(newGroup);
 		},
 
 		/*
@@ -988,7 +1029,7 @@ function vt_getElementsByName(tagName, elementName) {
 		isCondFirst: function(cond) {
 			var parentGroup = _findUp(cond.el, ".slds-expression__group"),
 				rows = parentGroup.getElementsByClassName("slds-expression__row");
-			return cond.el === rows[0] ? true : false; 
+			return cond.el.isSameNode(rows[0]) ? true : false; 
 		},
 
 	}
