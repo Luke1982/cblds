@@ -488,23 +488,35 @@ function vt_getElementsByName(tagName, elementName) {
 		},
 
 		/*
+		 * Method: 'insertCond'
+		 * Insert a condition div into a group div
+		 *
+		 * @param  : condition node
+		 * @param  : group no.
+		 */
+		insertCond: function(condNode, groupNo) {
+			var group = this.getCondGroupByNo(groupNo);
+			group.getElementsByTagName("UL")[0].appendChild(condNode);
+		},
+
+		/*
 		 * Method: 'addGroup'
 		 * Add a condition group
 		 *
 		 * @param  : event object
 		 */
 		addGroup: function(e) {
-			var newGroup   = this.cloneFirstGroup(),
-				firstCond  = newGroup.getElementsByClassName("slds-expression__row")[0],
-				newCond    = firstCond.cloneNode(true);
+			var newGroup = this.cloneFirstGroup(),
+				newCond  = newGroup.getElementsByClassName("slds-expression__row")[0].cloneNode(true);
+
+			newGroup = this.clearGroup(newGroup);
 
 			this.groups.push(newGroup);
 			this.grpCnt++;
 			newGroup.setAttribute("data-group-no", this.grpCnt);
 			newGroup.setAttribute("data-rowcount", 1);
 
-			newGroup.getElementsByTagName("UL")[0].innerHTML = "";
-			newGroup.getElementsByTagName("UL")[0].appendChild(newCond);
+			this.insertCond(newCond, this.grpCnt);
 			this.initCondRow(newCond);
 
 			this.grpCont.appendChild(newGroup);
@@ -519,7 +531,18 @@ function vt_getElementsByName(tagName, elementName) {
 		cloneFirstGroup: function() {
 			var firstGroup = this.grpCont.children[0];
 			return firstGroup.cloneNode(true);
-		},		
+		},
+
+		/*
+		 * Method: 'clearGroup'
+		 * Clear the group of all 'old' nodes
+		 *
+		 * @return  : empty group node
+		 */
+		clearGroup: function(groupNode) {
+			groupNode.getElementsByTagName("UL")[0].innerHTML = "";
+			return groupNode;
+		},
 
 		/*
 		 * Method: 'removeCond'
