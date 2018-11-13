@@ -75,7 +75,7 @@ function addConditionRow(groupIndex) {ldelim}
 	{rdelim}
 
 	var columnIndex = advft_column_index_count+1;
-	var nextNode = document.getElementById('groupfooter_'+groupIndex);
+	var nextNode = document.getElementById('conditiongroup_'+groupIndex);
 
 	var newNode = document.createElement('tr');
 	newNodeId = 'conditioncolumn_'+groupIndex+'_'+columnIndex;
@@ -201,10 +201,20 @@ function addConditionGroup(parentNodeId) {ldelim}
 	var groupIndex = advft_group_index_count+1;
 	var parentNode = document.getElementById(parentNodeId);
 
-	var newNode = document.createElement('div');
+	var newNode = document.createElement('li');
 	newNodeId = 'conditiongroup_'+groupIndex;
   	newNode.setAttribute('id',newNodeId);
   	newNode.setAttribute('name','conditionGroup');
+  	newNode.className = "slds-expression__group";
+
+  	var condGroupFieldSet = document.createElement("fieldset");
+  	condGroupFieldSet.id = "conditiongroup_" + groupIndex;
+
+  	var condGroupList = document.createElement("ul");
+  	condGroupList.id = "conditiongrouplist_" + groupIndex;
+
+  	condGroupFieldSet.appendChild(condGroupList);
+  	newNode.appendChild(condGroupFieldSet);
 
   	newNode.innerHTML = "<table class='small crmTable' border='0' cellpadding='5' cellspacing='1' width='100%' valign='top' id='conditiongrouptable_"+groupIndex+"'>"+
 			"<tr id='groupheader_"+groupIndex+"'>"+
@@ -222,6 +232,7 @@ function addConditionGroup(parentNodeId) {ldelim}
 			"<tr><td align='center' id='groupconditionglue_"+groupIndex+"'>"+
 			"</td></tr>"+
 		"</table>";
+
 
 	parentNode.appendChild(newNode);
 
@@ -274,8 +285,208 @@ function add_grouping_criteria(grouping_criteria) {ldelim}
 	}
 {rdelim}
 </script>
+{* <pre>{$COLUMNS_BLOCK|print_r}</pre> *}
+{* Get selected value to start out the dropdown with *}
+{foreach from=$COLUMNS_BLOCK item=BLOCK}
+	{foreach from=$BLOCK item=FIELD}
+		{if $FIELD.selected}
+			{$SELECTEDFIELD = $FIELD}
+		{/if}
+	{/foreach}
+{/foreach}
+<ul id="cbds-adv-cond__groups">
+    <li class="slds-expression__group" data-group-no="1" data-rowcount="1">
+        <fieldset>
+            <ul>
+                <li class="slds-expression__row slds-expression__row_group slds-p-horizontal_none" data-row-no="1">
+                    <fieldset>
+                        <div class="slds-grid slds-gutters_xx-small">
+                            <div class="slds-col slds-size_1-of-12">
+                                <div class="slds-form-element">
+                                    <label class="slds-form-element__label">Glue</label>
+                                    <div class="slds-form-element__control">
+                                        <div class="slds-combobox_container">
+                                            <div class="slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click" aria-expanded="false" aria-haspopup="listbox" role="combobox">
+                                                <div class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_right" role="none">
+                                                    <input class="slds-input slds-combobox__input slds-combobox__input-value adv-filt-row__glue" autocomplete="off" role="textbox" type="text" readonly="" disabled="" value="{$APP.LBL_CRITERIA_AND}" data-valueholder="nextsibling" />
+                                                    <input type="hidden" value="{$APP.LBL_CRITERIA_AND}" />
+                                                    <span class="slds-icon_container slds-icon-utility-down slds-input__icon slds-input__icon_right">
+                                                        <svg class="slds-icon slds-icon slds-icon_x-small slds-icon-text-default" aria-hidden="true">
+                                                            <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#down"></use>
+                                                        </svg>
+                                                    </span>
+                                                </div>
+                                                <div class="slds-dropdown slds-dropdown_length-2 slds-dropdown_fluid" role="listbox">
+                                                	<ul class="slds-listbox slds-listbox_vertical" role="group">
+                                                		<li role="presentation" class="slds-listbox__item" data-value="{$APP.LBL_CRITERIA_AND}">
+                                                			<div id="option1" class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small" role="option">
+                                                				<span class="slds-media__figure slds-listbox__option-icon"></span>
+                                                				<span class="slds-media__body">
+                                                					<span class="slds-truncate" title="{$APP.LBL_CRITERIA_AND}">{$APP.LBL_CRITERIA_AND}</span>
+                                                				</span>
+                                                			</div>
+                                                		</li>
+                                                		<li role="presentation" class="slds-listbox__item" data-value="{$APP.LBL_CRITERIA_OR}">
+                                                			<div id="option1" class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small" role="option">
+                                                				<span class="slds-media__figure slds-listbox__option-icon"></span>
+                                                				<span class="slds-media__body">
+                                                					<span class="slds-truncate" title="{$APP.LBL_CRITERIA_OR}">{$APP.LBL_CRITERIA_OR}</span>
+                                                				</span>
+                                                			</div>
+                                                		</li>
+                                                	</ul> 
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="slds-col">
+                                <div class="slds-form-element">
+                                    <label class="slds-form-element__label">{$APP.LBL_GENERAL_FIELDS}</label>
+                                    <div class="slds-form-element__control">
+                                        <div class="slds-combobox_container">
+                                            <div class="slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click adv-filt-field-sel" aria-expanded="false" aria-haspopup="listbox" role="combobox">
+                                                <div class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_right" role="none">
+                                                    <input class="slds-input slds-combobox__input slds-combobox__input-value" autocomplete="off" role="textbox" type="text" placeholder="{$SELECTEDFIELD.label}" readonly="" value="{$SELECTEDFIELD.label}" data-valueholder="nextsibling" />
+                                                    <input type="hidden" value="{$SELECTEDFIELD.value}" />
+                                                    <span class="slds-icon_container slds-icon-utility-down slds-input__icon slds-input__icon_right">
+                                                        <svg class="slds-icon slds-icon slds-icon_x-small slds-icon-text-default" aria-hidden="true">
+                                                            <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#down"></use>
+                                                        </svg>
+                                                    </span>
+                                                </div>
+                                                <div class="slds-dropdown slds-dropdown_length-4 slds-dropdown_fluid" role="listbox">
+                                                	{foreach from=$COLUMNS_BLOCK item='BLOCK' key='BLOCKLABEL'}
+                                                	<ul class="slds-listbox slds-listbox_vertical" role="group">
+                                                		<li role="presentation" class="slds-listbox__item">
+                                                			<div class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small" role="presentation">
+                                                				<h3 class="slds-text-title_caps" role="presentation">{$BLOCKLABEL}</h3>
+                                                			</div>
+                                                		</li>
+                                                		{foreach from=$BLOCK item='FIELD' key='FIELDLABEL'}
+                                                		<li role="presentation" class="slds-listbox__item" data-value="{$FIELD.value}">
+                                                			<div class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small" role="option">
+                                                				<span class="slds-media__figure slds-listbox__option-icon"></span>
+                                                				<span class="slds-media__body">
+                                                					<span class="slds-truncate" title="{$FIELD.label}">{$FIELD.label}</span>
+                                                				</span>
+                                                			</div>
+                                                		</li>
+                                                		{/foreach}
+                                                	</ul> 
+                                                	{/foreach}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="slds-col slds-grow-none">
+                                <div class="slds-form-element">
+                                    <label class="slds-form-element__label">Operator</label>
+                                    <div class="slds-form-element__control adv-filt-operator-wrapper">
+                                        <div class="slds-combobox_container">
+                                        	{* Filled by JS *}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="slds-col">
+                                <div class="slds-form-element">
+                                    <label class="slds-form-element__label">Value</label>
+                                    <div class="slds-form-element__control">
+                                        <input class="slds-input adv-filt-row__main-input" type="text" value="">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="slds-col slds-grow-none slds-size_1-of-12">
+                                <div class="slds-form-element">
+                                	<span class="slds-form-element__label">&nbsp;</span>
+                                    <div class="slds-form-element__control">
+                                        <button type="button" disabled="disabled" class="adv-filt-row__date-but slds-button slds-button_icon slds-button_icon-border-filled" title="{$APP.LBL_ACTION_DATE}" data-onclick="pick-date">
+                                            <svg class="slds-button__icon" aria-hidden="true">
+                                                <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#event"></use>
+                                            </svg>
+                                            <span class="slds-assistive-text">
+                                               {$APP.LBL_ACTION_DATE} 
+                                            </span>
+                                        </button>
+                                        <button type="button" disabled="disabled" class="slds-button slds-button_icon slds-button_icon-border-filled adv-filt-row__delete" title="{$APP.LBL_DELETE_BUTTON}" data-onclick="delete-cond">
+                                            <svg class="slds-button__icon" aria-hidden="true">
+                                                <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#delete"></use>
+                                            </svg>
+                                            <span class="slds-assistive-text">
+                                                {$APP.LBL_DELETE_BUTTON}
+                                            </span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </li>
+            </ul>
+            <div class="slds-expression__buttons">
+                <button type="button" class="slds-button slds-button_neutral" data-onclick="add-condition">
+                    <svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
+                        <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#add"></use>
+                    </svg>
+                    {$APP.LBL_NEW_CONDITION}
+                </button>
+            </div>
+        </fieldset>
+    </li>
+</ul>
+<div class="slds-expression__buttons">
+    <button type="button" class="slds-button slds-button_neutral" data-onclick="add-group">
+        <svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
+            <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#add"></use>
+        </svg>{'LBL_NEW_GROUP'|@getTranslatedString:$MODULE}
+    </button>
+</div>
 
-<div style="overflow:auto;margin-top: 30px;" id='adv_filter_div' name='adv_filter_div'>
+<div id="cbds-combo-oper-templ__box" style="display: none;">
+    <div class="slds-combobox_container">
+        <div class="slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click" aria-expanded="false" aria-haspopup="listbox" role="combobox">
+            <div class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_right" role="none">
+                <input class="slds-input slds-combobox__input" autocomplete="off" role="textbox" type="text" readonly="" value="" data-valueholder="nextsibling">
+                <input type="hidden" value="" />
+                <span class="slds-icon_container slds-icon-utility-down slds-input__icon slds-input__icon_right">
+                    <svg class="slds-icon slds-icon slds-icon_x-small slds-icon-text-default" aria-hidden="true">
+                        <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#down"></use>
+                    </svg>
+                </span>
+            </div>
+            <div class="slds-dropdown slds-dropdown_length-4 slds-dropdown_fluid" role="listbox">
+                <ul class="slds-listbox slds-listbox_vertical" role="presentation">
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="cbds-combo-oper-templ__item" style="display: none;">
+    <li role="presentation" class="slds-listbox__item">
+        <div class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small" role="option">
+            <span class="slds-media__figure slds-listbox__option-icon"></span>
+            <span class="slds-media__body">
+                <span class="slds-truncate" title="">
+                    
+                </span>
+            </span>
+        </div>
+    </li>	
+</div>
+
+<script>
+	window.addEventListener("load", function(){
+		var advancedFilter = document.getElementById("cbds-advanced-search");
+		window.AdvancedFilter = new cbAdvancedFilter(advancedFilter);
+	});
+</script>
+
+{* <div style="overflow:auto;margin-top: 30px;" id='adv_filter_div' name='adv_filter_div'>
 	<table class="small" border="0" cellpadding="5" cellspacing="0" width="100%">
 		<tr>
 			<td class="detailedViewHeader" align="left"><b>{'LBL_ADVANCED_FILTER'|@getTranslatedString:$MODULE}</b></td>
@@ -295,4 +506,4 @@ function add_grouping_criteria(grouping_criteria) {ldelim}
 		{/if}
 	{/if}
 </script>
-</div>
+</div>*}

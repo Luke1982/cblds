@@ -47,7 +47,7 @@
 </head>
 {include file='BrowserVariables.tpl'}
 {include file="Components.tpl"}
-<body leftmargin=0 topmargin=0 marginheight=0 marginwidth=0 class=small>
+<body leftmargin=0 topmargin=0 marginheight=0 marginwidth=0 class=small style="background-color: #b1d2dd;">
 	<a name="top"></a>
 	<!-- header -->
 	<script type="text/javascript" src="include/sw-precache/service-worker-registration.js"></script>

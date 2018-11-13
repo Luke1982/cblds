@@ -47,49 +47,192 @@ function trimfValues(value) {
 	return string_array[4];
 }
 
-function updatefOptions(sel, opSelName) {
-	var selObj = document.getElementById(opSelName);
-	var fieldtype = null;
-	var currOption = selObj.options[selObj.selectedIndex];
-	var currField = sel.options[sel.selectedIndex];
-	var nLoop = 0;
-	var nMaxVal = 0;
-	if (currField.value != null && currField.value.length != 0) {
-		fieldtype = trimfValues(currField.value);
-		var ops = typeofdata[fieldtype];
-		var off = 0;
-		if (ops != null) {
-			nMaxVal = selObj.length;
-			for (nLoop = 0; nLoop < nMaxVal; nLoop++) {
-				selObj.remove(0);
-			}
-			selObj.options[0] = new Option('None', '');
-			if (currField.value == '') {
-				selObj.options[0].selected = true;
-			}
-			off = 1;
-			for (var i = 0; i < ops.length; i++) {
-				var label = fLabels[ops[i]];
-				if (label == null) {
-					continue;
-				}
-				var option = new Option(fLabels[ops[i]], ops[i]);
-				selObj.options[i + off] = option;
-				if (currOption != null && currOption.value == option.value) {
-					option.selected = true;
-				}
-			}
-		}
-	} else {
-		nMaxVal = selObj.length;
-		for (nLoop = 0; nLoop < nMaxVal; nLoop++) {
-			selObj.remove(0);
-		}
-		selObj.options[0] = new Option('None', '');
-		if (currField.value == '') {
-			selObj.options[0].selected = true;
-		}
+// window.addEventListener("click", advFilterClicks); // Please stop adding event listeners to everything
+
+// function advFilterClicks(e) {
+// 	var onClick = e.target.getAttribute("data-onclick");
+
+// 	switch(onClick) {
+// 		case "add-condition":
+// 			advFiltAddCond(e);
+// 			break;
+// 		case "delete-cond":
+// 			advFiltRemoveCond(e);
+// 		case "add-group":
+// 			advFiltAddGroup(e);
+// 		default:
+// 			return true;
+// 	}
+// }
+
+function advFiltAddGroup(e) {
+	var groupsWrapper = document.getElementById("cbds-adv-cond__groups"),
+		newGroup = groupsWrapper.children[0].cloneNode(true),
+		firstRow = newGroup.getElementsByClassName("slds-expression__row_group")[0],
+		newRow = firstRow.cloneNode(true),
+		groupList = firstRow.parentElement,
+		newRow = advFiltInitRow(newRow);
+
+	groupList.innerHTML = "";
+	groupList.appendChild(newRow);
+
+	groupsWrapper.appendChild(newGroup);
+}
+
+function advFiltRemoveCond(e) {
+	var el = e.target;
+	while (el = el.parentElement) {
+		if (el.classList.contains("slds-expression__row_group") || el === document) break;
 	}
+	el.parentNode.removeChild(el);
+}
+
+function advFiltAddCond(e) {
+	var el = e.target;
+	while (el = el.parentElement) {
+		if (el.classList.contains("slds-expression__group") || el === document) break;
+	}
+	var firstRow = el.getElementsByClassName("slds-expression__row_group")[0],
+		groupNo = el.getAttribute("data-group-no"),
+		newRowNo = parseInt(el.getAttribute("data-rowcount")) + 1,
+		newRow = firstRow.cloneNode(true),
+		delButton = newRow.getElementsByClassName("adv-filt-row__delete")[0],
+		glueBox = newRow.getElementsByClassName("adv-filt-row__glue")[0],
+		combos = newRow.getElementsByClassName("slds-combobox");
+
+	el.setAttribute("data-rowcount", newRowNo);
+	delButton.removeAttribute("disabled");
+	glueBox.removeAttribute("disabled");
+	newRow.getElementsByClassName("adv-filt-row__main-input")[0].value = "";
+
+	var operatorWrapper = newRow.getElementsByClassName("adv-filt-operator-wrapper")[0];
+	operatorWrapper.id = "advancedfilter-group-" + groupNo + "-row-" + newRowNo + "-operator";
+
+	firstRow.parentNode.appendChild(newRow); // Do this BEFORE instantiating the combobox, of form submits on enter
+
+	for (var i = 0; i < combos.length; i++) {
+		var onSelect = false;
+		if (combos[i].id == "first-advfilt-combobox") {
+			combos[i].id = "";
+			combos[i].setAttribute("onchange", "updatefOptions(this, '" + groupNo + "', '" + newRowNo + "');");
+			onSelect = combos[i].onchange;
+		} else {
+			onSelect = false;
+		}
+		window.Comboboxes.push(new ldsCombobox(combos[i], {
+			"onSelect" : onSelect
+		}));
+	}
+}
+
+function updatefOptions(combobox, group, row) {
+	var newFieldType = combobox.optionNodes[combobox.curSelIndex].getAttribute("data-typeofdata"),
+		newOperations = typeofdata[newFieldType],
+		operatorWrapper = document.getElementById("advancedfilter-group-" + group + "-row-" + row + "-operator"),
+		comboboxTempl = document.getElementById("cbds-combo-oper-templ__box").firstElementChild,
+		itemTempl = document.getElementById("cbds-combo-oper-templ__item").firstElementChild,
+		newComboBox = comboboxTempl.cloneNode(true),
+		newComboBoxInput = newComboBox.getElementsByClassName("slds-combobox__input")[0].placeholder = alert_arr.STDFILTER,
+		row = combobox.el;
+
+	// Get parent row element
+	while (row = row.parentElement) {
+		if (row.classList.contains("slds-expression__row_group") || row === document) break;
+	}
+
+	for (var i = 0; i < newOperations.length; i++) {
+		var newListItem = itemTempl.cloneNode(true);
+			newListItemSpan = newListItem.getElementsByClassName("slds-truncate")[0];
+
+		newListItem.setAttribute("data-value", newOperations[i]);
+		newListItemSpan.setAttribute("title", fLabels[newOperations[i]]);
+		newListItemSpan.innerText = fLabels[newOperations[i]];
+
+		newComboBox.getElementsByClassName("slds-listbox")[0].appendChild(newListItem);
+	}
+
+	operatorWrapper.innerHTML = "";
+	operatorWrapper.appendChild(newComboBox);
+
+	var dateButt = row.getElementsByClassName("adv-filt-row__event-but")[0];
+	if (newFieldType == "D" || newFieldType == "DT") {
+		dateButt.removeAttribute("disabled");
+	} else {
+		dateButt.setAttribute("disabled", "disabled");
+	}
+
+	var dateFormat;
+	switch (window.userDateFormat) {
+		case "yyyy-mm-dd":
+			dateFormat = "%Y-%m-%d";
+			break;
+		case "dd-mm-yyyy":
+			dateFormat = "%d-%m-%Y";
+			break;
+		case "mm-dd-yyyy":
+			dateFormat = "%m-%d-%Y";
+			break;
+		default:
+			dateFormat = "%d-%m-%Y";
+	}
+	Calendar.setup ({
+		inputField : row.getElementsByClassName("adv-filt-row__main-input")[0],
+		ifFormat : dateFormat,
+		showsTime : false,
+		button : dateButt,
+		singleClick : true,
+		step : 1
+	});	
+
+	window.Comboboxes.push(new ldsCombobox(newComboBox, {
+		"onSelect" : false
+	}));
+	// var selObj = document.getElementById(opSelName);
+	// var fieldtype = null;
+	// var currOption = selObj.options[selObj.selectedIndex];
+	// var currField = sel.options[sel.selectedIndex];
+	// var nLoop = 0;
+	// var nMaxVal = 0;
+	// if (currField.value != null && currField.value.length != 0) {
+	// 	fieldtype = trimfValues(currField.value);
+	// 	var ops = typeofdata[fieldtype];
+	// 	var off = 0;
+	// 	if (ops != null) {
+	// 		nMaxVal = selObj.length;
+	// 		for (nLoop = 0; nLoop < nMaxVal; nLoop++) {
+	// 			selObj.remove(0);
+	// 		}
+	// 		selObj.options[0] = new Option('None', '');
+	// 		if (currField.value == '') {
+	// 			selObj.options[0].selected = true;
+	// 		}
+	// 		off = 1;
+	// 		for (var i = 0; i < ops.length; i++) {
+	// 			var label = fLabels[ops[i]];
+	// 			if (label == null) {
+	// 				continue;
+	// 			}
+	// 			var option = new Option(fLabels[ops[i]], ops[i]);
+	// 			selObj.options[i + off] = option;
+	// 			if (currOption != null && currOption.value == option.value) {
+	// 				option.selected = true;
+	// 			}
+	// 		}
+	// 	}
+	// } else {
+	// 	nMaxVal = selObj.length;
+	// 	for (nLoop = 0; nLoop < nMaxVal; nLoop++) {
+	// 		selObj.remove(0);
+	// 	}
+	// 	selObj.options[0] = new Option('None', '');
+	// 	if (currField.value == '') {
+	// 		selObj.options[0].selected = true;
+	// 	}
+	// }
+}
+
+function advFiltInitRow(rowNode) {
+
 }
 
 function showHideDivs(showdiv, hidediv) {
@@ -486,3 +629,452 @@ function vt_getElementsByName(tagName, elementName) {
 	}
 	return selectedElements;
 }
+
+/****
+	* cbAdvancedFilter
+	* @author: MajorLabel <info@majorlabel.nl>
+	* @license GNU / GPLv2
+	*/
+(function cbadvancedfilterModule(factory){
+
+	if (typeof define === "function" && define.amd) {
+		define(factory);
+	} else if (typeof module != "undefined" && typeof module.exports != "undefined") {
+		module.exports = factory();
+	} else {
+		window["cbAdvancedFilter"] = factory();
+	}
+
+})(function cbadvancedfilterFactory(){
+
+	/**
+	 * @class cbAdvancedFilter
+	 * @param {element}: Typically a wrapping element of an advanced filter box
+	 */
+	function cbAdvancedFilter(el) {
+		/* Public attributes */
+		this.el     = el,
+		this.groups = document.getElementsByClassName("slds-expression__group"),
+		this.rowCnt = 0,
+		this.conds  = {};
+
+		var intialConds = this.getInitConditions()
+		for (var i = 0; i < intialConds.length; i++) {
+			this.initCondRow(intialConds[i]);
+		}
+		/* Instance listeners */
+
+		/* Global listeners */
+		_on(window, "click", this.handleClicks, this); // Please don't bind clicks to elements
+
+		/* TEST area */
+		// console.log(this);
+	}
+
+	cbAdvancedFilter.prototype = {
+		constructor: cbAdvancedFilter,
+
+		/*
+		 * Method: 'getInitConditions'
+		 * Gets all initial condition rows on screen
+		 *
+		 * @return : HTMLCollection of initial condition rows
+		 *
+		 */
+		getInitConditions: function() {
+			return document.getElementsByClassName("slds-expression__row_group");
+		},
+
+		/*
+		 * Method: 'buildCondObj'
+		 * 
+		 * Builds a condition object, only call this
+		 * AFTER the node has been appended to the
+		 * group div
+		 *
+		 * @param  : A row/cond node
+		 * @return : A condition (obj)
+		 */
+		buildCondObj: function(condNode) {
+			_initCombos(condNode, "slds-combobox");
+			var me = this,
+				row = {
+				"el"        : condNode,
+				"groupNo"   : me.getCondGroupNo(condNode),
+				"rowNo"     : (me.rowCnt + 1),
+				"opWrapper" : condNode.getElementsByClassName("adv-filt-operator-wrapper")[0],
+				"fieldCombo": me.getFieldCombo(condNode),
+				"datePicker": false,
+				"dateButt"  : condNode.getElementsByClassName("adv-filt-row__date-but")[0]
+			};
+			this.rowCnt++;
+			return row;
+		},
+
+		/*
+		 * Method: 'getCondGroupNo'
+		 * Get the group no. for a certain condition
+		 *
+		 * @param  : element that lives in the group
+		 * @return : group no. (int)
+		 */
+		getCondGroupNo: function(el) {
+			var groupEl = _findUp(el, ".slds-expression__group");
+			return parseInt(groupEl.getAttribute("data-group-no"));
+		},
+
+		/*
+		 * Method: 'getCondGroupByNo'
+		 * Get the group node by its number
+		 *
+		 * @param  : numer (int)
+		 * @return : group node
+		 */
+		getCondGroupByNo: function(no) {
+			for (var i = this.groups.length - 1; i >= 0; i--) {
+				if (parseInt(this.groups[i].getAttribute("data-group-no")) == no) {
+					return this.groups[i];
+				} else {
+					return false;
+				}
+			}
+		},
+
+		/*
+		 * Method: 'handleClicks'
+		 * Handle clicks for the entire advanced search block
+		 *
+		 * @param  : event object
+		 */
+		handleClicks: function(e) {
+			var onClick = e.target.getAttribute("data-onclick");
+			switch(onClick) {
+				case "add-condition":
+					this.addCond(e);
+					break;
+				case "delete-cond":
+					this.removeCond(e);
+				default:
+					return false;
+			}
+		},
+
+		/*
+		 * Method: 'addCond'
+		 * Add a condition row
+		 *
+		 * @param  : event object
+		 */
+		addCond: function(e) {
+			var groupNo   = this.getCondGroupNo(e.target),
+				group     = this.getCondGroupByNo(groupNo)
+				groupList = group.getElementsByTagName("UL")[0],
+				firstCond = group.getElementsByClassName("slds-expression__row")[0],
+				newCond   = firstCond.cloneNode(true),
+				newCondObj= {};
+
+			groupList.appendChild(newCond);
+			this.initCondRow(newCond);
+		},
+
+		/*
+		 * Method: 'removeCond'
+		 * Remove a condition row
+		 *
+		 * @param  : event object
+		 */
+		removeCond: function(e) {
+			var row = _findUp(e.target, ".slds-expression__row");
+			row.parentElement.removeChild(row);
+			this.rowCnt--;
+		},
+
+		/*
+		 * Method: 'getRowNo'
+		 * Get the row no. for a certain condition
+		 *
+		 * @param  : row element node
+		 * @return : row no. (int)
+		 */
+		getRowNo: function(el) {
+			return parseInt(el.getAttribute("data-row-no"));
+		},
+
+		/*
+		 * Method: 'initCondRow'
+		 * Initialize a condition row
+		 *
+		 * @param  : condition node
+		 */
+		initCondRow: function(condNode) {
+			var newCondObj = this.buildCondObj(condNode),
+				cond = this.conds[newCondObj["rowNo"]] = newCondObj;
+			this.setDataRowNo(condNode);
+
+			cond.fieldCombo.onSelect = this.setOperations.bind(this, cond);
+			cond.fieldCombo.select(); // Fire select on the fieldpicker once to get the operations combo going
+
+			if (!this.isCondFirst(cond)) {
+				this.enCapability(cond, "delete");
+				this.enCapability(cond, "glue");
+			}
+		},
+
+		/*
+		 * Method: 'setDataRowNo'
+		 * Set the data attribute for the row no.
+		 *
+		 * @param  : condition node
+		 */
+		setDataRowNo: function(condNode) {
+			condNode.setAttribute("data-row-no", this.rowCnt);
+		},
+
+		/*
+		 * Method: 'enCapability'
+		 * Enable a specific row capability, like delete, or choose glue
+		 *
+		 * @param  : condition object
+		 * @param  : capability name
+		 */
+		enCapability: function(cond, cap) {
+			switch (cap) {
+				case "delete":
+					this.enElement(cond, "adv-filt-row__delete");
+					break;
+				case "date":
+					this.enElement(cond, "adv-filt-row__date-but");
+					if (!cond.datePicker) this.enDate(cond);
+					break;
+				case "glue":
+					this.enElement(cond, "adv-filt-row__glue");
+				default:
+					return false;
+			}
+		},
+
+		/*
+		 * Method: 'disCapability'
+		 * Disable a specific row capability, like delete, or choose glue
+		 *
+		 * @param  : condition object
+		 * @param  : capability name
+		 */
+		disCapability: function(cond, cap) {
+			switch (cap) {
+				case "date":
+					this.disElement(cond, "adv-filt-row__date-but");
+					break;
+				default:
+					return false;
+			}
+		},
+
+		/*
+		 * Method: 'enElement'
+		 * Enable a element
+		 *
+		 * @param  : condition object
+		 * @param  : className name
+		 */
+		enElement: function(cond, className) {
+			var el = cond.el.getElementsByClassName(className)[0];
+			el.removeAttribute("disabled");
+		},
+
+		/*
+		 * Method: 'disElement'
+		 * Disable a element
+		 *
+		 * @param  : condition object
+		 * @param  : className name
+		 */
+		disElement: function(cond, className) {
+			var el = cond.el.getElementsByClassName(className)[0];
+			el.setAttribute("disabled", "disabled");
+		},
+
+		/*
+		 * Method: 'setOperations'
+		 * Set the operations Combobox appropriately to the
+		 * selected field type of data
+		 *
+		 * @param  : Condition row object
+		 * @param  : value of the field, typically a string with
+		 *           things like fieldname, tablename etc. separated
+		 *           by a ":" (colon)
+		 */
+		setOperations: function(cond, val) {
+			var typeOfData  = _getToDFromVal(val),
+				operations  = _getOpsByToD(typeOfData),
+				opBox       = document.getElementById("cbds-combo-oper-templ__box").children[0].cloneNode(true),
+				opListBox   = opBox.getElementsByClassName("slds-listbox")[0],
+				opItemTempl = document.getElementById("cbds-combo-oper-templ__item").children[0];
+			
+			for (var i = operations.length - 1; i >= 0; i--) {
+				var opItem = opItemTempl.cloneNode(true);
+				opItem.setAttribute("data-value", operations[i]["value"]);
+				opItem.getElementsByClassName("slds-truncate")[0].innerText = operations[i]["label"];
+				opItem.getElementsByClassName("slds-truncate")[0].title = operations[i]["label"];
+				opListBox.appendChild(opItem);
+			}
+
+			cond.opWrapper.innerHTML = "";
+			cond.opWrapper.appendChild(opBox);
+			window.Comboboxes.push(new ldsCombobox(opBox, {
+				"onSelect" : false
+			}));
+
+			if (typeOfData == "D" || typeOfData == "DT")
+				this.enCapability(cond, "date");
+			else
+				this.disCapability(cond, "date");
+		},
+
+		/*
+		 * Method: 'getFieldCombo'
+		 * Get the field selector combobox object for
+		 * a specific condition row
+		 *
+		 * @param  : condition Node
+		 * @return : Combobox object
+		 */
+		getFieldCombo: function(condNode) {
+			var comboEl = condNode.getElementsByClassName("adv-filt-field-sel")[0];
+			for (var i = window.Comboboxes.length - 1; i >= 0; i--) {
+				if (window.Comboboxes[i].el.isSameNode(comboEl))
+					return window.Comboboxes[i];
+			}
+		},
+
+		/*
+		 * Method: 'enDate'
+		 * Starts out the datepicker
+		 *
+		 * @param  : condition object
+		 */
+		enDate: function(cond) {
+			var dateFormat;
+			switch (window.userDateFormat) {
+				case "yyyy-mm-dd":
+					dateFormat = "%Y-%m-%d";
+					break;
+				case "dd-mm-yyyy":
+					dateFormat = "%d-%m-%Y";
+					break;
+				case "mm-dd-yyyy":
+					dateFormat = "%m-%d-%Y";
+					break;
+				default:
+					dateFormat = "%d-%m-%Y";
+			}
+			Calendar.setup ({
+				inputField : cond.el.getElementsByClassName("adv-filt-row__main-input")[0],
+				ifFormat : dateFormat,
+				showsTime : false,
+				button : cond.dateButt,
+				singleClick : true,
+				step : 1
+			});	
+		},
+
+		/*
+		 * Method: 'isCondFirst'
+		 * Is this the first row in the group?
+		 *
+		 * @param  : condition object
+		 * @return : true if row is rist, false if it isn't
+		 */
+		isCondFirst: function(cond) {
+			var parentGroup = _findUp(cond.el, ".slds-expression__group"),
+				rows = parentGroup.getElementsByClassName("slds-expression__row");
+			return cond.el === rows[0] ? true : false; 
+		},
+
+	}
+
+	/**
+	  * Section with factory tools
+	  */
+	function _on(el,type,func,context) {
+		el.addEventListener(type, func.bind(context));
+	}
+
+	function _findUp(element, searchterm) {
+		element = element.children[0] != undefined ? element.children[0] : element; // Include the current element
+		while (element = element.parentElement) {
+			if ( (searchterm.charAt(0) === "#" && element.id === searchterm.slice(1) )
+				|| ( searchterm.charAt(0) === "." && element.classList.contains(searchterm.slice(1) ) 
+				|| ( searchterm.charAt(0) === "$" && element.tagName === searchterm.slice(1) ) 
+				|| ( element.hasAttribute(searchterm) ))) {
+				return element;
+			} else if (element == document.body) {
+				break;
+			}
+		}
+	}
+
+	function _initCombos(parent, targetClass) {
+		var combos = parent.getElementsByClassName(targetClass);
+		for (var i = combos.length - 1; i >= 0; i--) {
+			window.Comboboxes.push(new ldsCombobox(combos[i], {
+				"onSelect" : false
+			}));
+		}
+	}
+
+	function _getToDFromVal(val) {
+		var segments = val.split(":");
+		return segments[segments.length - 1];
+	}
+
+	function _getOpsByToD(tod) {
+		var operations = typesofdata[tod],
+			ops = [];
+
+		for (var i = operations.length - 1; i >= 0; i--) {
+			var op = {
+				"value" : operations[i],
+				"label" : fLabels[operations[i]]
+			};
+			ops.push(op);
+		}
+		return ops;
+	}
+
+	var typesofdata = new Array();
+		typesofdata['V'] = ['e', 'n', 's', 'ew', 'dnsw', 'dnew', 'c', 'k'];
+		typesofdata['N'] = ['e', 'n', 'l', 'g', 'm', 'h'];
+		typesofdata['T'] = ['e', 'n', 'l', 'g', 'm', 'h', 'bw', 'b', 'a'];
+		typesofdata['I'] = ['e', 'n', 'l', 'g', 'm', 'h'];
+		typesofdata['C'] = ['e', 'n'];
+		typesofdata['D'] = ['e', 'n', 'l', 'g', 'm', 'h', 'bw', 'b', 'a'];
+		typesofdata['DT'] = ['e', 'n', 'l', 'g', 'm', 'h', 'bw', 'b', 'a'];
+		typesofdata['NN'] = ['e', 'n', 'l', 'g', 'm', 'h'];
+		typesofdata['E'] = ['e', 'n', 's', 'ew', 'dnsw', 'dnew', 'c', 'k'];
+
+	var fLabels = new Array();
+		fLabels['e'] = alert_arr.EQUALS;
+		fLabels['n'] = alert_arr.NOT_EQUALS_TO;
+		fLabels['s'] = alert_arr.STARTS_WITH;
+		fLabels['ew'] = alert_arr.ENDS_WITH;
+		fLabels['dnsw'] = alert_arr.DOES_NOT_START_WITH;
+		fLabels['dnew'] = alert_arr.DOES_NOT_END_WITH;
+		fLabels['c'] = alert_arr.CONTAINS;
+		fLabels['k'] = alert_arr.DOES_NOT_CONTAINS;
+		fLabels['l'] = alert_arr.LESS_THAN;
+		fLabels['g'] = alert_arr.GREATER_THAN;
+		fLabels['m'] = alert_arr.LESS_OR_EQUALS;
+		fLabels['h'] = alert_arr.GREATER_OR_EQUALS;
+		fLabels['bw'] = alert_arr.BETWEEN;
+		fLabels['b'] = alert_arr.BEFORE;
+		fLabels['a'] = alert_arr.AFTER;	
+
+	/*
+	 * Globals
+	 */
+
+
+	return cbAdvancedFilter;
+
+});

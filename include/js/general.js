@@ -5352,7 +5352,7 @@ AutocompleteRelation.prototype.MinCharsToSearch = function () {
 		this.el 	= el,
 		this.input 	= el.getElementsByClassName("slds-combobox__input")[0],
 		this.specialKeys = ["up","down","enter","esc"],
-		this.optionNodes = el.getElementsByClassName("slds-listbox__item"),
+		this.optionNodes = this.getOptionNodes(),
 		this.active = false,
 		this.curSel = this.input.value,
 		this.fallBackSel = null,
@@ -5361,6 +5361,7 @@ AutocompleteRelation.prototype.MinCharsToSearch = function () {
 		this.onSelect = typeof params.onSelect == "function" ? params.onSelect : false,
 		this._val = this.optionNodes[this.curSelIndex].getAttribute("data-value"),
 		this.parentForm = _findUp(this.input, "$FORM");
+		this.valueHolder = this.getValueHolder();
 
 		/* Instance listeners */
 		_on(el, "mousedown", this.handleClick, this);
@@ -5406,6 +5407,61 @@ AutocompleteRelation.prototype.MinCharsToSearch = function () {
 		},
 
 		/*
+		 * Method: 'getOptionNodes'
+		 * Gets all the option nodes that have a child with a class
+		 * of 'slds-truncate'
+		 *
+		 */
+		getOptionNodes: function() {
+			var optionNodes = this.el.getElementsByClassName("slds-listbox__item");
+			var filteredOptionNodes = [];
+			for (var i = 0; i < optionNodes.length; i++) {
+				if (optionNodes[i].getElementsByClassName("slds-truncate").length !== 0) filteredOptionNodes.push(optionNodes[i]);
+			}
+
+			return filteredOptionNodes;
+		},
+
+		/*
+		 * Method: 'getValueHolder'
+		 * Retrieves the hidden input that holds the actual value for the dropdown
+		 *
+		 */
+		getValueHolder: function() {
+			var valueHolderLoc = this.input.getAttribute("data-valueholder");
+			switch (valueHolderLoc) {
+				case "nextsibling":
+					return this.input.nextElementSibling
+					break;
+				default:
+					return false;
+			}
+		},
+
+		/*
+		 * Method: 'updateValueHolder'
+		 * Sets the value for the (hidden) valueHolder input, if there was one
+		 *
+		 */
+		updateValueHolder: function(val) {
+			if (this.valueHolder)
+				this.valueHolder.value = val;
+		},
+
+		/*
+		 * Method: 'getOpener'
+		 * Get the correct div to add the 'slds-is-open' class to
+		 * or remove it from when opening and closing
+		 *
+		 */
+		getOpener: function() {
+			if ( this.el.classList.contains("slds-combobox") )
+				return this.el;
+			else
+				return this.el.getElementsByClassName("slds-combobox")[0];
+		},
+
+		/*
 		 * Method: 'open'
 		 * Opens and activates the dropdown and selects the last selected (or first)
 		 * item in the list
@@ -5415,8 +5471,9 @@ AutocompleteRelation.prototype.MinCharsToSearch = function () {
 			this.fallBackIndex = this.getCurSelIndex(),
 			this.fallBackSel = this.curSel;
 
-			this.el.classList.add("slds-is-open");
-			this.setOptionState(this.curSelIndex, "selected");
+			this.getOpener().classList.add("slds-is-open");
+			// Set first oprtion active on open? Need to update hidden val as well then
+			// this.setOptionState(this.curSelIndex, "selected");
 			this.active = true;
 		},
 
@@ -5426,7 +5483,7 @@ AutocompleteRelation.prototype.MinCharsToSearch = function () {
 		 *
 		 */
 		close: function(e) {
-			this.el.classList.remove("slds-is-open");
+			this.getOpener().classList.remove("slds-is-open");
 			this.active = false;
 		},
 
@@ -5578,7 +5635,9 @@ AutocompleteRelation.prototype.MinCharsToSearch = function () {
 		 *
 		 */
 		select: function() {
-			this._val = this.optionNodes[this.curSelIndex].getAttribute("data-value");
+			var val = this.optionNodes[this.curSelIndex].getAttribute("data-value");
+			this._val = val;
+			this.updateValueHolder(val);
 			this.input.value = this.curSel;
 			this.close();
 
@@ -5673,7 +5732,7 @@ function initCbdsComboboxes() {
 	let cbdsComboBoxes = document.getElementsByClassName("cbds-lds__combobox");
 	for (var i = 0; i < cbdsComboBoxes.length; i++) {
 		window.Comboboxes.push(new ldsCombobox(cbdsComboBoxes[i], {
-			"onSelect" : false
+			"onSelect" : cbdsComboBoxes[i].onchange
 		}));
 	}
 }

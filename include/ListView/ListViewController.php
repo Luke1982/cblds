@@ -947,7 +947,7 @@ class ListViewController {
 			$fieldLabelEscaped = str_replace(" ", "_", $field->getFieldLabelKey());
 			$optionvalue = $field->getTableName().":".$field->getColumnName().":".$fieldName.":".$module."_".$fieldLabelEscaped.":".$typeOfData;
 
-			$OPTION_SET[$blockName][$label] = array('label' => $label, 'value' => $optionvalue, 'selected' => $selected);
+			$OPTION_SET[$blockName][$label] = array('label' => $label, 'value' => $optionvalue, 'selected' => $selected, 'typeofdata' => $typeOfData);
 		}
 		// sort array on block label
 		ksort($OPTION_SET, SORT_STRING);
