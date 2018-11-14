@@ -353,20 +353,21 @@ function vt_getElementsByName(tagName, elementName) {
 		this.conds  = {},
 		this.grpCont= document.getElementById("cbds-adv-cond__groups");
 
-		var intialConds = this.getInitConditions()
-		for (var i = 0; i < intialConds.length; i++) {
-			this.initCondRow(intialConds[i]);
-		}
-		/* Instance listeners */
-
-		/* Global listeners */
-		_on(window, "click", this.handleClicks, this); // Please don't bind clicks to elements
-
 		/* Startup */
 		var curGroups = document.getElementsByClassName("slds-expression__group");
 		for (var i = curGroups.length - 1; i >= 0; i--) {
 			this.groups.push(curGroups[i]);
+		}		
+
+		var intialConds = this.getInitConditions()
+		for (var i = 0; i < intialConds.length; i++) {
+			this.initCondRow(intialConds[i]);
 		}
+
+		/* Instance listeners */
+
+		/* Global listeners */
+		_on(window, "click", this.handleClicks, this); // Please don't bind clicks to elements
 
 		/* TEST area */
 		// console.log(this);
@@ -428,7 +429,7 @@ function vt_getElementsByName(tagName, elementName) {
 		 * Method: 'getCondGroupByNo'
 		 * Get the group node by its number
 		 *
-		 * @param  : numer (int)
+		 * @param  : number (int)
 		 * @return : group node
 		 */
 		getCondGroupByNo: function(no) {
@@ -478,10 +479,9 @@ function vt_getElementsByName(tagName, elementName) {
 		addCond: function(e) {
 			var groupNo   = this.getCondGroupNo(e.target),
 				group     = this.getCondGroupByNo(groupNo),
-				groupList = group.getElementsByTagName("UL")[0],
+				groupList = group.getElementsByClassName("adv-filt-row-holder")[0],
 				firstCond = group.getElementsByClassName("slds-expression__row")[0],
-				newCond   = firstCond.cloneNode(true),
-				newCondObj= {};
+				newCond   = firstCond.cloneNode(true);
 
 			groupList.appendChild(newCond);
 			this.initCondRow(newCond);
@@ -496,7 +496,7 @@ function vt_getElementsByName(tagName, elementName) {
 		 */
 		insertCond: function(condNode, groupNo) {
 			var group = this.getCondGroupByNo(groupNo);
-			group.getElementsByTagName("UL")[0].appendChild(condNode);
+			group.getElementsByClassName("adv-filt-row-holder")[0].appendChild(condNode);
 		},
 
 		/*
@@ -521,6 +521,7 @@ function vt_getElementsByName(tagName, elementName) {
 
 			if (this.getCondGroupNo(newGroup) != 1)
 				this.enCapability(newGroup, "group-controls");
+				_initCombos(newGroup, "adv-filt-glue-combo");
 
 			this.grpCont.appendChild(newGroup);
 		},
@@ -543,7 +544,7 @@ function vt_getElementsByName(tagName, elementName) {
 		 * @return  : empty group node
 		 */
 		clearGroup: function(groupNode) {
-			groupNode.getElementsByTagName("UL")[0].innerHTML = "";
+			groupNode.getElementsByClassName("adv-filt-row-holder")[0].innerHTML = "";
 			return groupNode;
 		},
 
@@ -554,9 +555,21 @@ function vt_getElementsByName(tagName, elementName) {
 		 * @param  : event object
 		 */
 		removeCond: function(e) {
-			var row = _findUp(e.target, ".slds-expression__row");
+			var row  = _findUp(e.target, ".slds-expression__row"),
+				cond = this.getCondObjByNo(parseInt(row.getAttribute("data-row-no")));
 			row.parentElement.removeChild(row);
-			this.rowCnt--;
+			this.updateDataRowCnt(cond.groupNo);
+			this.conds[cond.rowNo] = null;
+		},
+
+		/*
+		 * Method: 'getCondObjByNo'
+		 * Get a condition object by its no.
+		 *
+		 * @param  : cond no. (int)
+		 */
+		getCondObjByNo: function(no) {
+			return this.conds[no];
 		},
 
 		/*
@@ -580,6 +593,7 @@ function vt_getElementsByName(tagName, elementName) {
 			var newCondObj = this.buildCondObj(condNode),
 				cond = this.conds[newCondObj["rowNo"]] = newCondObj;
 			this.setDataRowNo(condNode);
+			this.updateDataRowCnt(cond.groupNo);
 
 			cond.fieldCombo.onSelect = this.setOperations.bind(this, cond);
 			cond.fieldCombo.select(); // Fire select on the fieldpicker once to get the operations combo going
@@ -598,6 +612,18 @@ function vt_getElementsByName(tagName, elementName) {
 		 */
 		setDataRowNo: function(condNode) {
 			condNode.setAttribute("data-row-no", this.rowCnt);
+		},
+
+		/*
+		 * Method: 'setDataRowCnt'
+		 * Update the rowcount data attribute on the parent group
+		 *
+		 * @param  : group no.
+		 */
+		updateDataRowCnt: function(groupNo) {
+			var group = this.getCondGroupByNo(groupNo),
+				count = group.getElementsByClassName("slds-expression__row").length;
+			group.setAttribute("data-rowcount", count);
 		},
 
 		/*

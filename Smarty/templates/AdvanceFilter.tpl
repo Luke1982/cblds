@@ -296,20 +296,57 @@ function add_grouping_criteria(grouping_criteria) {ldelim}
 {/foreach}
 <ul id="cbds-adv-cond__groups">
     <li class="slds-expression__group" data-group-no="1" data-rowcount="1">
+    	<div class="slds-grid slds-gutters_xx-small adv-filt-group-controls slds-hide">
+    		<div class="slds-col slds-grid slds-grid_align-end">
+    			<div class="col">
+                    <div class="slds-combobox_container">
+                        <div class="slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click adv-filt-glue-combo" aria-expanded="false" aria-haspopup="listbox" role="combobox">
+                            <div class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_right" role="none">
+                                <input class="slds-input slds-combobox__input slds-combobox__input-value adv-filt-group__glue" autocomplete="off" role="textbox" type="text" readonly="" value="{$APP.LBL_CRITERIA_AND}" data-valueholder="nextsibling" />
+                                <input type="hidden" value="{$APP.LBL_CRITERIA_AND}" />
+                                <span class="slds-icon_container slds-icon-utility-down slds-input__icon slds-input__icon_right">
+                                    <svg class="slds-icon slds-icon slds-icon_x-small slds-icon-text-default" aria-hidden="true">
+                                        <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#down"></use>
+                                    </svg>
+                                </span>
+                            </div>
+                            <div class="slds-dropdown slds-dropdown_length-2 slds-dropdown_fluid" role="listbox">
+                            	<ul class="slds-listbox slds-listbox_vertical" role="group">
+                            		<li role="presentation" class="slds-listbox__item" data-value="{$APP.LBL_CRITERIA_AND}">
+                            			<div class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small" role="option">
+                            				<span class="slds-media__figure slds-listbox__option-icon"></span>
+                            				<span class="slds-media__body">
+                            					<span class="slds-truncate" title="{$APP.LBL_CRITERIA_AND}">{$APP.LBL_CRITERIA_AND}</span>
+                            				</span>
+                            			</div>
+                            		</li>
+                            		<li role="presentation" class="slds-listbox__item" data-value="{$APP.LBL_CRITERIA_OR}">
+                            			<div class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small" role="option">
+                            				<span class="slds-media__figure slds-listbox__option-icon"></span>
+                            				<span class="slds-media__body">
+                            					<span class="slds-truncate" title="{$APP.LBL_CRITERIA_OR}">{$APP.LBL_CRITERIA_OR}</span>
+                            				</span>
+                            			</div>
+                            		</li>
+                            	</ul> 
+                            </div>
+                        </div>
+                    </div>    				
+    			</div>
+    			<div class="slds-col">
+	    			<button type="button" class="slds-button slds-button_icon slds-button_icon-border" title="{$APP.LBL_DELETE_GROUP}">
+	    				<svg class="slds-button__icon" aria-hidden="true">
+	    					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
+	    				</svg>
+	    				<span class="slds-assistive-text">{$APP.LBL_DELETE_GROUP}</span>
+	    			</button>
+    			</div>    			
+    		</div>
+    	</div>
         <fieldset>
-            <ul>
-                <li class="slds-expression__row slds-expression__row_group slds-p-horizontal_none slds-m-top_none" data-row-no="1">
+            <ul class="adv-filt-row-holder">
+                <li class="slds-expression__row slds-expression__row_group slds-p-horizontal_none" data-row-no="1">
                     <fieldset>
-                    	<div class="slds-grid slds-gutters_xx-small adv-filt-group-controls slds-hide">
-                    		<div class="slds-col">
-                    			<button type="button" class="slds-button slds-button_icon slds-button_icon-border slds-float_right" title="{$APP.LBL_DELETE_GROUP}">
-                    				<svg class="slds-button__icon" aria-hidden="true">
-                    					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
-                    				</svg>
-                    				<span class="slds-assistive-text">{$APP.LBL_DELETE_GROUP}</span>
-                    			</button>                    			
-                    		</div>
-                    	</div>
                         <div class="slds-grid slds-gutters_xx-small">
                             <div class="slds-col slds-size_1-of-12">
                                 <div class="slds-form-element">
