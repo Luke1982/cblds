@@ -350,41 +350,28 @@ function vt_getElementsByName(tagName, elementName) {
 		this.groups = [],
 		this.rowCnt = 0,
 		this.grpCnt = 1,
-		this.conds  = {},
-		this.grpCont= document.getElementById("cbds-adv-cond__groups");
+		this.conds  = [],
+		this.grpCont= document.getElementById("cbds-advfilt-groups");
 
 		/* Startup */
-		var curGroups = document.getElementsByClassName("slds-expression__group");
-		for (var i = curGroups.length - 1; i >= 0; i--) {
-			this.groups.push(curGroups[i]);
-		}		
-
-		var intialConds = this.getInitConditions()
-		for (var i = 0; i < intialConds.length; i++) {
-			this.initCondRow(intialConds[i]);
-		}
+		this.init();
 
 		/* Instance listeners */
 
 		/* Global listeners */
 		_on(window, "click", this.handleClicks, this); // Please don't bind clicks to elements
-
-		/* TEST area */
-		// console.log(this);
 	}
 
 	cbAdvancedFilter.prototype = {
 		constructor: cbAdvancedFilter,
 
 		/*
-		 * Method: 'getInitConditions'
-		 * Gets all initial condition rows on screen
-		 *
-		 * @return : HTMLCollection of initial condition rows
+		 * Method: 'init'
+		 * Initialize the block
 		 *
 		 */
-		getInitConditions: function() {
-			return document.getElementsByClassName("slds-expression__row_group");
+		init: function() {
+			Group.add(this);
 		},
 
 		/*
@@ -397,21 +384,21 @@ function vt_getElementsByName(tagName, elementName) {
 		 * @param  : A row/cond node
 		 * @return : A condition (obj)
 		 */
-		buildCondObj: function(condNode) {
-			_initCombos(condNode, "slds-combobox");
-			var me = this,
-				row = {
-				"el"        : condNode,
-				"groupNo"   : me.getCondGroupNo(condNode),
-				"rowNo"     : (me.rowCnt + 1),
-				"opWrapper" : condNode.getElementsByClassName("adv-filt-operator-wrapper")[0],
-				"fieldCombo": me.getFieldCombo(condNode),
-				"datePicker": false,
-				"dateButt"  : condNode.getElementsByClassName("adv-filt-row__date-but")[0]
-			};
-			this.rowCnt++;
-			return row;
-		},
+		// buildCondObj: function(condNode) {
+		// 	_initCombos(condNode, "slds-combobox");
+		// 	var me = this,
+		// 		row = {
+		// 		"el"        : condNode,
+		// 		"groupNo"   : me.getCondGroupNo(condNode),
+		// 		"rowNo"     : (me.rowCnt + 1),
+		// 		"opWrapper" : condNode.getElementsByClassName("adv-filt-operator-wrapper")[0],
+		// 		"fieldCombo": me.getFieldCombo(condNode),
+		// 		"datePicker": false,
+		// 		"dateButt"  : condNode.getElementsByClassName("adv-filt-row__date-but")[0]
+		// 	};
+		// 	this.rowCnt++;
+		// 	return row;
+		// },
 
 		/*
 		 * Method: 'getCondGroupNo'
@@ -420,10 +407,10 @@ function vt_getElementsByName(tagName, elementName) {
 		 * @param  : element that lives in the group
 		 * @return : group no. (int)
 		 */
-		getCondGroupNo: function(el) {
-			var groupEl = _findUp(el, ".slds-expression__group");
-			return parseInt(groupEl.getAttribute("data-group-no"));
-		},
+		// getCondGroupNo: function(el) {
+		// 	var groupEl = _findUp(el, ".slds-expression__group");
+		// 	return parseInt(groupEl.getAttribute("data-group-no"));
+		// },
 
 		/*
 		 * Method: 'getCondGroupByNo'
@@ -432,20 +419,20 @@ function vt_getElementsByName(tagName, elementName) {
 		 * @param  : number (int)
 		 * @return : group node
 		 */
-		getCondGroupByNo: function(no) {
-			var groups = this.groups,
-				retGroup = false;
+		// getCondGroupByNo: function(no) {
+		// 	var groups = this.groups,
+		// 		retGroup = false;
 
-			for (var i = groups.length - 1; i >= 0; i--) {
-				(function(_i){
-					if (parseInt(groups[_i].getAttribute("data-group-no")) == no) {
-						retGroup = groups[_i];
-					}
-				})(i);
-			}
+		// 	for (var i = groups.length - 1; i >= 0; i--) {
+		// 		(function(_i){
+		// 			if (parseInt(groups[_i].getAttribute("data-group-no")) == no) {
+		// 				retGroup = groups[_i];
+		// 			}
+		// 		})(i);
+		// 	}
 
-			return retGroup;
-		},
+		// 	return retGroup;
+		// },
 
 		/*
 		 * Method: 'handleClicks'
@@ -457,13 +444,13 @@ function vt_getElementsByName(tagName, elementName) {
 			var onClick = e.target.getAttribute("data-onclick");
 			switch(onClick) {
 				case "add-condition":
-					this.addCond(e);
-					break;
-				case "delete-cond":
-					this.removeCond(e);
+					this.getGroupByButton(e.target).addCond();
 					break;
 				case "add-group":
-					this.addGroup(e);
+					Group.add(this);
+					break;
+				case "delete-group":
+					this.getGroupByButton(e.target).delete();
 					break;
 				default:
 					return false;
@@ -471,239 +458,39 @@ function vt_getElementsByName(tagName, elementName) {
 		},
 
 		/*
-		 * Method: 'addCond'
-		 * Add a condition row
+		 * Method: 'getGroupByButton'
+		 * Gets the group object for a certain button
 		 *
-		 * @param  : event object
+		 * @param  : button node
+		 * @return : group object
 		 */
-		addCond: function(e) {
-			var groupNo   = this.getCondGroupNo(e.target),
-				group     = this.getCondGroupByNo(groupNo),
-				groupList = group.getElementsByClassName("adv-filt-row-holder")[0],
-				firstCond = group.getElementsByClassName("slds-expression__row")[0],
-				newCond   = firstCond.cloneNode(true);
-
-			groupList.appendChild(newCond);
-			this.initCondRow(newCond);
-		},
-
-		/*
-		 * Method: 'insertCond'
-		 * Insert a condition div into a group div
-		 *
-		 * @param  : condition node
-		 * @param  : group no.
-		 */
-		insertCond: function(condNode, groupNo) {
-			var group = this.getCondGroupByNo(groupNo);
-			group.getElementsByClassName("adv-filt-row-holder")[0].appendChild(condNode);
-		},
-
-		/*
-		 * Method: 'addGroup'
-		 * Add a condition group
-		 *
-		 * @param  : event object
-		 */
-		addGroup: function(e) {
-			var newGroup = this.cloneFirstGroup(),
-				newCond  = newGroup.getElementsByClassName("slds-expression__row")[0].cloneNode(true);
-
-			newGroup = this.clearGroup(newGroup);
-
-			this.groups.push(newGroup);
-			this.grpCnt++;
-			newGroup.setAttribute("data-group-no", this.grpCnt);
-			newGroup.setAttribute("data-rowcount", 1);
-
-			this.insertCond(newCond, this.grpCnt);
-			this.initCondRow(newCond);
-
-			if (this.getCondGroupNo(newGroup) != 1)
-				this.enCapability(newGroup, "group-controls");
-				_initCombos(newGroup, "adv-filt-glue-combo");
-
-			this.grpCont.appendChild(newGroup);
-		},
-
-		/*
-		 * Method: 'cloneFirstGroup'
-		 * Get a clone of the first group div
-		 *
-		 * @return  : cloned group node
-		 */
-		cloneFirstGroup: function() {
-			var firstGroup = this.grpCont.children[0];
-			return firstGroup.cloneNode(true);
-		},
-
-		/*
-		 * Method: 'clearGroup'
-		 * Clear the group of all 'old' nodes
-		 *
-		 * @return  : empty group node
-		 */
-		clearGroup: function(groupNode) {
-			groupNode.getElementsByClassName("adv-filt-row-holder")[0].innerHTML = "";
-			return groupNode;
-		},
-
-		/*
-		 * Method: 'removeCond'
-		 * Remove a condition row
-		 *
-		 * @param  : event object
-		 */
-		removeCond: function(e) {
-			var row  = _findUp(e.target, ".slds-expression__row"),
-				cond = this.getCondObjByNo(parseInt(row.getAttribute("data-row-no")));
-			row.parentElement.removeChild(row);
-			this.updateDataRowCnt(cond.groupNo);
-			this.conds[cond.rowNo] = null;
-		},
-
-		/*
-		 * Method: 'getCondObjByNo'
-		 * Get a condition object by its no.
-		 *
-		 * @param  : cond no. (int)
-		 */
-		getCondObjByNo: function(no) {
-			return this.conds[no];
-		},
-
-		/*
-		 * Method: 'getRowNo'
-		 * Get the row no. for a certain condition
-		 *
-		 * @param  : row element node
-		 * @return : row no. (int)
-		 */
-		getRowNo: function(el) {
-			return parseInt(el.getAttribute("data-row-no"));
-		},
-
-		/*
-		 * Method: 'initCondRow'
-		 * Initialize a condition row
-		 *
-		 * @param  : condition node
-		 */
-		initCondRow: function(condNode) {
-			var newCondObj = this.buildCondObj(condNode),
-				cond = this.conds[newCondObj["rowNo"]] = newCondObj;
-			this.setDataRowNo(condNode);
-			this.updateDataRowCnt(cond.groupNo);
-
-			cond.fieldCombo.onSelect = this.setOperations.bind(this, cond);
-			cond.fieldCombo.select(); // Fire select on the fieldpicker once to get the operations combo going
-
-			if (!this.isCondFirst(cond)) {
-				this.enCapability(cond, "delete");
-				this.enCapability(cond, "glue");
+		getGroupByButton: function(node) {
+			var groupNode = _findUp(node, ".slds-expression__group"),
+				group     = false,
+				me        = this;
+			for (var i = 0; i < me.groups.length; i++) {
+				(function(_i){
+					if (me.groups[_i].el.isSameNode(groupNode)) {
+						group = me.groups[_i];
+					}
+				})(i);
 			}
+			return group;
 		},
 
 		/*
-		 * Method: 'setDataRowNo'
-		 * Set the data attribute for the row no.
+		 * Method: 'updateGroupNos'
+		 * Updates the group numbers for all groups
 		 *
-		 * @param  : condition node
+		 * @param : method to obtain group no. (string)
 		 */
-		setDataRowNo: function(condNode) {
-			condNode.setAttribute("data-row-no", this.rowCnt);
-		},
-
-		/*
-		 * Method: 'setDataRowCnt'
-		 * Update the rowcount data attribute on the parent group
-		 *
-		 * @param  : group no.
-		 */
-		updateDataRowCnt: function(groupNo) {
-			var group = this.getCondGroupByNo(groupNo),
-				count = group.getElementsByClassName("slds-expression__row").length;
-			group.setAttribute("data-rowcount", count);
-		},
-
-		/*
-		 * Method: 'enCapability'
-		 * Enable a specific row capability, like delete, or choose glue
-		 *
-		 * @param  : condition object / group node
-		 * @param  : capability name
-		 */
-		enCapability: function(obj, cap) {
-			switch (cap) {
-				case "delete":
-					this.enElement(obj, "adv-filt-row__delete");
-					break;
-				case "date":
-					this.enElement(obj, "adv-filt-row__date-but");
-					if (!obj.datePicker) this.enDate(obj);
-					break;
-				case "glue":
-					this.enElement(obj, "adv-filt-row__glue");
-					break;
-				case "group-controls":
-					this.showEl(obj.getElementsByClassName("adv-filt-group-controls")[0]);
-					break;
-				default:
-					return false;
+		updateGroupNos: function(method) {
+			for (var i = this.groups.length - 1; i >= 0; i--) {
+				this.groups[i].setNo(this.groups[i].getNoFrom(method));
 			}
-		},
+		},		
 
-		/*
-		 * Method: 'disCapability'
-		 * Disable a specific row capability, like delete, or choose glue
-		 *
-		 * @param  : condition object
-		 * @param  : capability name
-		 */
-		disCapability: function(cond, cap) {
-			switch (cap) {
-				case "date":
-					this.disElement(cond, "adv-filt-row__date-but");
-					break;
-				default:
-					return false;
-			}
-		},
 
-		/*
-		 * Method: 'enElement'
-		 * Enable a element
-		 *
-		 * @param  : condition object
-		 * @param  : className name
-		 */
-		enElement: function(cond, className) {
-			var el = cond.el.getElementsByClassName(className)[0];
-			el.removeAttribute("disabled");
-		},
-
-		/*
-		 * Method: 'showEl'
-		 * Show an element
-		 *
-		 * @param  : node
-		 */
-		showEl: function(node) {
-			node.classList.remove("slds-hide");
-			node.classList.add("slds-show");
-		},
-
-		/*
-		 * Method: 'disElement'
-		 * Disable a element
-		 *
-		 * @param  : condition object
-		 * @param  : className name
-		 */
-		disElement: function(cond, className) {
-			var el = cond.el.getElementsByClassName(className)[0];
-			el.setAttribute("disabled", "disabled");
-		},
 
 		/*
 		 * Method: 'setOperations'
@@ -789,20 +576,430 @@ function vt_getElementsByName(tagName, elementName) {
 			});	
 		},
 
-		/*
-		 * Method: 'isCondFirst'
-		 * Is this the first row in the group?
-		 *
-		 * @param  : condition object
-		 * @return : true if row is rist, false if it isn't
-		 */
-		isCondFirst: function(cond) {
-			var parentGroup = _findUp(cond.el, ".slds-expression__group"),
-				rows = parentGroup.getElementsByClassName("slds-expression__row");
-			return cond.el.isSameNode(rows[0]) ? true : false; 
-		},
 
 	}
+
+	/* ==== Submodules ==== */
+
+	/* Group submodule */
+	function Group(node, advfilt) {
+		this.parent    = advfilt,
+		this.el        = node,
+		this.no        = null,
+		this.condWrap  = this.el.getElementsByClassName("cbds-advfilt-condwrapper")[0],
+		this.condCount = null;	
+
+	}
+
+	/* Group static methods */
+
+	/*
+	 * method: add
+	 * Adds a new group to the block
+	 *
+	 * @param : parent block object
+	 */
+	Group.add = function(parent) {
+		var grpTempl = document.getElementById("cbds-advfilt-template__group").children[0],
+			newGroup = grpTempl.cloneNode(true),
+			grp      = new Group(newGroup, parent);
+
+		grp.parent.groups.push(grp);
+		grp.insert();
+		grp.init();
+	};		
+
+	Group.prototype = {
+		constructor: Group,
+
+		class : "slds-expression__group",
+		controlClass : "cbds-advfilt-group__controls",
+		condClass : "slds-expression__row",
+
+		/*
+		 * method: getNoFrom
+		 * Gets the group no.
+		 *
+		 * @param : How to get the group no. (int)
+		 *          - data   : gets the no from the data attribute
+		 *          - screen : gets the no. from the qty of groups in the block
+		 *          - self   : get the group no. from the current instance
+		 */
+		getNoFrom: function(method) {
+			var no = false;
+			switch (method) {
+				case "data":
+					no = this.el.getAttribute("data-group-no");
+					break;
+				case "screen":
+					for (var i = 0; i < this.parent.groups.length; i++) {
+						if(this.parent.groups[i].el.isSameNode(this.el)) {
+							no = i + 1;
+						}
+					}
+					break;
+				case "self":
+					no = this.no;
+					break;
+			}
+			return parseInt(no);
+		},
+
+		/*
+		 * method: setNo
+		 * Sets the group no. both in the data attribute as the instance
+		 *
+		 * @param : (int)
+		 */
+		setNo: function(no) {
+			this.el.setAttribute("data-group-no", no);
+			this.no = no;
+		},
+
+		/*
+		 * method: setCondCount
+		 * Sets the no. of conditions both in the data attribute as the instance
+		 *
+		 * @param : (int)
+		 */
+		setCondCount: function(no) {
+			this.el.setAttribute("data-condcount", no);
+			this.condCount = no;
+		},
+
+		/*
+		 * method: insert
+		 * Adds a new group noe into the block node
+		 *
+		 */
+		insert: function() {
+			this.parent.grpCont.appendChild(this.el);
+		},
+
+		/*
+		 * method: init
+		 * Initializes the group
+		 *
+		 */
+		init: function() {
+			if (!this.isFirst())
+				this.setCap("controls", true);
+				_initCombos(this.el, "cbds-advfilt-group__gluecombo");
+			this.setNo(this.getNoFrom("screen"));
+			this.addCond();
+			this.setCondCount(this.countConds("screen"));
+		},
+
+		/*
+		 * method: setCap
+		 * Sets a capability state
+		 *
+		 * @param : capability name (string)
+		 * @param : state (bool)
+		 */
+		setCap: function(cap, state) {
+			if (state) {
+				switch (cap) {
+					case "controls":
+						this.setControls(true);
+						break;
+					default:
+						return true;
+				}
+			}
+		},
+
+		/*
+		 * method: setControls
+		 * Enables or disables the controls for the group (close button, glue)
+		 *
+		 * @param : enable/disable (bool)
+		 */
+		setControls: function(state) {
+			_sldsShow(this.el.getElementsByClassName(this.controlClass)[0], state);
+		},
+
+		/*
+		 * method: isFirst
+		 * Is this group the first in the block?
+		 *
+		 * @return : bool
+		 */
+		isFirst: function() {
+			if (this.parent.grpCont.getElementsByClassName(this.class)[0].isSameNode(this.el))
+				return true;
+			else
+				return false;
+		},
+
+		/*
+		 * method: addCond
+		 * Adds a new condition to the group
+		 *
+		 */
+		addCond: function() {
+			var condTempl = document.getElementById("cbds-advfilt-template__condition").children[0],
+				newCond   = condTempl.cloneNode(true),
+				cond      = new Cond(newCond, this);
+
+			this.insertCond(cond);
+			cond.init(); // Initialize the condition AFTER inserting it, otherwise it won't know if it's the first in the group
+		},
+
+		/*
+		 * method: insertCond
+		 * Inserts a new condition to the group node
+		 *
+		 * @param : condition object
+		 */
+		insertCond: function(cond) {
+			this.condWrap.appendChild(cond.el);
+		},
+
+		/*
+		 * method: countConds
+		 * Get the number of conditions in this group
+		 *
+		 * @param : method of retrieving the condition count
+		 *          - data   : gets the cond count from the data attribute
+		 *          - screen : gets the cond count. from the qty of conditions in the group on screen
+		 *          - self   : get the cond count from the current instance		 
+		 */
+		countConds: function(method) {
+			var count;
+			switch(method) {
+				case "data":
+					count = this.el.getAttribute("data-condcount");
+					break;
+				case "screen":
+					count = this.el.getElementsByClassName(this.condClass).length;
+					break;
+				case "self":
+					count = this.condCount;
+					break;
+			}
+			return parseInt(count);
+		},
+
+		/*
+		 * method: delete
+		 * Delete a group
+		 *
+		 */
+		delete: function() {
+			this.parent.grpCont.removeChild(this.el);
+			this.parent.groups.splice(this.parent.groups.indexOf(this), 1);
+			this.parent.updateGroupNos("screen");
+		},
+
+	};
+
+	/* Cond submodule */
+	function Cond(node, group) {
+		this.parent    = group.parent,
+		this.el        = node,
+		this.group     = group,
+		this.no        = null,
+		this.delButton = this.el.getElementsByClassName(this.delButtClass)[0],
+		this.glueBox   = this.el.getElementsByClassName(this.glueBoxClass)[0],
+		this.glueInput = this.el.getElementsByClassName(this.glueInpClass)[0],
+		this.fieldBox  = this.el.getElementsByClassName(this.fieldBoxClass)[0],
+		this.glueCombo = null,
+		this.fieldCombo= null,
+		this.op        = null;
+
+		this.parent.conds.push(this);
+	}
+
+	Cond.prototype = {
+		constructor: Cond,
+
+		class : "slds-expression__row",
+		delButtClass : "cbds-advfilt-cond__delete",
+		glueBoxClass : "cbds-advfilt-cond__glue",
+		glueInpClass : "cbds-advfilt-cond__glue--input",
+		fieldBoxClass : "cbds-advfilt-cond__field",
+
+		/*
+		 * method: getNoFrom
+		 * Gets the condition no. from the node's data attribute
+		 *
+		 * @param : method of retrieving the condition no
+		 *          - data   : gets the cond no from the data attribute
+		 *          - self   : get the cond no from the current instance	
+		 * @return : int
+		 */
+		getNoFrom: function(method) {
+			var no = false;
+			switch (method) {
+				case "data":
+					no = this.el.getAttribute("data-cond-no");
+					break;
+				case "self":
+					no = this.no;
+					break;
+			}
+			return parseInt(no);
+		},
+
+		/*
+		 * method: init
+		 * Initialize the condition
+		 *
+		 */
+		init: function() {
+			if (!this.isFirst()) {
+				this.setCap("delete", true);
+				this.setCap("glue", true);
+			}
+			this.setCap("field", true);
+		},
+
+		/*
+		 * method: setCap
+		 * Set capability with state
+		 *
+		 * @param : Capability name (string)
+		 * @param : state (bool)
+		 */
+		setCap: function(cap, state) {
+			switch(cap) {
+				case "delete":
+					this.setDelete(state);
+					break;
+				case "glue":
+					this.setGlue(state);
+					break;
+				case "field":
+					this.setField(state);
+					break;
+			}
+		},
+
+		/*
+		 * method: setDelete
+		 * Set delete button capability for the condition
+		 *
+		 * @param : state (bool)
+		 */
+		setDelete: function(state) {
+			if (state)
+				_sldsEnable(this.delButton, true);
+			else
+				_sldsEnable(this.delButton, false);
+		},
+
+		/*
+		 * method: setGlue
+		 * Set capability to glue to previous condition
+		 *
+		 * @param : state (bool)
+		 */
+		setGlue: function(state) {
+			if (state) {
+				_sldsEnable(this.glueInput, true);
+				this.glueCombo = new ldsCombobox(this.glueBox, {"onSelect" : false});
+				window.Comboboxes.push(this.glueCombo);
+			} else {
+				_sldsEnable(this.glueInput, false);
+			}
+		},
+
+		/*
+		 * method: setField
+		 * Set capability select a field
+		 *
+		 * @param : state (bool)
+		 */
+		setField: function(state) {
+			if (state) {
+				this.fieldCombo = new ldsCombobox(this.fieldBox, {"onSelect" : this.setOps.bind(this)});
+				window.Comboboxes.push(this.fieldCombo);
+			}
+		},
+
+		/*
+		 * method: setOps
+		 * Responds to the field selector, when a selection is made the operations
+		 * combo should update with the appropriate values for the selected field
+		 *
+		 * @param : val (string)
+		 */
+		setOps: function(val) {
+			this.op = new Operations(this);
+			// testing...
+			console.log(this.op.getComboBox(this.op.getFieldType(val)));
+		},
+
+		/*
+		 * method: isFirst
+		 * Is this the first condition in the group?
+		 *
+		 * @return : bool
+		 */
+		isFirst: function() {
+			return this.el.isSameNode(this.group.el.getElementsByClassName(this.class)[0]);
+		},
+
+	};
+
+	/* Operations submodule */
+	function Operations(cond) {
+		this.cond = cond;
+	}
+
+	Operations.prototype = {
+		constructor : Operations,
+
+		/*
+		 * method: getFieldType
+		 * Get the fieldtype from a given field value
+		 *
+		 * @param  : field value (string)
+		 * @return : field type (string)
+		 */
+		getFieldType : function(val) {
+			var valArray = val.split(":");
+			return valArray[valArray.length - 1];
+		},
+
+		/*
+		 * method: getComboBox
+		 * Get a new operations ComboBox node based on the field type
+		 *
+		 * @return : node
+		 */
+		getComboBox : function(type) {
+			var box = this.getTempl(),
+				ops = this.getOps(type);
+		},
+
+		/*
+		 * method: getOps
+		 * Get an array of operations by using the field type
+		 *
+		 * @return : node
+		 */
+		getOps : function(type) {
+			var ops = {};
+			for (var i = 0; i < typesofdata[type].length; i++) {
+				ops[typesofdata[type][i]] = fLabels[typesofdata[type][i]];
+			}
+			return ops;
+		},
+
+		/*
+		 * method: getTempl
+		 * Get a new operations template node
+		 *
+		 * @return : node
+		 */
+		getTempl : function() {
+			var opTempl = document.getElementById("cbds-advfilt-template__operation-box").children[0],
+				newOp   = opTempl.cloneNode(true);
+			return newOp;
+		}
+	};
 
 	/**
 	  * Section with factory tools
@@ -851,6 +1048,23 @@ function vt_getElementsByName(tagName, elementName) {
 			ops.push(op);
 		}
 		return ops;
+	}
+
+	function _sldsShow(el, state) {
+		if (state) {
+			el.classList.add("slds-show");
+			el.classList.remove("slds-hide");
+		} else {
+			el.classList.add("slds-hide");
+			el.classList.remove("slds-show");
+		}
+	}
+
+	function _sldsEnable(el, state) {
+		if (state)
+			el.removeAttribute("disabled");
+		else
+			el.setAttribute("disabled", "disabled");
 	}
 
 	var typesofdata = new Array();
