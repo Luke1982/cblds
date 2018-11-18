@@ -374,65 +374,6 @@ function vt_getElementsByName(tagName, elementName) {
 			Group.add(this);
 		},
 
-		/*
-		 * Method: 'buildCondObj'
-		 * 
-		 * Builds a condition object, only call this
-		 * AFTER the node has been appended to the
-		 * group div
-		 *
-		 * @param  : A row/cond node
-		 * @return : A condition (obj)
-		 */
-		// buildCondObj: function(condNode) {
-		// 	_initCombos(condNode, "slds-combobox");
-		// 	var me = this,
-		// 		row = {
-		// 		"el"        : condNode,
-		// 		"groupNo"   : me.getCondGroupNo(condNode),
-		// 		"rowNo"     : (me.rowCnt + 1),
-		// 		"opWrapper" : condNode.getElementsByClassName("adv-filt-operator-wrapper")[0],
-		// 		"fieldCombo": me.getFieldCombo(condNode),
-		// 		"datePicker": false,
-		// 		"dateButt"  : condNode.getElementsByClassName("adv-filt-row__date-but")[0]
-		// 	};
-		// 	this.rowCnt++;
-		// 	return row;
-		// },
-
-		/*
-		 * Method: 'getCondGroupNo'
-		 * Get the group no. for a certain condition
-		 *
-		 * @param  : element that lives in the group
-		 * @return : group no. (int)
-		 */
-		// getCondGroupNo: function(el) {
-		// 	var groupEl = _findUp(el, ".slds-expression__group");
-		// 	return parseInt(groupEl.getAttribute("data-group-no"));
-		// },
-
-		/*
-		 * Method: 'getCondGroupByNo'
-		 * Get the group node by its number
-		 *
-		 * @param  : number (int)
-		 * @return : group node
-		 */
-		// getCondGroupByNo: function(no) {
-		// 	var groups = this.groups,
-		// 		retGroup = false;
-
-		// 	for (var i = groups.length - 1; i >= 0; i--) {
-		// 		(function(_i){
-		// 			if (parseInt(groups[_i].getAttribute("data-group-no")) == no) {
-		// 				retGroup = groups[_i];
-		// 			}
-		// 		})(i);
-		// 	}
-
-		// 	return retGroup;
-		// },
 
 		/*
 		 * Method: 'handleClicks'
@@ -804,9 +745,12 @@ function vt_getElementsByName(tagName, elementName) {
 		this.glueBox   = this.el.getElementsByClassName(this.glueBoxClass)[0],
 		this.glueInput = this.el.getElementsByClassName(this.glueInpClass)[0],
 		this.fieldBox  = this.el.getElementsByClassName(this.fieldBoxClass)[0],
+		this.opWrapper = this.el.getElementsByClassName(this.opsWrapperClass)[0],
 		this.glueCombo = null,
 		this.fieldCombo= null,
-		this.op        = null;
+		this.op        = null,
+		this.opCombo   = null,
+		this.vals      = [];
 
 		this.parent.conds.push(this);
 	}
@@ -819,6 +763,9 @@ function vt_getElementsByName(tagName, elementName) {
 		glueBoxClass : "cbds-advfilt-cond__glue",
 		glueInpClass : "cbds-advfilt-cond__glue--input",
 		fieldBoxClass : "cbds-advfilt-cond__field",
+		opsWrapperClass : "cbds-advfilt-cond__opswrapper",
+		valueClass : "cbds-advfilt-cond__value",
+		valueInputClass : "cbds-advfilt-cond__value--input",
 
 		/*
 		 * method: getNoFrom
@@ -853,6 +800,38 @@ function vt_getElementsByName(tagName, elementName) {
 				this.setCap("glue", true);
 			}
 			this.setCap("field", true);
+			this.setOps(Field.getType(this.fieldCombo.getVal()));
+			this.getVals();
+			this.setVals();
+		},
+
+		/*
+		 * method: getVals
+		 * Get the value nodes and objects for this condition
+		 *
+		 */
+		getVals: function() {
+			var vals = this.el.getElementsByClassName(this.valueClass);
+			for (var i = 0; i < vals.length; i++) {
+				this.vals.push(new Value(this, vals[i]));
+			}
+		},
+
+		/*
+		 * method: setVals
+		 * Updates the value objects and nodes to reflect the current
+		 * state of the condition. Does things like enable datepicker
+		 * when needed, show two value input when needed etc.
+		 *
+		 */
+		setVals: function() {
+			var curVal  = this.fieldCombo.getVal(),
+			    curType = Field.getType(curVal),
+			    curOp   = this.op.combo.getVal();
+
+			for (var i = 0; i < this.vals.length; i++) {
+				this.vals[i].setup(curType, curOp);
+			}
 		},
 
 		/*
@@ -907,14 +886,35 @@ function vt_getElementsByName(tagName, elementName) {
 
 		/*
 		 * method: setField
-		 * Set capability select a field
+		 * Set capability to select a field
 		 *
 		 * @param : state (bool)
 		 */
 		setField: function(state) {
 			if (state) {
-				this.fieldCombo = new ldsCombobox(this.fieldBox, {"onSelect" : this.setOps.bind(this)});
+				this.fieldCombo = new ldsCombobox(this.fieldBox, {"onSelect" : this.react.bind(this)});
 				window.Comboboxes.push(this.fieldCombo);
+			}
+		},
+
+		/*
+		 * method: react
+		 * General method used when anything about the condition changes, either selection
+		 * of a field or selection of an operation
+		 *
+		 * @param : value of the combo
+		 */
+		react: function(val) {
+			switch (this.constructor.name) {
+				case "Cond":
+					this.setOps(val);
+					this.setVals();
+					break;
+				case "Operations":
+					// 'this' is bound to the operation instance here
+					this.onSelect();
+					this.cond.setVals();
+					break;
 			}
 		},
 
@@ -926,9 +926,22 @@ function vt_getElementsByName(tagName, elementName) {
 		 * @param : val (string)
 		 */
 		setOps: function(val) {
-			this.op = new Operations(this);
-			// testing...
-			console.log(this.op.getComboBox(this.op.getFieldType(val)));
+			this.op   = new Operations(this);
+			
+			var fieldType = Field.getType(val);
+			this.op.getComboBox(fieldType);
+			this.replOps();
+		},
+
+		/*
+		 * method: replOps
+		 * Inserts the operations combo in the wrapper DIV and
+		 * removes the current content of the operations wrapper
+		 *
+		 */
+		replOps: function(val) {
+			this.opWrapper.innerHTML = "";
+			this.opWrapper.appendChild(this.op.combo.el);
 		},
 
 		/*
@@ -945,33 +958,59 @@ function vt_getElementsByName(tagName, elementName) {
 
 	/* Operations submodule */
 	function Operations(cond) {
-		this.cond = cond;
+		this.cond  = cond,
+		this.combo = null;
 	}
 
 	Operations.prototype = {
 		constructor : Operations,
-
-		/*
-		 * method: getFieldType
-		 * Get the fieldtype from a given field value
-		 *
-		 * @param  : field value (string)
-		 * @return : field type (string)
-		 */
-		getFieldType : function(val) {
-			var valArray = val.split(":");
-			return valArray[valArray.length - 1];
-		},
+		theseNeedTwo : ["bw"],
 
 		/*
 		 * method: getComboBox
-		 * Get a new operations ComboBox node based on the field type
+		 * Get a new operations ComboBox object based on the field type
 		 *
-		 * @return : node
+		 * @param  : type of field (typeofdata) (string)
+		 * @return : ldsCombobox object
 		 */
 		getComboBox : function(type) {
-			var box = this.getTempl(),
-				ops = this.getOps(type);
+			var boxNode  = this.getTempl("box"),
+				listNode = boxNode.getElementsByClassName("slds-listbox")[0],
+				ops      = this.getOps(type),
+				box      = null;
+
+			for (op in ops) {
+				listNode.appendChild(this.buildItemNode(op, ops[op]));
+			}
+			box = new ldsCombobox(boxNode, {"onSelect" : this.cond.react.bind(this)});
+			window.Comboboxes.push(box);
+			this.combo = box;
+		},
+
+		/*
+		 * method: onSelect
+		 * onselect method for the operations combo
+		 *
+		 * @param  : value returned from the ldsCombobox instance
+		 */
+		onSelect : function(val) {
+			console.log(val);
+		},
+
+		/*
+		 * method: buildItemNode
+		 * Build an item node, provided an operations object
+		 *
+		 * @param  : operations value
+		 * @param  : operations label
+		 * @return : node
+		 */
+		buildItemNode : function(val,label) {
+			var item = this.getTempl("item"),
+				span = item.getElementsByClassName("slds-truncate")[0];
+			item.setAttribute("data-value", val);
+			span.title = span.innerHTML = label;
+			return item;
 		},
 
 		/*
@@ -992,12 +1031,169 @@ function vt_getElementsByName(tagName, elementName) {
 		 * method: getTempl
 		 * Get a new operations template node
 		 *
-		 * @return : node
+		 * @param  : type of template (box / item) (string)
+		 * @return : either combo no (no items inside) of item node
 		 */
-		getTempl : function() {
-			var opTempl = document.getElementById("cbds-advfilt-template__operation-box").children[0],
-				newOp   = opTempl.cloneNode(true);
-			return newOp;
+		getTempl : function(type) {
+			var templ   = document.getElementById("cbds-advfilt-template__operation-" + type).children[0],
+				newNode = templ.cloneNode(true);
+			return newNode;
+		},
+
+		/*
+		 * method: needsTwoVals
+		 * Does this operation require two values?
+		 *
+		 * @param  : type of operator (string)
+		 * @return : bool
+		 */
+		needsTwoVals : function(type) {
+			if (this.theseNeedTwo.indexOf(type) > -1)
+				return true;
+			else
+				return false;
+		},
+
+	};
+
+	/* Field submodule */
+	function Field() {
+
+	}
+
+	/*
+	 * Static method: getType
+	 * Deduces the field type from a value
+	 *
+	 * @param : fieldvalue (string)
+	 * @return: typeofdata (string)
+	 */
+	Field.getType = function(val) {
+		var valArray = val.split(":");
+		return valArray[valArray.length - 1];
+	}
+
+	/* Value submodule */
+	function Value(cond, node) {
+		this.cond       = cond,
+		this.val        = null,
+		this.el         = node,
+		this.dpActive   = false,
+		this.input      = this.el.getElementsByClassName(this.inputClass)[0],
+		this.dateButt   = this.el.getElementsByClassName(this.dateButtClass)[0];
+	}
+
+	Value.prototype = {
+		constructor : Value,
+
+		inputClass : "cbds-advfilt-cond__value--input",
+		dateButtClass : "cbds-advfilt-cond__value--datebutt",
+
+		/*
+		 * method : setup
+		 * Setup the value according to its requirements
+		 *
+		 * @param : current field type of the condition (string)
+		 * @param : current operation type of the condition (string)
+		 */
+		setup : function(fieldType, opType) {
+			switch(fieldType) {
+				case "D":
+					this.setCap("datepick", true);
+					break;
+				case "DT":
+					this.setCap("datetimepick", true);
+					break;
+				default:
+					this.setCap("datepick", false);
+					break;
+			}
+
+			var needsTwo = this.cond.op.needsTwoVals(opType);
+			if (needsTwo && this.isSecond()) {
+				_sldsShow(this.el, true);
+			} else if (!needsTwo && this.isSecond()) {
+				_sldsShow(this.el, false);
+			}
+		},
+
+		/*
+		 * method : isSecond
+		 * Is this the second value box?
+		 *
+		 * @return : (bool)
+		 */
+		isSecond : function() {
+			return this.el.isSameNode(this.cond.vals[1].el);
+		},
+
+		/*
+		 * method : setCap
+		 * enable or diable a capability for this value
+		 *
+		 * @param : capability name (string)
+		 * @param : capability state (bool)
+		 */
+		setCap : function(name, state) {
+			switch(name) {
+				case "datepick":
+					this.setDTPick("date", state);
+					break;
+				case "datetimepick":
+					this.setDTPick("datetime", state);
+					break;
+			}
+		},
+
+		/*
+		 * method : setDTPick
+		 * set the state and type of the date / datetimepicker for this value
+		 *
+		 * @param : type of picker (date/datetime) (string)
+		 * @param : state (bool)
+		 */
+		setDTPick : function(name, state) {
+			var needsTime  = name == "datetime" ? true : false,
+			    dateFormat = this.getDateFormat(needsTime);
+
+			Calendar.setup ({
+				inputField : this.input,
+				ifFormat : dateFormat,
+				showsTime : needsTime,
+				button : this.dateButt,
+				singleClick : true,
+				step : 1
+			});
+
+			_sldsEnable(this.dateButt, state);
+		},
+
+		/*
+		 * method: getDateFormat
+		 * Gets a correctly formatted date string for the datepicker
+		 * based on the current user settings
+		 *
+		 * @param : include the time format in the string? (bool)
+		 */
+		getDateFormat: function(needsTime) {
+			var dateFormat;
+			switch (window.userDateFormat) {
+				case "yyyy-mm-dd":
+					dateFormat = "%Y-%m-%d";
+					break;
+				case "dd-mm-yyyy":
+					dateFormat = "%d-%m-%Y";
+					break;
+				case "mm-dd-yyyy":
+					dateFormat = "%m-%d-%Y";
+					break;
+				default:
+					dateFormat = "%d-%m-%Y";
+			}
+			if (needsTime)
+				dateFormat += " %H:%M";
+
+			return dateFormat;
 		}
 	};
 
@@ -1029,25 +1225,6 @@ function vt_getElementsByName(tagName, elementName) {
 				"onSelect" : false
 			}));
 		}
-	}
-
-	function _getToDFromVal(val) {
-		var segments = val.split(":");
-		return segments[segments.length - 1];
-	}
-
-	function _getOpsByToD(tod) {
-		var operations = typesofdata[tod],
-			ops = [];
-
-		for (var i = operations.length - 1; i >= 0; i--) {
-			var op = {
-				"value" : operations[i],
-				"label" : fLabels[operations[i]]
-			};
-			ops.push(op);
-		}
-		return ops;
 	}
 
 	function _sldsShow(el, state) {

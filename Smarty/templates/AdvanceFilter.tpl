@@ -407,7 +407,7 @@ function add_grouping_criteria(grouping_criteria) {ldelim}
             <div class="slds-grid slds-gutters_xx-small">
                 <div class="slds-col slds-size_1-of-12">
                     <div class="slds-form-element">
-                        <label class="slds-form-element__label">Glue</label>
+                        {*<label class="slds-form-element__label"></label>*}
                         <div class="slds-form-element__control">
                             <div class="slds-combobox_container">
                                 <div class="slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click cbds-advfilt-cond__glue" aria-expanded="false" aria-haspopup="listbox" role="combobox">
@@ -447,7 +447,7 @@ function add_grouping_criteria(grouping_criteria) {ldelim}
                 </div>
                 <div class="slds-col">
                     <div class="slds-form-element">
-                        <label class="slds-form-element__label">{$APP.LBL_GENERAL_FIELDS}</label>
+                        {*<label class="slds-form-element__label">{$APP.LBL_GENERAL_FIELDS}</label>*}
                         <div class="slds-form-element__control">
                             <div class="slds-combobox_container">
                                 <div class="slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click cbds-advfilt-cond__field" aria-expanded="false" aria-haspopup="listbox" role="combobox">
@@ -488,34 +488,52 @@ function add_grouping_criteria(grouping_criteria) {ldelim}
                 </div>
                 <div class="slds-col slds-grow-none">
                     <div class="slds-form-element">
-                        <label class="slds-form-element__label">Operator</label>
-                        <div class="slds-form-element__control adv-filt-operator-wrapper">
-                            <div class="slds-combobox_container">
-                            	{* Filled by JS *}
-                            </div>
+                        {*<label class="slds-form-element__label">Operator</label>*}
+                        <div class="slds-form-element__control cbds-advfilt-cond__opswrapper">
+                        	{* Filled by JS *}
                         </div>
                     </div>
                 </div>
-                <div class="slds-col">
-                    <div class="slds-form-element">
-                        <label class="slds-form-element__label">Value</label>
-                        <div class="slds-form-element__control">
-                            <input class="slds-input adv-filt-row__main-input" type="text" value="">
+                <div class="slds-col slds-form_horizontal">
+                    <div class="slds-form-element cbds-advfilt-cond__value">
+                        <div class="slds-form-element__control slds-grid slds-p-horizontal_none">
+                        	<div class="slds-col">
+                            	<input class="slds-input cbds-advfilt-cond__value--input" type="text" value="">
+                            </div>
+                            <div class="slds-col">
+		                        <button type="button" disabled="disabled" class="cbds-advfilt-cond__value--datebutt slds-button slds-button_icon slds-button_icon-border-filled" title="{$APP.LBL_ACTION_DATE}" data-onclick="pick-date">
+		                            <svg class="slds-button__icon" aria-hidden="true">
+		                                <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#event"></use>
+		                            </svg>
+		                            <span class="slds-assistive-text">
+		                               {$APP.LBL_ACTION_DATE} 
+		                            </span>
+		                        </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="slds-form-element slds-hide cbds-advfilt-cond__value">
+                        <div class="slds-form-element__control slds-grid slds-p-horizontal_none">
+                        	<div class="slds-col">
+                            	<input class="slds-input cbds-advfilt-cond__value--input" type="text" value="">
+                            </div>
+                            <div class="slds-col">
+		                        <button type="button" disabled="disabled" class="cbds-advfilt-cond__value--datebutt slds-button slds-button_icon slds-button_icon-border-filled" title="{$APP.LBL_ACTION_DATE}" data-onclick="pick-date">
+		                            <svg class="slds-button__icon" aria-hidden="true">
+		                                <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#event"></use>
+		                            </svg>
+		                            <span class="slds-assistive-text">
+		                               {$APP.LBL_ACTION_DATE} 
+		                            </span>
+		                        </button>
+                            </div>
                         </div>
                     </div>
                 </div>
                 <div class="slds-col slds-grow-none slds-size_1-of-12">
                     <div class="slds-form-element">
-                    	<span class="slds-form-element__label">&nbsp;</span>
+                    	{*<span class="slds-form-element__label">&nbsp;</span>*}
                         <div class="slds-form-element__control">
-                            <button type="button" disabled="disabled" class="adv-filt-row__date-but slds-button slds-button_icon slds-button_icon-border-filled" title="{$APP.LBL_ACTION_DATE}" data-onclick="pick-date">
-                                <svg class="slds-button__icon" aria-hidden="true">
-                                    <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#event"></use>
-                                </svg>
-                                <span class="slds-assistive-text">
-                                   {$APP.LBL_ACTION_DATE} 
-                                </span>
-                            </button>
                             <button type="button" disabled="disabled" class="slds-button slds-button_icon slds-button_icon-border-filled cbds-advfilt-cond__delete" title="{$APP.LBL_DELETE_BUTTON}" data-onclick="delete-cond">
                                 <svg class="slds-button__icon" aria-hidden="true">
                                     <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#delete"></use>
