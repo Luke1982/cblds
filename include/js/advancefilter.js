@@ -385,13 +385,13 @@ function vt_getElementsByName(tagName, elementName) {
 			var onClick = e.target.getAttribute("data-onclick");
 			switch(onClick) {
 				case "add-condition":
-					this.getGroupByButton(e.target).addCond();
+					this.getByButton("groups", e.target).addCond();
 					break;
 				case "add-group":
 					Group.add(this);
 					break;
 				case "delete-group":
-					this.getGroupByButton(e.target).delete();
+					this.getByButton("groups", e.target).delete();
 					break;
 				default:
 					return false;
@@ -399,24 +399,26 @@ function vt_getElementsByName(tagName, elementName) {
 		},
 
 		/*
-		 * Method: 'getGroupByButton'
-		 * Gets the group object for a certain button
+		 * Method: 'getByButton'
+		 * Gets the group or condition object for a certain button
 		 *
+		 * @param  : group / condition ("groups" or "conds") (string)
 		 * @param  : button node
-		 * @return : group object
+		 * @return : group or condition object
 		 */
-		getGroupByButton: function(node) {
-			var groupNode = _findUp(node, ".slds-expression__group"),
-				group     = false,
-				me        = this;
-			for (var i = 0; i < me.groups.length; i++) {
+		getByButton: function(type, node) {
+			var elName = type == "groups" ? "group" : "row",
+			    upNode = _findUp(node, ".slds-expression__" + elName),
+				obj    = false,
+				me     = this;
+			for (var i = 0; i < me[type].length; i++) {
 				(function(_i){
-					if (me.groups[_i].el.isSameNode(groupNode)) {
-						group = me.groups[_i];
+					if (me[type][_i].el.isSameNode(upNode)) {
+						obj = me[type][_i];
 					}
 				})(i);
 			}
-			return group;
+			return obj;
 		},
 
 		/*
