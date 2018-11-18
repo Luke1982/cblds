@@ -348,7 +348,7 @@ function vt_getElementsByName(tagName, elementName) {
 		/* Public attributes */
 		this.el     = el,
 		this.groups = [],
-		this.rowCnt = 0,
+		this.condCnt= 0,
 		this.grpCnt = 1,
 		this.conds  = [],
 		this.grpCont= document.getElementById("cbds-advfilt-groups");
@@ -364,6 +364,8 @@ function vt_getElementsByName(tagName, elementName) {
 
 	cbAdvancedFilter.prototype = {
 		constructor: cbAdvancedFilter,
+
+		condClass : "slds-expression__row",
 
 		/*
 		 * Method: 'init'
@@ -392,6 +394,9 @@ function vt_getElementsByName(tagName, elementName) {
 					break;
 				case "delete-group":
 					this.getByButton("groups", e.target).delete();
+					break;
+				case "delete-cond":
+					this.getByButton("conds", e.target).delete();
 					break;
 				default:
 					return false;
@@ -431,7 +436,29 @@ function vt_getElementsByName(tagName, elementName) {
 			for (var i = this.groups.length - 1; i >= 0; i--) {
 				this.groups[i].setNo(this.groups[i].getNoFrom(method));
 			}
-		}
+		},
+
+
+		/*
+		 * method: countConds
+		 * Get the number of conditions in the entire block
+		 *
+		 * @param : method of retrieving the condition count
+		 *          - screen : gets the cond count. from the qty of conditions in the advanced filter block on screen
+		 *          - self   : get the cond count from the current instance		 
+		 */
+		countConds: function(method) {
+			var count;
+			switch(method) {
+				case "screen":
+					count = this.el.getElementsByClassName(this.condClass).length - 1; // -1 to exclude the template
+					break;
+				case "self":
+					count = this.condCnt;
+					break;
+			}
+			return parseInt(count);
+		},
 
 	}
 
@@ -543,7 +570,6 @@ function vt_getElementsByName(tagName, elementName) {
 				_initCombos(this.el, "cbds-advfilt-group__gluecombo");
 			this.setNo(this.getNoFrom("screen"));
 			this.addCond();
-			this.setCondCount(this.countConds("screen"));
 		},
 
 		/*
@@ -714,8 +740,12 @@ function vt_getElementsByName(tagName, elementName) {
 				this.setCap("delete", true);
 				this.setCap("glue", true);
 			}
+			this.group.setCondCount(this.group.countConds("screen"));
+			this.parent.condCnt = this.parent.countConds("screen");
+
 			this.setCap("field", true);
 			this.setOps(Field.getType(this.fieldCombo.getVal()));
+
 			this.getVals();
 			this.setVals();
 		},
@@ -867,6 +897,18 @@ function vt_getElementsByName(tagName, elementName) {
 		 */
 		isFirst: function() {
 			return this.el.isSameNode(this.group.el.getElementsByClassName(this.class)[0]);
+		},
+
+		/*
+		 * method: delete
+		 * Delete this condition
+		 *
+		 */
+		delete: function() {
+			this.group.condWrap.removeChild(this.el);
+			this.parent.conds.splice(this.parent.conds.indexOf(this), 1);
+			this.group.setCondCount(this.group.countConds("screen"));
+			this.parent.condCnt = this.parent.countConds("screen");
 		},
 
 	};
