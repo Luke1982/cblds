@@ -912,7 +912,7 @@ function vt_getElementsByName(tagName, elementName) {
 					break;
 				case "Operations":
 					// 'this' is bound to the operation instance here
-					this.onSelect();
+					this.onSelect(val);
 					this.cond.setVals();
 					break;
 			}
@@ -1110,21 +1110,28 @@ function vt_getElementsByName(tagName, elementName) {
 			}
 
 			var needsTwo = this.cond.op.needsTwoVals(opType);
-			if (needsTwo && this.isSecond()) {
+			if (needsTwo && (this.getSeq() == 2)) {
 				_sldsShow(this.el, true);
-			} else if (!needsTwo && this.isSecond()) {
+			} else if (!needsTwo && (this.getSeq() == 2)) {
 				_sldsShow(this.el, false);
 			}
 		},
 
 		/*
-		 * method : isSecond
-		 * Is this the second value box?
+		 * method : getSeq
+		 * Get the sequence of the value box in respect to its
+		 * parent condition
 		 *
-		 * @return : (bool)
+		 * @return : (int)
 		 */
-		isSecond : function() {
-			return this.el.isSameNode(this.cond.vals[1].el);
+		getSeq : function() {
+			var seq = false;
+			for (var i = 0; i < this.cond.vals.length; i++) {
+				if (this.el.isSameNode(this.cond.vals[i].el)) {
+					seq = i + 1;
+				}
+			}
+			return parseInt(seq);
 		},
 
 		/*
