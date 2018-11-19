@@ -1110,7 +1110,8 @@ function vt_getElementsByName(tagName, elementName) {
 		this.el         = node,
 		this.dpActive   = false,
 		this.input      = this.el.getElementsByClassName(this.inputClass)[0],
-		this.dateButt   = this.el.getElementsByClassName(this.dateButtClass)[0];
+		this.dateButt   = this.el.getElementsByClassName(this.dateButtClass)[0],
+		this.hasError   = false;
 	}
 
 	Value.prototype = {
@@ -1247,10 +1248,62 @@ function vt_getElementsByName(tagName, elementName) {
 				curVal    = this.input.value;
 			switch(fieldType) {
 				case "N":
-					this.setError(true);
+					// Check if valid number
+					if (cbNumber.isFloat(curVal) || cbNumber.isInt(curVal)) {
+						return !this.setError(false);
+					} else {
+						return !this.setError(true);
+					}
+					break;
+				case "NN":
+					// Check if valid negative no.
+					if ( (cbNumber.isFloat(curVal) || cbNumber.isInt(curVal)) && curVal.indexOf("-") == 0) {
+						return !this.setError(false);
+					} else {
+						return !this.setError(true);
+					}					
+					break;
+				case "I":
+					if (cbNumber.isInt(curVal)) {
+						return !this.setError(false);
+					} else {
+						return !this.setError(true);
+					}
+					break;
+				case "D":
+					// Check if valid date
+					break;
+				case "DT":
+					// Check if valid datetime
+					break;
+				case "C":
+					// Check if valid checkbox
+					if (curVal === "yes" || curVal === "no" || curVal === "1" || curVal === "0") {
+						return !this.setError(false);
+					} else {
+						return !this.setError(true);
+					}
+					break;
+				case "E":
+					// Check if valid email
+					var eMailPatt = /[\w\.]+\@[\w]+\.[a-zA-Z]{2,3}(\.[a-zA-Z]{2,3})?/g;
+					if (eMailPatt.test(curVal)) {
+						return !this.setError(false);
+					} else {
+						return !this.setError(true);
+					}
+					break;
+				case "T":
+					// Check if valid time
+					break;
+				case "V":
+					// Check if valid varchar
+					break;
+				case "O":
+					// Check if valid RecurringType/Duration_minutes
 					break;
 				default:
-					this.setError(false);
+					return !this.setError(false);
 			}
 		},
 
@@ -1259,12 +1312,18 @@ function vt_getElementsByName(tagName, elementName) {
 		 * Sets the error state of the current value
 		 *
 		 * @param : (bool)
+		 * @return: (bool)
 		 */
 		setError: function(state) {
-			if (state)
+			if (state) {
 				this.input.classList.add("slds-has-error");
-			else
+			    this.hasError = state;
+			} else {
 				this.input.classList.remove("slds-has-error");
+			    this.hasError = state;
+			}
+
+			return state;
 		}
 	};
 
