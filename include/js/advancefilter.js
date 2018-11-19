@@ -351,6 +351,7 @@ function vt_getElementsByName(tagName, elementName) {
 		this.condCnt= 0,
 		this.grpCnt = 1,
 		this.conds  = [],
+		this.vals   = [],
 		this.grpCont= document.getElementById("cbds-advfilt-groups");
 
 		/* Startup */
@@ -360,12 +361,14 @@ function vt_getElementsByName(tagName, elementName) {
 
 		/* Global listeners */
 		_on(window, "click", this.handleClicks, this); // Please don't bind clicks to elements
+		_on(window, "keyup", this.handleKeyUp, this); // Please don't bind keyup to elements
 	}
 
 	cbAdvancedFilter.prototype = {
 		constructor: cbAdvancedFilter,
 
 		condClass : "slds-expression__row",
+		valClasses : ["cbds-advfilt-cond__value--validate"],
 
 		/*
 		 * Method: 'init'
@@ -375,7 +378,6 @@ function vt_getElementsByName(tagName, elementName) {
 		init: function() {
 			Group.add(this);
 		},
-
 
 		/*
 		 * Method: 'handleClicks'
@@ -400,6 +402,31 @@ function vt_getElementsByName(tagName, elementName) {
 					break;
 				default:
 					return false;
+			}
+		},
+
+		/*
+		 * Method: 'handleKeyUp'
+		 * Handle keyup for the entire advanced search block
+		 *
+		 * @param  : event object
+		 */
+		handleKeyUp: function(e) {
+			if (this.needsValidation(e.target)) {
+				console.log("needs val");				
+			}
+		},
+
+		/*
+		 * Method: 'needsValidation'
+		 * Does this element need any validation?
+		 *
+		 * @param  : event object
+		 */
+		needsValidation: function(node) {
+			for (var i = 0; i < node.classList.length; i++) {
+				if (this.valClasses.indexOf(node.classList[i]) > -1)
+					return true;
 			}
 		},
 
@@ -742,23 +769,53 @@ function vt_getElementsByName(tagName, elementName) {
 			}
 			this.group.setCondCount(this.group.countConds("screen"));
 			this.parent.condCnt = this.parent.countConds("screen");
+			this.setNo(this.parent.condCnt);
 
 			this.setCap("field", true);
 			this.setOps(Field.getType(this.fieldCombo.getVal()));
 
-			this.getVals();
+			this.getVals("node");
 			this.setVals();
+		},
+
+		/*
+		 * method: setNo
+		 * Set the condition no. both in the object as the data attribute
+		 *
+		 */
+		setNo: function(no) {
+			this.no = no;
+			this.el.getAttribute("data-cond-no", no);
 		},
 
 		/*
 		 * method: getVals
 		 * Get the value nodes and objects for this condition
 		 *
+		 * @param : method of retrieving values (string)
+		 *           - "node" : get the value nodes in this condition node
+		 *           - "obj"  : get the value objects that have this condition object set
+		 *
+		 * @return: value objects, only when method is "obj" (array)
+		 *
 		 */
-		getVals: function() {
-			var vals = this.el.getElementsByClassName(this.valueClass);
-			for (var i = 0; i < vals.length; i++) {
-				this.vals.push(new Value(this, vals[i]));
+		getVals: function(method) {
+			switch (method) {
+				case "node":
+					var vals = this.el.getElementsByClassName(this.valueClass);
+					for (var i = 0; i < vals.length; i++) {
+						this.parent.vals.push(new Value(this, vals[i]));
+					}
+					break;
+				case "obj":
+					var values = [];
+					for (var i = 0; i < this.parent.vals.length; i++) {
+						if(this.parent.vals[i].cond === this) {
+							values.push(this.parent.vals[i]);
+						}
+					}
+					return values;					
+					break;
 			}
 		},
 
@@ -774,8 +831,10 @@ function vt_getElementsByName(tagName, elementName) {
 			    curType = Field.getType(curVal),
 			    curOp   = this.op.combo.getVal();
 
-			for (var i = 0; i < this.vals.length; i++) {
-				this.vals[i].setup(curType, curOp);
+			for (var i = 0; i < this.parent.vals.length; i++) {
+				if (this.parent.vals[i].cond === this) {
+					this.parent.vals[i].setup(curType, curOp);
+				}
 			}
 		},
 
@@ -951,7 +1010,6 @@ function vt_getElementsByName(tagName, elementName) {
 		 * @param  : value returned from the ldsCombobox instance
 		 */
 		onSelect : function(val) {
-			console.log(val);
 		},
 
 		/*
@@ -1033,6 +1091,7 @@ function vt_getElementsByName(tagName, elementName) {
 	/* Value submodule */
 	function Value(cond, node) {
 		this.cond       = cond,
+		this.condNo     = cond.no,
 		this.val        = null,
 		this.el         = node,
 		this.dpActive   = false,
@@ -1082,9 +1141,11 @@ function vt_getElementsByName(tagName, elementName) {
 		 * @return : (int)
 		 */
 		getSeq : function() {
-			var seq = false;
-			for (var i = 0; i < this.cond.vals.length; i++) {
-				if (this.el.isSameNode(this.cond.vals[i].el)) {
+			var seq  = false,
+			    vals = this.cond.getVals("obj");
+
+			for (var i = 0; i < vals.length; i++) {
+				if (this.el.isSameNode(vals[i].el)) {
 					seq = i + 1;
 				}
 			}

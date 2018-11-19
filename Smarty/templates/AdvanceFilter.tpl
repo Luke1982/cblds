@@ -498,7 +498,7 @@ function add_grouping_criteria(grouping_criteria) {ldelim}
                     <div class="slds-form-element cbds-advfilt-cond__value">
                         <div class="slds-form-element__control slds-grid slds-p-horizontal_none">
                         	<div class="slds-col">
-                            	<input class="slds-input cbds-advfilt-cond__value--input" type="text" value="">
+                            	<input class="slds-input cbds-advfilt-cond__value--input cbds-advfilt-cond__value--validate" type="text" value="">
                             </div>
                             <div class="slds-col">
 		                        <button type="button" disabled="disabled" class="cbds-advfilt-cond__value--datebutt slds-button slds-button_icon slds-button_icon-border-filled" title="{$APP.LBL_ACTION_DATE}" data-onclick="pick-date">
