@@ -934,6 +934,10 @@ function vt_getElementsByName(tagName, elementName) {
 					this.cond.setVals();
 					break;
 			}
+			var vals = this.getVals("obj");
+			for (var i = 0; i < vals.length; i++) {
+				vals[i].validate();
+			}
 		},
 
 		/*
@@ -1295,6 +1299,11 @@ function vt_getElementsByName(tagName, elementName) {
 					break;
 				case "T":
 					// Check if valid time
+					if (this.isTime(curVal)) {
+						return !this.setError(false);
+					} else {
+						return !this.setError(true);
+					}
 					break;
 				case "V":
 					// Check if valid varchar
@@ -1305,6 +1314,24 @@ function vt_getElementsByName(tagName, elementName) {
 				default:
 					return !this.setError(false);
 			}
+		},
+
+		/*
+		 * method: isTime
+		 * Is this a valid time?
+		 *
+		 * @param : (string)
+		 * @return: (bool)
+		 */
+		isTime: function(time) {
+			var hours  = window.userHourFormat == "am/pm" ? 12 : 23,
+			    patt   = hours == 23 ? /^[0-9]{1,2}\:[0-9]{2}$/ : /^[0-9]{1,2}\:[0-9]{2}[ ]?(am|pm)$/,
+			    isTime = false; // Assume the worst
+
+			if (patt.test(time) && parseInt(time.split(":")[0]) <= hours && parseInt(time.split(":")[1]) <= 59) {
+				isTime = true;
+			}
+			return isTime;
 		},
 
 		/*
