@@ -5885,3 +5885,267 @@ addOnloadEvent(initCbdsComboboxes);
 	return cbNumber;
 
 });
+
+/****
+	* cbVal
+	* @author: MajorLabel <info@majorlabel.nl>
+	* @license GNU / GPL v2
+	*/
+(function cbvalModule(factory){
+
+	if (typeof define === "function" && define.amd) {
+		define(factory);
+	} else if (typeof module != "undefined" && typeof module.exports != "undefined") {
+		module.exports = factory();
+	} else {
+		window["cbVal"] = factory();
+	}
+
+})(function cbvalFactory(){
+
+	/**
+	 * @class cbVal
+	 *
+	 * @param : typeofdata (string) (http://corebos.org/documentation/doku.php?id=en:devel:field_structure&s[]=typeofdata)
+	 * @param : value to validate
+	 *
+	 * @return: does the value validate? (bool) 
+	 */
+	function cbVal(type, val) {
+			switch(type) {
+				case "N":
+					// Check if valid number
+					return cbVal.isNum(val);
+					break;
+				case "NN":
+					// Check if valid negative no.
+					return cbVal.isNegNum(val);
+					break;
+				case "I":
+					// Check if valid Integer
+					return cbVal.isInt(val);
+					break;
+				case "D":
+					// Check if valid date
+					return cbVal.isDate(val);
+					break;
+				case "DT":
+					// Check if valid datetime
+					return cbVal.isDateTime(val);
+					break;
+				case "C":
+					// Check if valid checkbox
+					return cbVal.isValidCheckBoxVal(val);
+					break;
+				case "E":
+					// Check if valid email
+					return cbVal.isEmail(val);
+					break;
+				case "T":
+					// Check if valid time
+					return cbVal.isTime(val);
+					break;
+				case "V":
+					// Check if valid varchar
+					return cbVal.isValidVarchar(val);
+					break;
+				case "O":
+					// Check if valid RecurringType/Duration_minutes
+					break;
+				default:
+					return false;
+					break;
+			}
+	}
+
+	/*
+	 * Static properties
+	 */
+	cbVal.validCheckBoxVals = ["yes", "no", "1", "0", 0, 1];
+	cbVal.notAllowedInVarchar = ["\\", "/", "<", ">", "+", "'", "\""];
+
+	/*
+	 * Static methods
+	 */
+
+	/*
+	 * isNum
+	 *--------------------------
+	 * Is this a number? Either a float or integer
+	 *
+	 * @return: (bool)
+	 */
+	cbVal.isNum = function(val) {
+		return (cbNumber.isFloat(val) || cbNumber.isInt(val));
+	}
+
+	/*
+	 * isNegNum
+	 *--------------------------
+	 * Is this a negative number? Either a float or integer
+	 *
+	 * @return: (bool)
+	 */
+	cbVal.isNegNum = function(val) {
+		return (cbVal.isNum(val) && val.toString().indexOf("-") == 0);
+	}
+
+	/*
+	 * isInt
+	 *--------------------------
+	 * Is this an integer?
+	 *
+	 * @return: (bool)
+	 */
+	cbVal.isInt = function(val) {
+		return (cbNumber.isInt(val));
+	}
+
+	/*
+	 * isValidCheckBoxVal
+	 *--------------------------
+	 * Is this a valid checkbox value?
+	 *
+	 * @return: (bool)
+	 */
+	cbVal.isValidCheckBoxVal = function(val) {
+		return cbVal.validCheckBoxVals.indexOf(val) > -1 ? true : false;
+	}
+
+	/*
+	 * isEmail
+	 *--------------------------
+	 * Is this a valid e-mail address?
+	 *
+	 * @return: (bool)
+	 */
+	cbVal.isEmail = function(val) {
+		return /[\w\.]+\@[\w]+\.[a-zA-Z]{2,3}(\.[a-zA-Z]{2,3})?/.test(val);
+	}
+
+	/*
+	 * isTime
+	 *--------------------------
+	 * Is this a valid time? Takes the current user
+	 * time format into account
+	 *
+	 * @return: (bool)
+	 */
+	cbVal.isTime = function(val) {
+		var hours  = window.userHourFormat == "am/pm" ? 12 : 23,
+		    patt   = hours == 23 ? /^[0-9]{1,2}\:[0-9]{2}$/ : /^[0-9]{1,2}\:[0-9]{2}[ ]?(am|pm)$/,
+		    isTime = false; // Assume the worst
+
+		if (patt.test(val) && parseInt(val.split(":")[0]) <= hours && parseInt(val.split(":")[1]) <= 59) {
+			isTime = true;
+		}
+		return isTime;
+	}
+
+	/*
+	 * isDate
+	 *--------------------------
+	 * Is this a valid date? Takes the current user
+	 * date format into account
+	 *
+	 * @return: (bool)
+	 */
+	cbVal.isDate = function(val) {
+		var df   = window.userDateFormat,
+		    splt = df.charAt(/[\-\/ ]/.exec(df).index), // get format splitter
+		    dArr = val.split(splt), // date array
+		    fArr = df.split(splt), // format array
+		    flg  = false; // Flag setup
+
+		if (val.indexOf(splt) === -1) {
+			return false; // If splitter is not present return right away
+		}
+
+		// Check if all the right numbers are in the right places
+		for (var i = 0; i < fArr.length; i++) {
+			if (fArr[i] == "dd") {
+				// Check date portion
+				flg = (parseInt(dArr[i]) > 0 && parseInt(dArr[i]) <= 31 && dArr[i].length < 3);
+			}
+			if (!flg) {break;}
+
+			if (fArr[i] == "mm") {
+				// Check month portion
+				flg = (parseInt(dArr[i]) > 0 && parseInt(dArr[i]) <= 12 && dArr[i].length < 3);
+			}
+			if (!flg) {break;}
+
+			if (fArr[i] == "yyyy") {
+				// Check year portion
+				flg = (parseInt(dArr[i]) > 0 && parseInt(dArr[i]) < 3000 && dArr[i].length == 4);
+			}
+			if (!flg) {break;}
+		}
+
+		// Does the date match the max. no. in the month?
+		if (flg) {
+			flg = dArr[fArr.indexOf("dd")] <= cbVal.daysInMonth(dArr[fArr.indexOf("mm")], dArr[fArr.indexOf("yyyy")]);
+		}
+
+		return flg;
+	}
+
+	/*
+	 * isDateTime
+	 *--------------------------
+	 * Is this a valid datetime? Takes the current user
+	 * date and time format into account
+	 *
+	 * @return: (bool)
+	 */
+	cbVal.isDateTime = function(val) {
+		var d = val.split(" ")[0],
+		    t = val.split(" ")[1];
+
+		return (cbVal.isDate(d) && cbVal.isTime(t));
+	}
+
+	/*
+	 * isValidVarchar
+	 *--------------------------
+	 * Is this a valid varchar?
+	 *
+	 * @return: (bool)
+	 */
+	cbVal.isValidVarchar = function(val) {
+		var flg = false;
+		for (var i = 0; i < cbVal.notAllowedInVarchar.length; i++) {
+			if (val.indexOf(cbVal.notAllowedInVarchar[i]) === -1) {
+				flg = true;
+			} else {
+				flg = false;
+				break;
+			}
+		}
+		return flg;
+	}
+
+	/*
+	 * daysInMonth
+	 *--------------------------
+	 * Return the days in a certain month of a certain year
+	 *
+	 * @param : month (int)
+	 * @param : year (int)
+	 * @return: (int)
+	 */
+	cbVal.daysInMonth = function(month, year) {
+		return new Date(year, month, 0).getDate();	
+	}
+
+
+	cbVal.prototype = {
+		constructor: cbVal,
+	}
+
+	/*
+	 * Export
+	 */
+	return cbVal;
+
+});
