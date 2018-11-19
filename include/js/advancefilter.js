@@ -1257,88 +1257,13 @@ function vt_getElementsByName(tagName, elementName) {
 		validate: function() {
 			var fieldType = Field.getType(this.cond.fieldCombo.getVal()),
 				curVal    = this.input.value;
-			switch(fieldType) {
-				case "N":
-					// Check if valid number
-					if (cbNumber.isFloat(curVal) || cbNumber.isInt(curVal)) {
-						return !this.setError(false);
-					} else {
-						return !this.setError(true);
-					}
-					break;
-				case "NN":
-					// Check if valid negative no.
-					if ( (cbNumber.isFloat(curVal) || cbNumber.isInt(curVal)) && curVal.indexOf("-") == 0) {
-						return !this.setError(false);
-					} else {
-						return !this.setError(true);
-					}					
-					break;
-				case "I":
-					if (cbNumber.isInt(curVal)) {
-						return !this.setError(false);
-					} else {
-						return !this.setError(true);
-					}
-					break;
-				case "D":
-					// Check if valid date
-					break;
-				case "DT":
-					// Check if valid datetime
-					break;
-				case "C":
-					// Check if valid checkbox
-					if (curVal === "yes" || curVal === "no" || curVal === "1" || curVal === "0") {
-						return !this.setError(false);
-					} else {
-						return !this.setError(true);
-					}
-					break;
-				case "E":
-					// Check if valid email
-					var eMailPatt = /[\w\.]+\@[\w]+\.[a-zA-Z]{2,3}(\.[a-zA-Z]{2,3})?/g;
-					if (eMailPatt.test(curVal)) {
-						return !this.setError(false);
-					} else {
-						return !this.setError(true);
-					}
-					break;
-				case "T":
-					// Check if valid time
-					if (this.isTime(curVal)) {
-						return !this.setError(false);
-					} else {
-						return !this.setError(true);
-					}
-					break;
-				case "V":
-					// Check if valid varchar
-					break;
-				case "O":
-					// Check if valid RecurringType/Duration_minutes
-					break;
-				default:
-					return !this.setError(false);
-			}
-		},
 
-		/*
-		 * method: isTime
-		 * Is this a valid time?
-		 *
-		 * @param : (string)
-		 * @return: (bool)
-		 */
-		isTime: function(time) {
-			var hours  = window.userHourFormat == "am/pm" ? 12 : 23,
-			    patt   = hours == 23 ? /^[0-9]{1,2}\:[0-9]{2}$/ : /^[0-9]{1,2}\:[0-9]{2}[ ]?(am|pm)$/,
-			    isTime = false; // Assume the worst
-
-			if (patt.test(time) && parseInt(time.split(":")[0]) <= hours && parseInt(time.split(":")[1]) <= 59) {
-				isTime = true;
+			if (cbVal(fieldType, curVal)) {
+				return !this.setError(false);
+			} else {
+				return !this.setError(true);
 			}
-			return isTime;
+
 		},
 
 		/*
