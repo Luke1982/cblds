@@ -413,7 +413,21 @@ function vt_getElementsByName(tagName, elementName) {
 		 */
 		handleKeyUp: function(e) {
 			if (this.needsValidation(e.target)) {
-				console.log("needs val");				
+				this.getValByInput(e.target).validate();				
+			}
+		},
+
+		/*
+		 * Method: 'getValByInput'
+		 * Get a value object by its input node
+		 *
+		 * @param  : input node
+		 * @return : value object
+		 */
+		getValByInput: function(inputNode) {
+			for (var i = 0; i < this.vals.length; i++) {
+				if (this.vals[i].input.isSameNode(inputNode))
+					return this.vals[i];
 			}
 		},
 
@@ -1219,6 +1233,38 @@ function vt_getElementsByName(tagName, elementName) {
 				dateFormat += " %H:%M";
 
 			return dateFormat;
+		},
+
+		/*
+		 * method: validate
+		 * Validates the current value in the input box
+		 * Gets the fieldtype and the current value
+		 *
+		 * @return : (bool)
+		 */
+		validate: function() {
+			var fieldType = Field.getType(this.cond.fieldCombo.getVal()),
+				curVal    = this.input.value;
+			switch(fieldType) {
+				case "N":
+					this.setError(true);
+					break;
+				default:
+					this.setError(false);
+			}
+		},
+
+		/*
+		 * method: setError
+		 * Sets the error state of the current value
+		 *
+		 * @param : (bool)
+		 */
+		setError: function(state) {
+			if (state)
+				this.input.classList.add("slds-has-error");
+			else
+				this.input.classList.remove("slds-has-error");
 		}
 	};
 
