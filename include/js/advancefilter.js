@@ -923,18 +923,20 @@ function vt_getElementsByName(tagName, elementName) {
 		 * @param : value of the combo
 		 */
 		react: function(val) {
+			var vals;
 			switch (this.constructor.name) {
 				case "Cond":
 					this.setOps(val);
 					this.setVals();
+					vals = this.getVals("obj");
 					break;
 				case "Operations":
 					// 'this' is bound to the operation instance here
 					this.onSelect(val);
 					this.cond.setVals();
+					vals = this.cond.getVals("obj");
 					break;
 			}
-			var vals = this.getVals("obj");
 			for (var i = 0; i < vals.length; i++) {
 				vals[i].validate();
 			}
@@ -1110,6 +1112,7 @@ function vt_getElementsByName(tagName, elementName) {
 	function Value(cond, node) {
 		this.cond       = cond,
 		this.condNo     = cond.no,
+		this.active     = false,
 		this.val        = null,
 		this.el         = node,
 		this.dpActive   = false,
@@ -1144,11 +1147,15 @@ function vt_getElementsByName(tagName, elementName) {
 					break;
 			}
 
+			this.active = this.getSeq() == 1 ? true : false; // Always set the first value active
+
 			var needsTwo = this.cond.op.needsTwoVals(opType);
 			if (needsTwo && (this.getSeq() == 2)) {
 				_sldsShow(this.el, true);
+				this.active = true;
 			} else if (!needsTwo && (this.getSeq() == 2)) {
 				_sldsShow(this.el, false);
+				this.active = false;
 			}
 		},
 
